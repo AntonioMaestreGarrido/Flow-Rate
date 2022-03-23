@@ -1,0 +1,22 @@
+*{
+    font-size: 30px;
+    font-weight: bolder;
+}
+td{
+    text-align: center;
+    border: solid black 2px;
+}
+th{
+    border: solid black 4px  ;
+    min-width: 15vw;
+}
+table{
+    margin: auto;
+}
+h1{
+    margin: auto;
+}
+button{
+    margin: 30px;
+    display: none;
+}

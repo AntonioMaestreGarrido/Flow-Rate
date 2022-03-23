@@ -1,17 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flow Ratio</title>
-    <script src="./index.js"></script>
-</head>
-<body>
-    <h1>Flow ratio</h1>
-    <p id='inductRate'></p>
-    <p id='stowRate'></p>
-    <p id='ATs'>ats</p>
-    
-</body>
+    <script src="./index.js" defer></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <h1>Flow Ratio</h1>
+    <table >
+      <tr>
+        <th>DQA2 </th>
+        <th>Actual</th>
+        <th>Max</th>
+        <th>Min</th>
+        <th>Optim</th>
+      </tr>
+
+      <tr>
+        <th>Ats</th>
+        <td id="ATsAct"></td>
+        <td id="ATsMax"></td>
+        <td id="ATsMin"></td>
+        <td id="ATsOpt"></td>
+      </tr>
+      <tr>
+        <th>Stow Rate</th>
+        <td id="StowRateAct"></td>
+        <td id="StowRateMin"></td>
+        <td id="StowRateMax"></td>
+        <td id="StowRateOpt"></td>
+      </tr>
+      <tr>
+        <th>Induc Rate</th>
+        <td id="InductRateAct"></td>
+        <td id="InductRateMin"></td>
+        <td id="InductRateMax"></td>
+        <td id="InductRateOpt"></td>
+      </tr>
+      <tr>
+        <th>Minutes to Check</th>
+        <td id="MinutesToCheck"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th>Ats at Time Check</th>
+        <td id="ATsAtTime"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+
+    <button id="refresh">Refresh</button>
+    <button id="encender">On</button>
+  </body>
 </html>
