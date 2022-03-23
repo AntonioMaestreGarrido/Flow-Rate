@@ -1,9 +1,9 @@
 
 
-let ATsAct, ATsMax, ATsMin, ATsOpt;
-let StowRateAct, StowRateMin, StowRateMax, StowRateOpt;
-let InductRateAct, InductRateMin, InductRateMax, InductRateOpt;
-let MinutesToCheck, ATsAtTime;
+let ATsAct=0, ATsMax=0, ATsMin=0, ATsOpt=0;
+let StowRateAct=0, StowRateMin=0, StowRateMax=0, StowRateOpt=0;
+let InductRateAct=0, InductRateMin=0, InductRateMax=0, InductRateOpt=0;
+let MinutesToCheck=0, ATsAtTime=0;
 let date = new Date();
 let encendido = false;
 
@@ -56,13 +56,13 @@ function calculate(data) {
   ATsMin = StowRateAct / 4;
   ATsOpt = (ATsMax + ATsMin) / 2;
 
-  StowRateMin = parseInt((StowRateAct / ATsMin) * ATsAct);
-  StowRateMax = parseInt((StowRateAct / ATsMax) * ATsAct);
-  StowRateOpt = parseInt((StowRateAct / ATsOpt) * ATsAct);
+  StowRateMin = parseInt((StowRateAct * ATsMax) / ATsAct);
+  StowRateMax = parseInt((StowRateAct * ATsMin) / ATsAct);
+  StowRateOpt =parseInt ((StowRateAct * ATsOpt) / ATsAct);
 
-  InductRateMin = parseInt((InductRateAct / ATsMin) * ATsAct);
-  InductRateMax = parseInt((InductRateAct / ATsMax) * ATsAct);
-  InductRateOpt = parseInt((InductRateAct / ATsOpt) * ATsAct);
+  InductRateMax = parseInt((InductRateAct * ATsMin) / ATsAct);
+  InductRateMin = parseInt((InductRateAct * ATsMax) / ATsAct);
+  InductRateOpt = parseInt((InductRateAct * ATsOpt) / ATsAct);
 
   filltable();
 }
