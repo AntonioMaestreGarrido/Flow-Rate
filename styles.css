@@ -8,7 +8,7 @@ td{
 }
 th{
     border: solid black 4px  ;
-    min-width: 15vw;
+    min-width: 8vw;
 }
 table{
     margin: auto;
@@ -19,6 +19,6 @@ h1{
 button{
     margin: 30px;
     
-    width: 40px;
+    width: 240px;
     border-radius: 15px;
 }

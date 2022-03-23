@@ -1,5 +1,16 @@
+import dailyData from "./data/dailyData.json" ;
 
 
+const windowData={"window":0,
+"ATs":0,
+"InducAct":0,
+"StowAct":0,
+"IductTotal":0,
+"StowTotal":0
+
+}
+console.log("dailyData")
+console.log(dailyData)
 let ATsAct=0, ATsMax=0, ATsMin=0, ATsOpt=0;
 let StowRateAct=0, StowRateMin=0, StowRateMax=0, StowRateOpt=0;
 let InductRateAct=0, InductRateMin=0, InductRateMax=0, InductRateOpt=0;
@@ -85,7 +96,12 @@ async function filltable() {
 
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
   document.getElementById("ATsAtTime").innerText = ATsAtTime;
+  if(MinutesToCheck==0){addWindowData()}
   giveStyle();
+}
+function addWindowData(){
+  addWindowData.window=+1
+  const a=1
 }
 function giveStyle() {
   if (ATsAct > ATsMax || ATsAct < ATsMin) {
@@ -106,4 +122,4 @@ function main() {
     //apitest()
   } while (encendido);
 }
-setInterval('apitest()',30000)
+//setInterval('apitest()',30000)
