@@ -40,16 +40,17 @@ async function apitest() {
     .catch(() => alert("No se encuentra el servidor"));
 }
 function calculate(data) {
+
   let date = new Date();
-  ATsAct = data.ATs;
-  StowRateAct = data.stowRate;
-  InductRateAct = data.inductRate;
+  ATsAct = parseInt( data.ATs)
+  StowRateAct =parseInt( data.stowRate)
+  InductRateAct =parseInt( data.inductRate)
   let stowRateMinute = StowRateAct / 60;
   let inductRateMinute = InductRateAct / 60;
   MinutesToCheck = 15 - (date.getMinutes() % 15);
-  ATsAtTime = parseInt(
-    ((InductRateAct - StowRateAct) / 60) * MinutesToCheck + ATsAct
-  );
+  console.log(InductRateAct,StowRateAct,MinutesToCheck,ATsAct)
+  let ritmo=parseInt(InductRateAct-StowRateAct)
+  ATsAtTime = parseInt((ritmo/60*MinutesToCheck)+ATsAct)
 
   ATsMax = StowRateAct / 2;
   ATsMin = StowRateAct / 4;
