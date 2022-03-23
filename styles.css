@@ -18,5 +18,7 @@ h1{
 }
 button{
     margin: 30px;
-    display: none;
+    
+    width: 40px;
+    border-radius: 5px;
 }
