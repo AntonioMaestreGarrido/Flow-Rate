@@ -1,36 +1,35 @@
-import dailyData from "./data/dailyData.json" ;
+const windowData = {
+  window: 0,
+  ATs: 0,
+  InducAct: 0,
+  StowAct: 0,
+  IductTotal: 0,
+  StowTotal: 0,
+};
 
-
-const windowData={"window":0,
-"ATs":0,
-"InducAct":0,
-"StowAct":0,
-"IductTotal":0,
-"StowTotal":0
-
-}
-console.log("dailyData")
-console.log(dailyData)
-let ATsAct=0, ATsMax=0, ATsMin=0, ATsOpt=0;
-let StowRateAct=0, StowRateMin=0, StowRateMax=0, StowRateOpt=0;
-let InductRateAct=0, InductRateMin=0, InductRateMax=0, InductRateOpt=0;
-let MinutesToCheck=0, ATsAtTime=0;
+let ATsAct = 0,
+  ATsMax = 0,
+  ATsMin = 0,
+  ATsOpt = 0;
+let StowRateAct = 0,
+  StowRateMin = 0,
+  StowRateMax = 0,
+  StowRateOpt = 0;
+let InductRateAct = 0,
+  InductRateMin = 0,
+  InductRateMax = 0,
+  InductRateOpt = 0;
+let MinutesToCheck = 0,
+  ATsAtTime = 0;
 let date = new Date();
 let encendido = false;
 
 const refreshButton = document.getElementById("refresh");
 const encenderButton = document.getElementById("encender");
 
-refreshButton.addEventListener("click", () => apitest());
-encenderButton.addEventListener("click", () => {
-  encendido = !encendido;
-  if (encendido) {
-    encenderButton.innerText = "On";
-    main();
-  } else {
-    encenderButton.innerText = "Of";
-  }
-});
+//refreshButton.addEventListener("click", () => apitest());
+
+console.log("hola");
 
 async function apitest() {
   let data2;
@@ -51,17 +50,16 @@ async function apitest() {
     .catch(() => alert("No se encuentra el servidor"));
 }
 function calculate(data) {
-
   let date = new Date();
-  ATsAct = parseInt( data.ATs)
-  StowRateAct =parseInt( data.stowRate)
-  InductRateAct =parseInt( data.inductRate)
+  ATsAct = parseInt(data.ATs);
+  StowRateAct = parseInt(data.stowRate);
+  InductRateAct = parseInt(data.inductRate);
   let stowRateMinute = StowRateAct / 60;
   let inductRateMinute = InductRateAct / 60;
   MinutesToCheck = 15 - (date.getMinutes() % 15);
-  console.log(InductRateAct,StowRateAct,MinutesToCheck,ATsAct)
-  let ritmo=parseInt(InductRateAct-StowRateAct)
-  ATsAtTime = parseInt((ritmo/60*MinutesToCheck)+ATsAct)
+  console.log(InductRateAct, StowRateAct, MinutesToCheck, ATsAct);
+  let ritmo = parseInt(InductRateAct - StowRateAct);
+  ATsAtTime = parseInt((ritmo / 60) * MinutesToCheck + ATsAct);
 
   ATsMax = StowRateAct / 2;
   ATsMin = StowRateAct / 4;
@@ -69,7 +67,7 @@ function calculate(data) {
 
   StowRateMin = parseInt((StowRateAct * ATsMax) / ATsAct);
   StowRateMax = parseInt((StowRateAct * ATsMin) / ATsAct);
-  StowRateOpt =parseInt ((StowRateAct * ATsOpt) / ATsAct);
+  StowRateOpt = parseInt((StowRateAct * ATsOpt) / ATsAct);
 
   InductRateMax = parseInt((InductRateAct * ATsMin) / ATsAct);
   InductRateMin = parseInt((InductRateAct * ATsMax) / ATsAct);
@@ -96,12 +94,12 @@ async function filltable() {
 
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
   document.getElementById("ATsAtTime").innerText = ATsAtTime;
-  if(MinutesToCheck==0){addWindowData()}
+
   giveStyle();
 }
-function addWindowData(){
-  addWindowData.window=+1
-  const a=1
+function addWindowData() {
+  addWindowData.window = +1;
+  const a = 1;
 }
 function giveStyle() {
   if (ATsAct > ATsMax || ATsAct < ATsMin) {
@@ -118,8 +116,33 @@ function giveStyle() {
 function main() {
   do {
     console.log("on");
-    console.log(encendido)
+    console.log(encendido);
     //apitest()
   } while (encendido);
 }
-//setInterval('apitest()',30000)
+setInterval('apitest()',30000)
+console.log("testpost");
+const obj = { atts: 10, ratio: "a tope" };
+
+async function testPost() {
+  let link = "http://localhost:3000/send?obj=" + JSON.stringify(obj);
+  console.log(link);
+  await fetch(link).catch(() => alert("No se encuentra el servidor"));
+
+  /*
+
+
+  console.log("testpost")
+    const rawResponse = await fetch('localhost:3000/test', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({a: 1, b: 'Textual content'})
+    });
+    const content = await rawResponse.json();
+  
+    console.log(content);
+  */
+}
