@@ -120,9 +120,10 @@ function main() {
     //apitest()
   } while (encendido);
 }
-setInterval('apitest()',30000)
-console.log("testpost");
-const obj = { atts: 10, ratio: "a tope" };
+console.log("arrancando")
+setInterval(apitest(),30000)
+//console.log("testpost");
+//const obj = { atts: 10, ratio: "a tope" };
 
 async function testPost() {
   let link = "http://localhost:3000/send?obj=" + JSON.stringify(obj);
