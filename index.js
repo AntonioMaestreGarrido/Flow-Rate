@@ -32,6 +32,7 @@ const encenderButton = document.getElementById("encender");
 console.log("hola");
 
 async function apitest() {
+  console.log("fetching server")
   let data2;
   //await  fetch("http://localhost:3000")
   /*
@@ -121,7 +122,7 @@ function main() {
   } while (encendido);
 }
 console.log("arrancando")
-setInterval(apitest(),30000)
+setInterval(apitest,30000)
 //console.log("testpost");
 //const obj = { atts: 10, ratio: "a tope" };
 
