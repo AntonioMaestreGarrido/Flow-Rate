@@ -35,7 +35,7 @@ document
   .getElementById("StowRateCustom")
   .addEventListener("change", fillCustom);
 document
-  .getElementById("StowInductCustom")
+  .getElementById("InductRateCustom")
   .addEventListener("change", fillCustom);
 
 function fillCustom() {
