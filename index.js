@@ -67,11 +67,11 @@ function calculate(data) {
   ATsOpt = (ATsMax + ATsMin) / 2;
 
   StowRateMin = parseInt((StowRateAct * ATsMax) / ATsAct);
-  StowRateMax = parseInt((StowRateAct * ATsMin) / ATsAct);
-  StowRateOpt = parseInt((StowRateAct * ATsOpt) / ATsAct);
+  StowRateMax =parseint( (ATsMax-ATsAct)/MinutesToCheck+StowRateAct);
+  StowRateOpt = parseInt( (ATsMin-ATsAct)/MinutesToCheck+StowRateAct);
 
-  InductRateMax = parseInt((InductRateAct * ATsMin) / ATsAct);
-  InductRateMin = parseInt((InductRateAct * ATsMax) / ATsAct);
+  InductRateMax = parseInt((InductRateAct * ATsMax) / ATsAct);
+  InductRateMin = parseInt((InductRateAct * ATsMin) / ATsAct);
   InductRateOpt = parseInt((InductRateAct * ATsOpt) / ATsAct);
 
   filltable();
@@ -121,8 +121,9 @@ function main() {
     //apitest()
   } while (encendido);
 }
+apitest()
 console.log("arrancando")
-setInterval(apitest,30000)
+setInterval(apitest,20000)
 //console.log("testpost");
 //const obj = { atts: 10, ratio: "a tope" };
 
