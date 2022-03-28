@@ -58,7 +58,7 @@ async function apitest() {
   console.log("fetching server");
   let data2;
   //await  fetch("http://localhost:3000")
-  /*
+  /*..
  Dirección IPv4. . . . . . . . . . . . . . : 192.168.15.230
  Máscara de subred . . . . . . . . . . . . : 255.255.255.0
  Puerta de enlace predeterminada . . . . . : 192.168.15.1
