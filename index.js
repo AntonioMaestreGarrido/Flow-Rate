@@ -58,7 +58,7 @@ async function apitest() {
 
  stowRate, ATs, inductRate
  */
-  await fetch("http://localhost:3000")
+  await fetch("http://localhost:3001")
     .then((response) => response.json())
     .then((data) => {
       let datos = data;
