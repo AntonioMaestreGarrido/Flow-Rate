@@ -65,7 +65,7 @@ async function apitest() {
 
  stowRate, ATs, inductRate
  */
-  await fetch("http://localhost:3001")
+  await fetch("http://localhost:3000")
     .then((response) => response.json())
     .then((data) => {
       let datos = data;
@@ -150,9 +150,9 @@ function main() {
     //apitest()
   } while (encendido);
 }
-apitest();
+//apitest();
 console.log("arrancando");
-setInterval(apitest, 20000);
+setInterval(apitest, 30000);
 //console.log("testpost");
 //const obj = { atts: 10, ratio: "a tope" };
 
