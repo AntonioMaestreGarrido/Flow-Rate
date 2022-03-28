@@ -14,41 +14,48 @@ let ATsAct = 0,
 let StowRateAct = 0,
   StowRateMin = 0,
   StowRateMax = 0,
-  StowRateOpt = 0;
-  StowRateCustom=0
+  StowRateOpt = 0,
+StowRateCustom = 0;
 let InductRateAct = 0,
   InductRateMin = 0,
   InductRateMax = 0,
   InductRateOpt = 0;
-  InductRateCustom=0
+InductRateCustom = 0;
 let MinutesToCheck = 0,
   ATsAtTime = 0;
-  ATsAtTimeCustom=0
+ATsAtTimeCustom = 0;
 let date = new Date();
 let encendido = false;
-let parcelStowedThisWindow
+let parcelStowedThisWindow;
 
 const refreshButton = document.getElementById("refresh");
 const encenderButton = document.getElementById("encender");
 
-document.getElementById("StowRateCustom").addEventListener('change',fillCustom)
-document.getElementById("StowInductCustom").addEventListener('change',fillCustom)
+document
+  .getElementById("StowRateCustom")
+  .addEventListener("change", fillCustom);
+document
+  .getElementById("StowInductCustom")
+  .addEventListener("change", fillCustom);
 
-
-function fillCustom(){
-  InductRateCustom=parseInt( document.getElementById('InductRateCustom').textContent)
-  StowRateCustom=parseInt( document.getElementById('StowRateCustom').textContent)
-  ATsAtTimeCustom = parseInt(((InductRateCustom - StowRateCustom) / 60) * MinutesToCheck + ATsAct);
-
+function fillCustom() {
+  InductRateCustom = parseInt(
+    document.getElementById("InductRateCustom").textContent
+  );
+  StowRateCustom = parseInt(
+    document.getElementById("StowRateCustom").textContent
+  );
+  ATsAtTimeCustom = parseInt(
+    ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheck + ATsAct
+  );
 }
-
 
 //refreshButton.addEventListener("click", () => apitest());
 
 console.log("hola");
 
 async function apitest() {
-  console.log("fetching server")
+  console.log("fetching server");
   let data2;
   //await  fetch("http://localhost:3000")
   /*
@@ -78,15 +85,13 @@ function calculate(data) {
   let ritmo = parseInt(InductRateAct - StowRateAct);
   ATsAtTime = parseInt((ritmo / 60) * MinutesToCheck + ATsAct);
 
-  
-
   ATsMax = StowRateAct / 2;
   ATsMin = StowRateAct / 4;
   ATsOpt = (ATsMax + ATsMin) / 2;
 
   StowRateMin = parseInt((StowRateAct * ATsMax) / ATsAct);
-  StowRateMax =parseint( (ATsMax-ATsAct)/MinutesToCheck+StowRateAct);
-  StowRateOpt = parseInt( (ATsMin-ATsAct)/MinutesToCheck+StowRateAct);
+  StowRateMax = parseint((ATsMax - ATsAct) / MinutesToCheck + StowRateAct);
+  StowRateOpt = parseInt((ATsMin - ATsAct) / MinutesToCheck + StowRateAct);
 
   InductRateMax = parseInt((InductRateAct * ATsMax) / ATsAct);
   InductRateMin = parseInt((InductRateAct * ATsMin) / ATsAct);
@@ -114,7 +119,7 @@ async function filltable() {
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
   document.getElementById("ATsAtTime").innerText = ATsAtTime;
   document.getElementById("ATsAtTimeCustom").innerText = ATsAtTime;
-  
+
   giveStyle();
 }
 function addWindowData() {
@@ -132,7 +137,7 @@ function giveStyle() {
   } else {
     document.getElementById("ATsAtTime").style.backgroundColor = "green";
   }
-  if (ATsAtTimeCustom > StowRateCustom/2 || StowRateCustom / 4) {
+  if (ATsAtTimeCustom > StowRateCustom / 2 || StowRateCustom / 4) {
     document.getElementById("ATsAtTimeCustom").style.backgroundColor = "red";
   } else {
     document.getElementById("ATsAtTimeCustom").style.backgroundColor = "green";
@@ -145,9 +150,9 @@ function main() {
     //apitest()
   } while (encendido);
 }
-apitest()
-console.log("arrancando")
-setInterval(apitest,20000)
+apitest();
+console.log("arrancando");
+setInterval(apitest, 20000);
 //console.log("testpost");
 //const obj = { atts: 10, ratio: "a tope" };
 
