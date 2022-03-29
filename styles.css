@@ -5,13 +5,18 @@
 td{
     text-align: center;
     border: solid black 2px;
+   
 }
 th{
     border: solid black 4px  ;
     min-width: 8vw;
+    
 }
 table{
     margin: auto;
+}
+table *{
+    height: 12px;
 }
 h1{
     margin: auto;

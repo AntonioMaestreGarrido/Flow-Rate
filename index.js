@@ -1,3 +1,6 @@
+
+
+
 const windowData = {
   window: 0,
   ATs: 0,
@@ -26,19 +29,22 @@ let MinutesToCheck = 0,
 ATsAtTimeCustom = 0;
 let date = new Date();
 let encendido = false;
-let parcelStowedThisWindow;
+let parcelStowedThisWindow=0;
+let ParcelStowedLAstWindow=0
+let window=0
 
 const refreshButton = document.getElementById("refresh");
 const encenderButton = document.getElementById("encender");
 
 document
   .getElementById("StowRateCustom")
-  .addEventListener("change", fillCustom);
+  .addEventListener("focusout",()=> fillCustom());
 document
   .getElementById("InductRateCustom")
-  .addEventListener("change", fillCustom);
+  .addEventListener("focusout",()=> fillCustom());
 
 function fillCustom() {
+ 
   InductRateCustom = parseInt(
     document.getElementById("InductRateCustom").textContent
   );
@@ -48,11 +54,15 @@ function fillCustom() {
   ATsAtTimeCustom = parseInt(
     ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheck + ATsAct
   );
+  document.getElementById('MinCustom').textContent=document.getElementById("StowRateCustom").textContent/4
+  document.getElementById('MaxCustom').textContent=document.getElementById("StowRateCustom").textContent/2
+  document.getElementById('ATsAtTimeCustom').textContent=ATsAtTimeCustom
+  giveStyle()
 }
 
 //refreshButton.addEventListener("click", () => apitest());
 
-console.log("hola");
+
 
 async function apitest() {
   console.log("fetching server");
@@ -69,11 +79,14 @@ async function apitest() {
     .then((response) => response.json())
     .then((data) => {
       let datos = data;
+      console.log(datos)
       calculate(datos);
+      
     })
-    .catch(() => alert("No se encuentra el servidor"));
+    .catch((error) => alert("No se encuentra el servidor",error));
 }
 function calculate(data) {
+
   let date = new Date();
   ATsAct = parseInt(data.ATs);
   StowRateAct = parseInt(data.stowRate);
@@ -89,15 +102,23 @@ function calculate(data) {
   ATsMin = StowRateAct / 4;
   ATsOpt = (ATsMax + ATsMin) / 2;
 
-  StowRateMin = parseInt((StowRateAct * ATsMax) / ATsAct);
-  StowRateMax = parseint((ATsMax - ATsAct) / MinutesToCheck + StowRateAct);
-  StowRateOpt = parseInt((ATsMin - ATsAct) / MinutesToCheck + StowRateAct);
+  StowRateMax = parseInt((MinutesToCheck*InductRateAct+60*ATsAct)/(15+MinutesToCheck));
+  StowRateMin = parseInt((MinutesToCheck*InductRateAct+60*ATsAct)/(30+MinutesToCheck));
+  StowRateOpt = parseInt(StowRateMax+StowRateMin)/2
 
-  InductRateMax = parseInt((InductRateAct * ATsMax) / ATsAct);
-  InductRateMin = parseInt((InductRateAct * ATsMin) / ATsAct);
-  InductRateOpt = parseInt((InductRateAct * ATsOpt) / ATsAct);
+  InductRateMax = parseInt(((60*ATsMax-60*ATsAct)/MinutesToCheck)+StowRateAct);
+  InductRateMin = parseInt(((60*ATsMin-60*ATsAct)/MinutesToCheck)+StowRateAct);
+  InductRateOpt = (InductRateMax+InductRateMin)/2
 
   filltable();
+  if(MinutesToCheck===0){
+    takeWindowData()
+  }
+}
+function takeWindowData(){
+  takeWindowData.window++
+
+
 }
 
 async function filltable() {
@@ -117,8 +138,10 @@ async function filltable() {
   document.getElementById("InductRateOpt").innerText = InductRateOpt;
 
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
+  document.getElementById("MinutesToCheck2").innerText = MinutesToCheck;
+  
   document.getElementById("ATsAtTime").innerText = ATsAtTime;
-  document.getElementById("ATsAtTimeCustom").innerText = ATsAtTime;
+  //document.getElementById("ATsAtTimeCustom").innerText = ATsAtTime;
 
   giveStyle();
 }
@@ -137,7 +160,10 @@ function giveStyle() {
   } else {
     document.getElementById("ATsAtTime").style.backgroundColor = "green";
   }
-  if (ATsAtTimeCustom > StowRateCustom / 2 || StowRateCustom / 4) {
+  console.log('StowRateCustom',StowRateCustom)
+  console.log('ATsAtTimeCustom',ATsAtTimeCustom)
+  if (ATsAtTimeCustom > StowRateCustom / 2 || ATsAtTimeCustom< StowRateCustom / 4) {
+
     document.getElementById("ATsAtTimeCustom").style.backgroundColor = "red";
   } else {
     document.getElementById("ATsAtTimeCustom").style.backgroundColor = "green";
@@ -150,7 +176,7 @@ function main() {
     //apitest()
   } while (encendido);
 }
-//apitest();
+apitest();
 console.log("arrancando");
 setInterval(apitest, 30000);
 //console.log("testpost");
