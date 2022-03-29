@@ -153,12 +153,12 @@ function giveStyle() {
   if (ATsAct > ATsMax || ATsAct < ATsMin) {
     document.getElementById("ATsAct").style.backgroundColor = "red";
   } else {
-    document.getElementById("ATsAct").style.backgroundColor = "green";
+    document.getElementById("ATsAct").style.backgroundColor = "rgb(109, 230, 109)";
   }
   if (ATsAtTime > ATsMax || ATsAtTime < ATsMin) {
     document.getElementById("ATsAtTime").style.backgroundColor = "red";
   } else {
-    document.getElementById("ATsAtTime").style.backgroundColor = "green";
+    document.getElementById("ATsAtTime").style.backgroundColor = "rgb(109, 230, 109)";
   }
   console.log("StowRateCustom", StowRateCustom);
   console.log("ATsAtTimeCustom", ATsAtTimeCustom);
@@ -168,7 +168,7 @@ function giveStyle() {
   ) {
     document.getElementById("ATsAtTimeCustom").style.backgroundColor = "red";
   } else {
-    document.getElementById("ATsAtTimeCustom").style.backgroundColor = "green";
+    document.getElementById("ATsAtTimeCustom").style.backgroundColor = "rgb(109, 230, 109)";
   }
 }
 function main() {
@@ -215,6 +215,19 @@ function setupEventsListener() {
     .addEventListener("focusout", () => fillCustom());
 
   startButton.addEventListener("click", () => handleStartButton());
+  document.getElementById("copy").addEventListener("click",()=>copyData())
+}
+function copyData(){
+  
+  document.getElementById("ATsCustom").textContent=ATsAct
+  document.getElementById("StowRateCustom").textContent=StowRateAct
+  document.getElementById("InductRateCustom").textContent=InductRateAct
+  document.getElementById("MinutesToCheckCustom").textContent=MinutesToCheck
+  fillCustom()
+
+
+
+
 }
 function handleStartButton() {
   console.log(startButton.textContent);
