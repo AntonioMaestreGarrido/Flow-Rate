@@ -1,6 +1,4 @@
 
-
-
 const windowData = {
   window: 0,
   ATs: 0,
@@ -23,36 +21,26 @@ let InductRateAct = 0,
   InductRateMin = 0,
   InductRateMax = 0,
   InductRateOpt = 0,
-InductRateCustom = 0;
+  InductRateCustom = 0;
 let MinutesToCheck = 0,
   ATsAtTime = 0,
-ATsAtTimeCustom = 0;
+  ATsAtTimeCustom = 0;
 let date = new Date();
 let encendido = false;
-let parcelStowedThisWindow=0;
-let ParcelStowedLAstWindow=0
-let window=0
+let parcelStowedThisWindow = 0;
+let ParcelStowedLAstWindow = 0;
+let window = 0;
 
-const refreshButton = document.getElementById("refresh");
-const encenderButton = document.getElementById("encender");
 
-document
-  .getElementById("StowRateCustom")
-  .addEventListener("focusout",()=> fillCustom());
-document
-  .getElementById("InductRateCustom")
-  .addEventListener("focusout",()=> fillCustom());
-  document
-  .getElementById("MinutesToCheckCustom")
-  .addEventListener("focusout",()=> fillCustom());
-  document
-  .getElementById("ATsCustom")
-  .addEventListener("focusout",()=> fillCustom());
+const startButton = document.getElementById("startButton");
+setupEventsListener();
 
 function fillCustom() {
-  let ATsCustom=parseInt(document.getElementById('ATsCustom').textContent)
-  
-  let MinutesToCheckCustom=parseInt( document.getElementById('MinutesToCheckCustom').textContent)
+  let ATsCustom = parseInt(document.getElementById("ATsCustom").textContent);
+
+  let MinutesToCheckCustom = parseInt(
+    document.getElementById("MinutesToCheckCustom").textContent
+  );
   InductRateCustom = parseInt(
     document.getElementById("InductRateCustom").textContent
   );
@@ -60,18 +48,19 @@ function fillCustom() {
     document.getElementById("StowRateCustom").textContent
   );
   ATsAtTimeCustom = parseInt(
-    ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheckCustom + ATsCustom
+    ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheckCustom +
+      ATsCustom
   );
-  document.getElementById('MinCustom').textContent=document.getElementById("StowRateCustom").textContent/4
-  document.getElementById('MaxCustom').textContent=document.getElementById("StowRateCustom").textContent/2
-  document.getElementById('ATsAtTimeCustom').textContent=ATsAtTimeCustom
-  giveStyle()
-  console.log('ATsCustom',ATsCustom)
+  document.getElementById("MinCustom").textContent =
+    document.getElementById("StowRateCustom").textContent / 4;
+  document.getElementById("MaxCustom").textContent =
+    document.getElementById("StowRateCustom").textContent / 2;
+  document.getElementById("ATsAtTimeCustom").textContent = ATsAtTimeCustom;
+  giveStyle();
+  console.log("ATsCustom", ATsCustom);
 }
 
 //refreshButton.addEventListener("click", () => apitest());
-
-
 
 async function apitest() {
   console.log("fetching server");
@@ -88,14 +77,12 @@ async function apitest() {
     .then((response) => response.json())
     .then((data) => {
       let datos = data;
-      console.log(datos)
+      console.log(datos);
       calculate(datos);
-      
     })
-    .catch((error) => alert("No se encuentra el servidor",error));
+    .catch((error) => alert("No se encuentra el servidor", error));
 }
 function calculate(data) {
-
   let date = new Date();
   ATsAct = parseInt(data.ATs);
   StowRateAct = parseInt(data.stowRate);
@@ -111,23 +98,29 @@ function calculate(data) {
   ATsMin = StowRateAct / 4;
   ATsOpt = (ATsMax + ATsMin) / 2;
 
-  StowRateMax = parseInt((MinutesToCheck*InductRateAct+60*ATsAct)/(15+MinutesToCheck));
-  StowRateMin = parseInt((MinutesToCheck*InductRateAct+60*ATsAct)/(30+MinutesToCheck));
-  StowRateOpt = parseInt(StowRateMax+StowRateMin)/2
+  StowRateMax = parseInt(
+    (MinutesToCheck * InductRateAct + 60 * ATsAct) / (15 + MinutesToCheck)
+  );
+  StowRateMin = parseInt(
+    (MinutesToCheck * InductRateAct + 60 * ATsAct) / (30 + MinutesToCheck)
+  );
+  StowRateOpt = parseInt(StowRateMax + StowRateMin) / 2;
 
-  InductRateMax = parseInt(((60*ATsMax-60*ATsAct)/MinutesToCheck)+StowRateAct);
-  InductRateMin = parseInt(((60*ATsMin-60*ATsAct)/MinutesToCheck)+StowRateAct);
-  InductRateOpt = (InductRateMax+InductRateMin)/2
+  InductRateMax = parseInt(
+    (60 * ATsMax - 60 * ATsAct) / MinutesToCheck + StowRateAct
+  );
+  InductRateMin = parseInt(
+    (60 * ATsMin - 60 * ATsAct) / MinutesToCheck + StowRateAct
+  );
+  InductRateOpt = (InductRateMax + InductRateMin) / 2;
 
   filltable();
-  if(MinutesToCheck===0){
-    takeWindowData()
+  if (MinutesToCheck === 0) {
+    takeWindowData();
   }
 }
-function takeWindowData(){
-  takeWindowData.window++
-
-
+function takeWindowData() {
+  takeWindowData.window++;
 }
 
 async function filltable() {
@@ -148,7 +141,7 @@ async function filltable() {
 
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
   document.getElementById("MinutesToCheck2").innerText = MinutesToCheck;
-  
+
   document.getElementById("ATsAtTime").innerText = ATsAtTime;
   //document.getElementById("ATsAtTimeCustom").innerText = ATsAtTime;
 
@@ -169,27 +162,24 @@ function giveStyle() {
   } else {
     document.getElementById("ATsAtTime").style.backgroundColor = "green";
   }
-  console.log('StowRateCustom',StowRateCustom)
-  console.log('ATsAtTimeCustom',ATsAtTimeCustom)
-  if (ATsAtTimeCustom > StowRateCustom / 2 || ATsAtTimeCustom< StowRateCustom / 4) {
-
+  console.log("StowRateCustom", StowRateCustom);
+  console.log("ATsAtTimeCustom", ATsAtTimeCustom);
+  if (
+    ATsAtTimeCustom > StowRateCustom / 2 ||
+    ATsAtTimeCustom < StowRateCustom / 4
+  ) {
     document.getElementById("ATsAtTimeCustom").style.backgroundColor = "red";
   } else {
     document.getElementById("ATsAtTimeCustom").style.backgroundColor = "green";
   }
 }
 function main() {
-  do {
-    console.log("on");
-    console.log(encendido);
-    //apitest()
-  } while (encendido);
+  setInterval(apitest, 30000);
+ 
 }
-apitest();
-console.log("arrancando");
-setInterval(apitest, 30000);
-//console.log("testpost");
-//const obj = { atts: 10, ratio: "a tope" };
+//apitest();
+
+//setInterval(apitest, 30000);
 
 async function testPost() {
   let link = "http://localhost:3000/send?obj=" + JSON.stringify(obj);
@@ -213,3 +203,36 @@ async function testPost() {
     console.log(content);
   */
 }
+function setupEventsListener() {
+  document
+    .getElementById("StowRateCustom")
+    .addEventListener("focusout", () => fillCustom());
+  document
+    .getElementById("InductRateCustom")
+    .addEventListener("focusout", () => fillCustom());
+  document
+    .getElementById("MinutesToCheckCustom")
+    .addEventListener("focusout", () => fillCustom());
+  document
+    .getElementById("ATsCustom")
+    .addEventListener("focusout", () => fillCustom());
+    
+    startButton.addEventListener("click", () =>handleStartButton());
+
+}
+function handleStartButton(){
+  
+  console.log (startButton.textContent)
+  if(startButton.textContent==='Off'){
+    startButton.textContent='Running'
+    apitest()
+    handleStartButton.intervalID=setInterval(apitest, 30000);
+    console.log(handleStartButton.intervalID)
+  }else{
+    startButton.textContent='Off'
+    clearInterval(handleStartButton.intervalID);
+    console.log('intervalID', handleStartButton.intervalID)
+  }
+
+}
+
