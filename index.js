@@ -1,4 +1,3 @@
-
 const windowData = {
   window: 0,
   ATs: 0,
@@ -30,7 +29,6 @@ let encendido = false;
 let parcelStowedThisWindow = 0;
 let ParcelStowedLAstWindow = 0;
 let window = 0;
-
 
 const startButton = document.getElementById("startButton");
 setupEventsListener();
@@ -175,7 +173,6 @@ function giveStyle() {
 }
 function main() {
   setInterval(apitest, 30000);
- 
 }
 //apitest();
 
@@ -216,23 +213,31 @@ function setupEventsListener() {
   document
     .getElementById("ATsCustom")
     .addEventListener("focusout", () => fillCustom());
-    
-    startButton.addEventListener("click", () =>handleStartButton());
 
+  startButton.addEventListener("click", () => handleStartButton());
 }
-function handleStartButton(){
-  
-  console.log (startButton.textContent)
-  if(startButton.textContent==='Off'){
-    startButton.textContent='Running'
-    apitest()
-    handleStartButton.intervalID=setInterval(apitest, 30000);
-    console.log(handleStartButton.intervalID)
-  }else{
-    startButton.textContent='Off'
+function handleStartButton() {
+  console.log(startButton.textContent);
+  if (startButton.textContent === "Off") {
+    startButton.textContent = "Running";
+    apitest();
+    handleStartButton.intervalID = setInterval(apitest, 30000);
+    console.log(handleStartButton.intervalID);
+  } else {
+    startButton.textContent = "Off";
     clearInterval(handleStartButton.intervalID);
-    console.log('intervalID', handleStartButton.intervalID)
+    console.log("intervalID", handleStartButton.intervalID);
   }
-
 }
+testevent();
+function testevent() {
+  let source = new EventSource("http://localhost:3000/test");
 
+  source.onmessage = function (event) {
+    console.log(event.data);
+  };
+}
+document.getElementById("testbutton").addEventListener("click", () => {
+  console.log("fecth");
+  fetch("http://localhost:3000/test");
+});
