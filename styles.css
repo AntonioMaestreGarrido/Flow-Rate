@@ -20,6 +20,8 @@ table *{
 }
 h1{
     margin: auto;
+    text-align: center;
+    border-bottom: solid black 5px;
 }
 button{
     margin: 30px;

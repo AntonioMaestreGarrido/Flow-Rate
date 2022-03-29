@@ -42,9 +42,17 @@ document
 document
   .getElementById("InductRateCustom")
   .addEventListener("focusout",()=> fillCustom());
+  document
+  .getElementById("MinutesToCheckCustom")
+  .addEventListener("focusout",()=> fillCustom());
+  document
+  .getElementById("ATsCustom")
+  .addEventListener("focusout",()=> fillCustom());
 
 function fillCustom() {
- 
+  let ATsCustom=parseInt(document.getElementById('ATsCustom').textContent)
+  
+  let MinutesToCheckCustom=parseInt( document.getElementById('MinutesToCheckCustom').textContent)
   InductRateCustom = parseInt(
     document.getElementById("InductRateCustom").textContent
   );
@@ -52,12 +60,13 @@ function fillCustom() {
     document.getElementById("StowRateCustom").textContent
   );
   ATsAtTimeCustom = parseInt(
-    ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheck + ATsAct
+    ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheckCustom + ATsCustom
   );
   document.getElementById('MinCustom').textContent=document.getElementById("StowRateCustom").textContent/4
   document.getElementById('MaxCustom').textContent=document.getElementById("StowRateCustom").textContent/2
   document.getElementById('ATsAtTimeCustom').textContent=ATsAtTimeCustom
   giveStyle()
+  console.log('ATsCustom',ATsCustom)
 }
 
 //refreshButton.addEventListener("click", () => apitest());
