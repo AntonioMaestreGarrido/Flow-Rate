@@ -172,7 +172,7 @@ function giveStyle() {
   }
 }
 function main() {
-  setInterval(apitest, 30000);
+  setInterval(apitest, 20000);
 }
 //apitest();
 
@@ -229,15 +229,24 @@ function handleStartButton() {
     console.log("intervalID", handleStartButton.intervalID);
   }
 }
-testevent();
-function testevent() {
-  let source = new EventSource("http://localhost:3000/test");
 
-  source.onmessage = function (event) {
-    console.log(event.data);
-  };
-}
+  let source = new EventSource("localhost:3000/test");
+  source.addEventListener('message', message => {
+    console.log("get")
+    console.log('Got', message);
+  })
+
+
+
+let ATsfromEvent,StowFromEvent,InductFromEvent
+
 document.getElementById("testbutton").addEventListener("click", () => {
-  console.log("fecth");
-  fetch("http://localhost:3000/test");
-});
+  console.log("fetch sse");
+ 
+ 
+ 
+  fetch("http://localhost:3000/test")
+   
+
+}
+)
