@@ -234,7 +234,7 @@ function handleStartButton() {
   if (startButton.textContent === "Off") {
     startButton.textContent = "Running";
     apitest();
-    handleStartButton.intervalID = setInterval(apitest, 30000);
+    handleStartButton.intervalID = setInterval(apitest, 15000);
     console.log(handleStartButton.intervalID);
   } else {
     startButton.textContent = "Off";
