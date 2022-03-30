@@ -138,7 +138,7 @@ async function filltable() {
   document.getElementById("InductRateOpt").innerText = InductRateOpt;
 
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
-  //document.getElementById("MinutesToCheck2").innerText = MinutesToCheck;
+ 
 
   document.getElementById("ATsAtTime").innerText = ATsAtTime;
   //document.getElementById("ATsAtTimeCustom").innerText = ATsAtTime;
