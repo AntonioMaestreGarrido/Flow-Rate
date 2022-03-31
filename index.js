@@ -174,9 +174,7 @@ function giveStyle() {
 function main() {
   setInterval(apitest, 20000);
 }
-//apitest();
 
-//setInterval(apitest, 30000);
 
 async function testPost() {
   let link = "http://localhost:3000/send?obj=" + JSON.stringify(obj);
