@@ -1,82 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flow Ratio</title>
-    <script  type="module" src="./index.js" defer></script>
-    <link rel="stylesheet" href="./styles.css" />
-    <link rel="icon" href="data:,">
-  </head>
-  <body>
-    
-     
-        <h1>Flow Ratio 1.132</h1>
-        <button id="startButton">Off</button>
-        <button id="testbutton">test</button>
-     
-    
-    <table >
-      <tr>
-        <th>DQA2 </th>
-        <th>Actual</th>
-        <th>Min</th>
-        <th>Max</th>
-        <th>Optim</th>
-        <th contenteditable="true">Custom</th>
-        <th>Min Custom</th>
-        <th>Max Custom</th>
 
-      </tr>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flow Ratio</title>
+  <script type="module" src="./index.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" href="data:,">
+</head>
 
-      <tr>
-        <th>Ats</th>
-        <td id="ATsAct"></td>
-        <td id="ATsMin"></td>
-        <td id="ATsMax"></td>
-        <td id="ATsOpt"></td>
-        <td id="ATsCustom" contenteditable="true"></td>
-                
-        <td id="MinCustom"></td>
-        <td id="MaxCustom"></td>
-      </tr>
-      <tr>
-        <th>Stow Rate</th>
-        <td id="StowRateAct"></td>
-        <td id="StowRateMin"></td>
-        <td id="StowRateMax"></td>
-        <td id="StowRateOpt"></td>
-        <td id="StowRateCustom" contenteditable="true"></td>
-      </tr>
-      <tr>
-        <th>Induc Rate</th>
-        <td id="InductRateAct"></td>
-        <td id="InductRateMin"></td>
-        <td id="InductRateMax"></td>
-        <td id="InductRateOpt"></td>
-        <td id="InductRateCustom" contenteditable="true" ></td>
-      </tr>
-      <tr>
-        <th>Minutes to Check</th>
-        <td id="MinutesToCheck"></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td id="MinutesToCheckCustom" contenteditable="true"></td>
-      </tr>
-      <tr>
-        <th>Ats at Time Check</th>
-        <td id="ATsAtTime"></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td id="ATsAtTimeCustom"></td>
-        <td id="copyCell"><button id="copy">Copy </button></td>
-      </tr>
-    </table>
+<body>
 
-  
-  </body>
-  <Data id="hidden Data"></Data>
+
+  <h1>Flow Ratio 1.132</h1>
+  <button id="startButton">Off</button>
+  <button id="showChart">chart</button>
+
+  <button id="addtest">random</button>
+  <button id="testpos">move</button>
+
+
+  <table>
+    <tr>
+      <th>DQA2 </th>
+      <th>Actual</th>
+      <th>Min</th>
+      <th>Max</th>
+      <th>Optim</th>
+      <th contenteditable="true">Custom</th>
+      <th>Min Custom</th>
+      <th>Max Custom</th>
+
+    </tr>
+
+    <tr>
+      <th>Ats</th>
+      <td id="ATsAct"></td>
+      <td id="ATsMin"></td>
+      <td id="ATsMax"></td>
+      <td id="ATsOpt"></td>
+      <td id="ATsCustom" contenteditable="true"></td>
+
+      <td id="MinCustom"></td>
+      <td id="MaxCustom"></td>
+    </tr>
+    <tr>
+      <th>Stow Rate</th>
+      <td id="StowRateAct"></td>
+      <td id="StowRateMin"></td>
+      <td id="StowRateMax"></td>
+      <td id="StowRateOpt"></td>
+      <td id="StowRateCustom" contenteditable="true"></td>
+    </tr>
+    <tr>
+      <th>Induc Rate</th>
+      <td id="InductRateAct"></td>
+      <td id="InductRateMin"></td>
+      <td id="InductRateMax"></td>
+      <td id="InductRateOpt"></td>
+      <td id="InductRateCustom" contenteditable="true"></td>
+    </tr>
+    <tr>
+      <th>Minutes to Check</th>
+      <td id="MinutesToCheck"></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td id="MinutesToCheckCustom" contenteditable="true"></td>
+    </tr>
+    <tr>
+      <th>Ats at Time Check</th>
+      <td id="ATsAtTime"></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td id="ATsAtTimeCustom"></td>
+      <td id="copyCell"><button id="copy">Copy </button></td>
+    </tr>
+  </table>
+
+
+</body>
+<div id="canvasContainer">
+  <canvas id="test" width="1000" height="300"></canvas>
+</div>
+
 </html>

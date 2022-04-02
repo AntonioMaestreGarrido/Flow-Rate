@@ -1,3 +1,9 @@
+
+import { drawChart, testChart, addtest, updateChart } from "./grafica.js";
+
+
+
+
 const windowData = {
   window: 0,
   ATs: 0,
@@ -6,6 +12,7 @@ const windowData = {
   IductTotal: 0,
   StowTotal: 0,
 };
+let database
 
 let ATsAct = 0,
   ATsMax = 0,
@@ -30,6 +37,7 @@ let parcelStowedThisWindow = 0;
 let ParcelStowedLAstWindow = 0;
 let window = 0;
 
+
 const startButton = document.getElementById("startButton");
 setupEventsListener();
 
@@ -47,7 +55,7 @@ function fillCustom() {
   );
   ATsAtTimeCustom = parseInt(
     ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheckCustom +
-      ATsCustom
+    ATsCustom
   );
   document.getElementById("MinCustom").textContent =
     document.getElementById("StowRateCustom").textContent / 4;
@@ -55,32 +63,38 @@ function fillCustom() {
     document.getElementById("StowRateCustom").textContent / 2;
   document.getElementById("ATsAtTimeCustom").textContent = ATsAtTimeCustom;
   giveStyle();
-  console.log("ATsCustom", ATsCustom);
+
 }
 
 //refreshButton.addEventListener("click", () => apitest());
 
 async function apitest() {
-  console.log("fetching server");
-  let data2;
-  //await  fetch("http://localhost:3000")
-  /*..
- Dirección IPv4. . . . . . . . . . . . . . : 192.168.15.230
- Máscara de subred . . . . . . . . . . . . : 255.255.255.0
- Puerta de enlace predeterminada . . . . . : 192.168.15.1
 
- stowRate, ATs, inductRate
- */
+console.log(seconds())
+  let data2;
+
   await fetch("http://localhost:3000")
     .then((response) => response.json())
     .then((data) => {
       let datos = data;
-      console.log(datos);
+      //console.log(datos);
       calculate(datos);
     })
     .catch((error) => alert("No se encuentra el servidor", error));
 }
-function calculate(data) {
+async function getDataBase() {
+  await fetch("http://localhost:3000/getData")
+    .then((response) => response.json())
+    .then((data) => {
+      database = data;
+      console.log("database", database);
+
+    })
+    .catch((error) => alert("No se encuentra el servidor", error));
+
+}
+async function calculate(data) {
+  calculate.minute
   let date = new Date();
   ATsAct = parseInt(data.ATs);
   StowRateAct = parseInt(data.stowRate);
@@ -88,7 +102,7 @@ function calculate(data) {
   let stowRateMinute = StowRateAct / 60;
   let inductRateMinute = InductRateAct / 60;
   MinutesToCheck = 15 - (date.getMinutes() % 15);
-  console.log(InductRateAct, StowRateAct, MinutesToCheck, ATsAct);
+  //console.log(InductRateAct, StowRateAct, MinutesToCheck, ATsAct);
   let ritmo = parseInt(InductRateAct - StowRateAct);
   ATsAtTime = parseInt((ritmo / 60) * MinutesToCheck + ATsAct);
 
@@ -107,14 +121,34 @@ function calculate(data) {
   InductRateMax = parseInt(
     (60 * ATsMax - 60 * ATsAct) / MinutesToCheck + StowRateAct
   );
-  InductRateMin = parseInt(
-    (60 * ATsMin - 60 * ATsAct) / MinutesToCheck + StowRateAct
-  );
+  InductRateMin = parseInt((60 * ATsMin - 60 * ATsAct) / MinutesToCheck + StowRateAct);
   InductRateOpt = (InductRateMax + InductRateMin) / 2;
 
   filltable();
-  if (MinutesToCheck === 0) {
-    takeWindowData();
+
+  if (calculate.minute != date.getMinutes()) {
+    calculate.minute = date.getMinutes()
+    const data = { InductRateAct, StowRateAct, ATsAct, "hora": new Date().getHours(),"minuto":new Date().getMinutes() }
+    updateChart(data)
+    let dataToSend = JSON.stringify(data)
+    console.log("datato send", dataToSend)
+    await fetch("http://localhost:3000/send", {
+      method: "post", headers: {
+        'Content-Type': 'application/json'
+
+      }, body: JSON.stringify(data)
+    })
+
+
+  }
+  if(calculate.minute/15===110){
+    await fetch("http://localhost:3000/send", {
+      method: "post", headers: {
+        'Content-Type': 'application/json'
+
+      }, body: JSON.stringify(data)
+    })
+
   }
 }
 function takeWindowData() {
@@ -138,7 +172,7 @@ async function filltable() {
   document.getElementById("InductRateOpt").innerText = InductRateOpt;
 
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
- 
+
 
   document.getElementById("ATsAtTime").innerText = ATsAtTime;
   //document.getElementById("ATsAtTimeCustom").innerText = ATsAtTime;
@@ -160,8 +194,7 @@ function giveStyle() {
   } else {
     document.getElementById("ATsAtTime").style.backgroundColor = "rgb(109, 230, 109)";
   }
-  console.log("StowRateCustom", StowRateCustom);
-  console.log("ATsAtTimeCustom", ATsAtTimeCustom);
+
   if (
     ATsAtTimeCustom > StowRateCustom / 2 ||
     ATsAtTimeCustom < StowRateCustom / 4
@@ -171,34 +204,13 @@ function giveStyle() {
     document.getElementById("ATsAtTimeCustom").style.backgroundColor = "rgb(109, 230, 109)";
   }
 }
-function main() {
-  setInterval(apitest, 20000);
-}
 
 
-async function testPost() {
-  let link = "http://localhost:3000/send?obj=" + JSON.stringify(obj);
-  console.log(link);
-  await fetch(link).catch(() => alert("No se encuentra el servidor"));
-
-  /*
 
 
-  console.log("testpost")
-    const rawResponse = await fetch('localhost:3000/test', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({a: 1, b: 'Textual content'})
-    });
-    const content = await rawResponse.json();
-  
-    console.log(content);
-  */
-}
+
 function setupEventsListener() {
+  document.getElementById('addtest').addEventListener('click', () => addtest())
   document
     .getElementById("StowRateCustom")
     .addEventListener("focusout", () => fillCustom());
@@ -211,16 +223,34 @@ function setupEventsListener() {
   document
     .getElementById("ATsCustom")
     .addEventListener("focusout", () => fillCustom());
+  document.getElementById('showChart').addEventListener('click', () => drawChart())
 
   startButton.addEventListener("click", () => handleStartButton());
-  document.getElementById("copy").addEventListener("click",()=>copyData())
-}
-function copyData(){
+  document.getElementById("copy").addEventListener("click", () => copyData())
+  document.getElementById("testpos").addEventListener("click", () => mueve())
   
-  document.getElementById("ATsCustom").textContent=ATsAct
-  document.getElementById("StowRateCustom").textContent=StowRateAct
-  document.getElementById("InductRateCustom").textContent=InductRateAct
-  document.getElementById("MinutesToCheckCustom").textContent=MinutesToCheck
+}
+function mueve(){
+  mueve.flag
+  let chart=document.getElementById('test')
+  console.log( 'chart leftt',chart.style.left)
+  if(mueve.flag){
+    mueve.flag=false
+    chart.style.left='100vw'
+  }else{
+    mueve.flag=true
+
+    
+  chart.style.left='0'
+  
+}
+}
+function copyData() {
+
+  document.getElementById("ATsCustom").textContent = ATsAct
+  document.getElementById("StowRateCustom").textContent = StowRateAct
+  document.getElementById("InductRateCustom").textContent = InductRateAct
+  document.getElementById("MinutesToCheckCustom").textContent = MinutesToCheck
   fillCustom()
 
 
@@ -228,36 +258,19 @@ function copyData(){
 
 }
 function handleStartButton() {
-  console.log(startButton.textContent);
+  
+
   if (startButton.textContent === "Off") {
     startButton.textContent = "Running";
-    apitest();
-    handleStartButton.intervalID = setInterval(apitest, 15000);
-    console.log(handleStartButton.intervalID);
+    
+
+    apitest()
+    handleStartButton.intervalID = setInterval(apitest, 15000)
+      ;
+
   } else {
     startButton.textContent = "Off";
     clearInterval(handleStartButton.intervalID);
-    console.log("intervalID", handleStartButton.intervalID);
+
   }
 }
-
-  let source = new EventSource("localhost:3000/test");
-  source.addEventListener('message', message => {
-    console.log("get")
-    console.log('Got', message);
-  })
-
-
-
-let ATsfromEvent,StowFromEvent,InductFromEvent
-
-document.getElementById("testbutton").addEventListener("click", () => {
-  console.log("fetch sse");
- 
- 
- 
-  fetch("http://localhost:3000/test")
-   
-
-}
-)
