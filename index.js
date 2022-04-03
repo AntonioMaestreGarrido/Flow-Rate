@@ -1,8 +1,4 @@
-
 import { drawChart, testChart, addtest, updateChart } from "./grafica.js";
-
-
-
 
 const windowData = {
   window: 0,
@@ -12,7 +8,7 @@ const windowData = {
   IductTotal: 0,
   StowTotal: 0,
 };
-let database
+let database;
 
 let ATsAct = 0,
   ATsMax = 0,
@@ -37,8 +33,8 @@ let parcelStowedThisWindow = 0;
 let ParcelStowedLAstWindow = 0;
 let window = 0;
 
-
 const startButton = document.getElementById("startButton");
+
 setupEventsListener();
 
 function fillCustom() {
@@ -55,7 +51,7 @@ function fillCustom() {
   );
   ATsAtTimeCustom = parseInt(
     ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheckCustom +
-    ATsCustom
+      ATsCustom
   );
   document.getElementById("MinCustom").textContent =
     document.getElementById("StowRateCustom").textContent / 4;
@@ -63,14 +59,11 @@ function fillCustom() {
     document.getElementById("StowRateCustom").textContent / 2;
   document.getElementById("ATsAtTimeCustom").textContent = ATsAtTimeCustom;
   giveStyle();
-
 }
 
 //refreshButton.addEventListener("click", () => apitest());
 
 async function apitest() {
-
-
   let data2;
 
   await fetch("http://localhost:3000")
@@ -88,15 +81,15 @@ async function getDataBase() {
     .then((data) => {
       database = data;
       console.log("database", database);
-
     })
     .catch((error) => alert("No se encuentra el servidor", error));
-
 }
 async function calculate(data) {
-  calculate.minute
-  calculate.windowMinute
-  if (!calculate.windowMinute){calculate.windowMinute=0}
+  calculate.minute;
+  calculate.windowMinute;
+  if (!calculate.windowMinute) {
+    calculate.windowMinute = 0;
+  }
   let date = new Date();
   ATsAct = parseInt(data.ATs);
   StowRateAct = parseInt(data.stowRate);
@@ -123,46 +116,44 @@ async function calculate(data) {
   InductRateMax = parseInt(
     (60 * ATsMax - 60 * ATsAct) / MinutesToCheck + StowRateAct
   );
-  InductRateMin = parseInt((60 * ATsMin - 60 * ATsAct) / MinutesToCheck + StowRateAct);
+  InductRateMin = parseInt(
+    (60 * ATsMin - 60 * ATsAct) / MinutesToCheck + StowRateAct
+  );
   InductRateOpt = (InductRateMax + InductRateMin) / 2;
 
   filltable();
 
   if (calculate.minute != date.getMinutes()) {
-    calculate.minute = date.getMinutes()
-    const data = { InductRateAct, StowRateAct, ATsAct, "hora": new Date().getHours(),"minuto":new Date().getMinutes() }
-    updateChart(data)
-    let dataToSend = JSON.stringify(data)
-    console.log("datato send", dataToSend)
+    calculate.minute = date.getMinutes();
+    const data = {
+      InductRateAct,
+      StowRateAct,
+      ATsAct,
+      hora: new Date().getHours(),
+      minuto: new Date().getMinutes(),
+      "passed":checkComply(ATsAct,StowRateAct)
+
+    };
+    updateChart(data);
+    let dataToSend = JSON.stringify(data);
+    console.log("datato send", dataToSend);
     await fetch("http://localhost:3000/send", {
-      method: "post", headers: {
-        'Content-Type': 'application/json'
-
-      }, body: JSON.stringify(data)
-    })
-
-
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
   }
-  console.log('minutoes to cjeck',MinutesToCheck)
-  console.log('calculate.winddow',calculate.windowMinute)
-  console.log('dsdsd',date.getMinutes())
-  if(MinutesToCheck===5 && calculate.windowMinute != date.getMinutes()){
-    console.log("dentro iwnnd")
-    calculate.windowMinute=new Date().getMinutes()
-    let date=new Date()
-    let passed
-    if (ATsAct > ATsMax || ATsAct < ATsMin) {passed=false}else{passed=true}
-    let object={"hora":date.getHours,"minutos":date.getMinutes,"passed":passed}
-    await fetch("http://localhost:3000/sendWindow", {
-      
+  
+ 
+}
+// comprueba si el valor de ats esta complay con el ritmo de stow
+function checkComply(Ats,stow){
+  if (Ats > stow/2 || Ats < stow/4)
+  {return false}
+  return true
 
-      method: "post", headers: {
-        'Content-Type': 'application/json'
-
-      }, body: JSON.stringify(object)
-    })
-
-  }
 }
 function takeWindowData() {
   takeWindowData.window++;
@@ -186,7 +177,6 @@ async function filltable() {
 
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
 
-
   document.getElementById("ATsAtTime").innerText = ATsAtTime;
   //document.getElementById("ATsAtTimeCustom").innerText = ATsAtTime;
 
@@ -200,12 +190,14 @@ function giveStyle() {
   if (ATsAct > ATsMax || ATsAct < ATsMin) {
     document.getElementById("ATsAct").style.backgroundColor = "red";
   } else {
-    document.getElementById("ATsAct").style.backgroundColor = "rgb(109, 230, 109)";
+    document.getElementById("ATsAct").style.backgroundColor =
+      "rgb(109, 230, 109)";
   }
   if (ATsAtTime > ATsMax || ATsAtTime < ATsMin) {
     document.getElementById("ATsAtTime").style.backgroundColor = "red";
   } else {
-    document.getElementById("ATsAtTime").style.backgroundColor = "rgb(109, 230, 109)";
+    document.getElementById("ATsAtTime").style.backgroundColor =
+      "rgb(109, 230, 109)";
   }
 
   if (
@@ -214,16 +206,13 @@ function giveStyle() {
   ) {
     document.getElementById("ATsAtTimeCustom").style.backgroundColor = "red";
   } else {
-    document.getElementById("ATsAtTimeCustom").style.backgroundColor = "rgb(109, 230, 109)";
+    document.getElementById("ATsAtTimeCustom").style.backgroundColor =
+      "rgb(109, 230, 109)";
   }
 }
 
-
-
-
-
 function setupEventsListener() {
-  document.getElementById('addtest').addEventListener('click', () => addtest())
+  document.getElementById("addtest").addEventListener("click", () => addtest());
   document
     .getElementById("StowRateCustom")
     .addEventListener("focusout", () => fillCustom());
@@ -236,54 +225,43 @@ function setupEventsListener() {
   document
     .getElementById("ATsCustom")
     .addEventListener("focusout", () => fillCustom());
-  document.getElementById('showChart').addEventListener('click', () => drawChart())
+  document
+    .getElementById("showChart")
+    .addEventListener("click", () => drawChart());
 
   startButton.addEventListener("click", () => handleStartButton());
-  document.getElementById("copy").addEventListener("click", () => copyData())
-  document.getElementById("testpos").addEventListener("click", () => mueve())
-  
+  document.getElementById("copy").addEventListener("click", () => copyData());
+  document.getElementById("testpos").addEventListener("click", () => mueve());
 }
-function mueve(){
-  mueve.flag
-  let chart=document.getElementById('test')
-  console.log( 'chart leftt',chart.style.left)
-  if(mueve.flag){
-    mueve.flag=false
-    chart.style.left='100vw'
-  }else{
-    mueve.flag=true
+function mueve() {
+  mueve.flag;
+  let chart = document.getElementById("test");
+  console.log("chart leftt", chart.style.left);
+  if (mueve.flag) {
+    mueve.flag = false;
+    chart.style.left = "100vw";
+  } else {
+    mueve.flag = true;
 
-    
-  chart.style.left='0'
-  
-}
+    chart.style.left = "0";
+  }
 }
 function copyData() {
-
-  document.getElementById("ATsCustom").textContent = ATsAct
-  document.getElementById("StowRateCustom").textContent = StowRateAct
-  document.getElementById("InductRateCustom").textContent = InductRateAct
-  document.getElementById("MinutesToCheckCustom").textContent = MinutesToCheck
-  fillCustom()
-
-
-
-
+  document.getElementById("ATsCustom").textContent = ATsAct;
+  document.getElementById("StowRateCustom").textContent = StowRateAct;
+  document.getElementById("InductRateCustom").textContent = InductRateAct;
+  document.getElementById("MinutesToCheckCustom").textContent = MinutesToCheck;
+  fillCustom();
 }
 function handleStartButton() {
-  
-
   if (startButton.textContent === "Off") {
     startButton.textContent = "Running";
-    
 
-    apitest()
-    handleStartButton.intervalID = setInterval(apitest, 15000)
-      ;
-
+    apitest();
+    drawChart()
+    handleStartButton.intervalID = setInterval(apitest, 15000);
   } else {
     startButton.textContent = "Off";
     clearInterval(handleStartButton.intervalID);
-
   }
 }

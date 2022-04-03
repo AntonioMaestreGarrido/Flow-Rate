@@ -66,3 +66,13 @@ button:hover{
     
     
 }
+#pieComply{
+    width: 300px;
+    max-height: 300px;
+    
+    border: solid black 4px;
+}
+#showChart ,#addtest,#testpos{
+    display: none;
+}
+
