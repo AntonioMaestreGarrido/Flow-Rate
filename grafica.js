@@ -6,6 +6,7 @@ const AtsArray = []
 const times = []
 const maxAts=[]
 const minAts=[]
+//ghgh
 
 export function updateChart(data){
     //{ InductRateAct, StowRateAct, ATsAct, "hora": new Date().getHours(),"minuto":new Date().getMinutes() }
