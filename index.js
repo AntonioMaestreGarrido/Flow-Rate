@@ -70,7 +70,7 @@ function fillCustom() {
 
 async function apitest() {
 
-console.log(seconds())
+
   let data2;
 
   await fetch("http://localhost:3000")
@@ -95,13 +95,15 @@ async function getDataBase() {
 }
 async function calculate(data) {
   calculate.minute
+  calculate.windowMinute
+  if (!calculate.windowMinute){calculate.windowMinute=0}
   let date = new Date();
   ATsAct = parseInt(data.ATs);
   StowRateAct = parseInt(data.stowRate);
   InductRateAct = parseInt(data.inductRate);
   let stowRateMinute = StowRateAct / 60;
   let inductRateMinute = InductRateAct / 60;
-  MinutesToCheck = 15 - (date.getMinutes() % 15);
+  MinutesToCheck = 5 - (date.getMinutes() % 5);
   //console.log(InductRateAct, StowRateAct, MinutesToCheck, ATsAct);
   let ritmo = parseInt(InductRateAct - StowRateAct);
   ATsAtTime = parseInt((ritmo / 60) * MinutesToCheck + ATsAct);
@@ -141,12 +143,23 @@ async function calculate(data) {
 
 
   }
-  if(calculate.minute/15===110){
-    await fetch("http://localhost:3000/send", {
+  console.log('minutoes to cjeck',MinutesToCheck)
+  console.log('calculate.winddow',calculate.windowMinute)
+  console.log('dsdsd',date.getMinutes())
+  if(MinutesToCheck===5 && calculate.windowMinute != date.getMinutes()){
+    console.log("dentro iwnnd")
+    calculate.windowMinute=new Date().getMinutes()
+    let date=new Date()
+    let passed
+    if (ATsAct > ATsMax || ATsAct < ATsMin) {passed=false}else{passed=true}
+    let object={"hora":date.getHours,"minutos":date.getMinutes,"passed":passed}
+    await fetch("http://localhost:3000/sendWindow", {
+      
+
       method: "post", headers: {
         'Content-Type': 'application/json'
 
-      }, body: JSON.stringify(data)
+      }, body: JSON.stringify(object)
     })
 
   }
