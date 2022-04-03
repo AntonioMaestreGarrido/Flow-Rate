@@ -96,7 +96,7 @@ async function calculate(data) {
   InductRateAct = parseInt(data.inductRate);
   let stowRateMinute = StowRateAct / 60;
   let inductRateMinute = InductRateAct / 60;
-  MinutesToCheck = 5 - (date.getMinutes() % 5);
+  MinutesToCheck = 15 - (date.getMinutes() % 15);
   //console.log(InductRateAct, StowRateAct, MinutesToCheck, ATsAct);
   let ritmo = parseInt(InductRateAct - StowRateAct);
   ATsAtTime = parseInt((ritmo / 60) * MinutesToCheck + ATsAct);
