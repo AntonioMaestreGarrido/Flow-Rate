@@ -1,40 +1,48 @@
 let database;
 let myChart;
-let myPieChart
+let myPieChart;
 const inducRateArray = [];
 const stowRateArray = [];
 const AtsArray = [];
 const times = [];
 const maxAts = [];
 const minAts = [];
+const epochArray=[]
 
 export function updateChart(data) {
   //{ InductRateAct, StowRateAct, ATsAct, "hora": new Date().getHours(),"minuto":new Date().getMinutes() }
+  // 0: {label: 'Induct Rate', data: Array(117), backgroundColor: 'red', borderColor: 'red', tension: '0.2', …}
+  // 1: {label: 'ATs', data: Array(117), parsing: {…}, backgroundColor: 'green', borderColor: 'green', …}
+  // 2: {label: 'Stow Rate', data: Array(117), parsing: {…}, backgroundColor: 'blue', borderColor: 'blue', …}
+  // 3: {label: 'Max Ats', data: Array(117), parsing: {…}, pointRadius: '0', backgroundColor: 'black', …}
+  // 4: {label: 'Min Ats', data: Array(117), parsing: {…}, pointRadius: '0', backgroundColor: 'black', …}
+  //**************************************************** */
+  // console.log('intentado actuializar',data)
+  // console.log('datos del chart',myChart.data.datasets)
+  // console.log("data4",myChart.data.datasets[4].data)
+  // myChart.data.datasets[0].data.push(data.InductRateAct);
+  // myChart.data.datasets[1].data.push(data.ATsAct);
+  // myChart.data.datasets[2].data.push(data.StowRateAct);
+  // myChart.data.datasets[3].data.push(data.MaxAts);
+  // myChart.data.datasets[4].data.push(data.MinAts);
+  console.log('pre',database)
+  database.push(data)
+  console.log('post',database)
 
-  //     0: {label: 'inducRateArray', data: Array(25), backgroundColor: 'red', borderColor: 'red', tension: '0.2'}
-  //     1: {label: 'stowRateArray', data: Array(25), backgroundColor: 'blue', borderColor: 'blue', tension: '0.2'}
-  //     2: {label: 'maxAts', data: Array(25), backgroundColor: 'green', borderColor: 'green', tension: '0.2'}
-  //     3: {label: 'minAts', data: Array(25), backgroundColor: 'green', borderColor: 'green', tension: '0.2'}
-  //     4: {label: 'AtsArray', data: Array(25)}
-  myChart.data.datasets[0].data.push(data.InductRateAct)
-
-  myChart.data.datasets[1].data.push(data.StowRateAct)
-  myChart.data.datasets[4].data.push(data.ATsAct)
-      maxAts.push(StowRateAct/2)
-
-      minAts.push(StowRateAct/4)
-      if(data.minuto%15===0){
-          if(data.passed){myPieChart.data.datasets[0].data[0]=myPieChart.data.datasets[0].data[0]+1}
-          else{myPieChart.data.datasets[0].data[1]=myPieChart.data.datasets[0].data[1]+1}
-
-      }
-      myChart.update()
-      myPieChart.update()
-      console.log("actualizado")
-      //console.log(myChart.data.datasetsmyChart.data.datasets)
-      //myPieChart.data.datasets[0].data[0] passed
+  // if (data.minuto % 15 === 0) {
+  //   if (data.passed) {
+  //     myPieChart.data.datasets[0].data[0] =
+  //       myPieChart.data.datasets[0].data[0] + 1;
+  //   } else {
+  //     myPieChart.data.datasets[0].data[1] =
+  //       myPieChart.data.datasets[0].data[1] + 1;
+  //   }
+  // }
   
+  myChart.update();
   
+  //console.log(myChart.data.datasetsmyChart.data.datasets)
+  //myPieChart.data.datasets[0].data[0] passed
 }
 export async function addtest() {
   //     console.log(myChart.data.labels)
@@ -44,21 +52,21 @@ export async function addtest() {
   // let newdata
 
   //    myChart.update()
-//   const char = document.getElementById("test");
-//   document.getElementById("test").style.backgroundColor = "red";
-//   char.parentNode.removeChild(document.getElementById("test"));
+  //   const char = document.getElementById("test");
+  //   document.getElementById("test").style.backgroundColor = "red";
+  //   char.parentNode.removeChild(document.getElementById("test"));
 
-//   let newCanvas = document.createElement("canvas");
-//   newCanvas.id = "test";
-//   document.getElementById("canvasContainer").appendChild(newCanvas);
-//   drawChart();
-drawPased();
+  //   let newCanvas = document.createElement("canvas");
+  //   newCanvas.id = "test";
+  //   document.getElementById("canvasContainer").appendChild(newCanvas);
+  //   drawChart();
+  
 }
 
 export async function testChart() {
-  await getDataBase();
+  await getDataBase().then(myChart.update());
 
-  drawChart();
+  //drawChart();
 }
 
 async function getDataBase() {
@@ -68,14 +76,12 @@ async function getDataBase() {
       database = data;
     })
     .catch((error) => alert("No se encuentra el servidor", error));
-   return await database;
+  return await database;
 }
 let y = [];
 
 export async function drawChart() {
-  setWorkTime();
   drawPased();
-  
 
   database = await fetch("http://localhost:3000/getData").then((response) =>
     response.json()
@@ -86,68 +92,90 @@ export async function drawChart() {
     inducRateArray.push(parseInt(key.InductRateAct));
     stowRateArray.push(parseInt(key.StowRateAct));
     AtsArray.push(parseInt(key.ATsAct));
-    maxAts.push(parseInt(key.ATsAct) / 2);
-    minAts.push(parseInt(key.ATsAct) / 4);
+    maxAts.push(parseInt(key.StowRateAct) / 2);
+    minAts.push(parseInt(key.StowRateAct) / 4);
     times.push(key.minutos);
+    epochArray.push(key.epoch)
   }
 
   myChart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: y,
       datasets: [
         {
-          label: "inducRateArray",
-          data: inducRateArray,
+          label: "Induct Rate",
+          data: database,
           backgroundColor: "red",
           borderColor: "red",
           tension: "0.2",
+          parsing: {
+            yAxisKey: "InductRateAct",
+          },
         },
         {
-          label: "stowRateArray",
-          data: stowRateArray,
+          label: "ATs",
+          data: database,
+          parsing: {
+            yAxisKey: "ATsAct",
+          },
+          backgroundColor: "green",
+          borderColor: "green",
+          tension: "0.2",
+          indexAxis: "y",
+        },
+        {
+          label: "Stow Rate",
+          data: database,
+          parsing: {
+            yAxisKey: "StowRateAct",
+          },
           backgroundColor: "blue",
           borderColor: "blue",
+          
           tension: "0.2",
+          indexAxis: "y",
         },
         {
-          label: "maxAts",
-          data: maxAts,
-          backgroundColor: "green",
-          borderColor: "green",
-          tension: "0.2",
-        },
-        {
-          label: "minAts",
-          data: minAts,
-          backgroundColor: "green",
-          borderColor: "green",
-          tension: "0.2",
-        },
-        {
-          label: "AtsArray",
-          data: AtsArray,
+          label: "Max Ats",
+          data: database,
+          parsing: {
+            yAxisKey: "ATsMax",
+          },
+          pointRadius:"0",
           backgroundColor: "black",
           borderColor: "black",
           tension: "0.2",
+          indexAxis: "y",
+        },{
+          label: "Min Ats",
+          data: database,
+          parsing: {
+            yAxisKey: "ATsMin",
+          },
+          pointRadius:"0",
+          backgroundColor: "black",
+          borderColor: "black",
+          tension: "0.2",
+          indexAxis: "y",
         },
       ],
     },
     options: {
+      parsing: { xAxisKey: "epoch" },
       animation: true,
       scales: {
-        x: {
-          ticks: {
-            // For a category axis, the val is the index so the lookup via getLabelForValue is needed
-            callback: function (val, index) {
-              // Hide every 2nd tick label
-              ///console.log( this.getLabelForValue(val),index)
-              return index % 5 === 0 ? this.getLabelForValue(val) : null;
+        xAxisKey: {
+          type: "time",
+          time: {
+            unit: "minute",
+            displayFormats: {
+              minute: "HH:mm",
             },
           },
         },
-        y: {
+        yAxis: {
           beginAtZero: false,
+          type: "linear",
         },
       },
     },
@@ -183,56 +211,53 @@ function addZero(i) {
 }
 
 async function drawPased() {
-    const complyArray=[]
+  const complyArray = [];
   let database = await getDataBase();
-    let inicio={
-        'hora':1,
-        'minuto':30
+  let inicio = {
+    hora: 1,
+    minuto: 30,
+  };
+  database.forEach((ele) => {
+    if (ele.minuto % 15 === 0) {
+      complyArray.push(ele);
     }
-    database.forEach(ele => {
-        
-        if(ele.minuto%15===0){
-            complyArray.push(ele)
-        }
-        
-    });
-   
-    drawPie(complyArray)
+  });
 
+  drawPie(complyArray);
 }
 
+function drawPie(complyArray) {
+  var passed = 0;
+  var failed = 0;
 
-function drawPie(complyArray){
-    
-    var passed=0
-    var failed=0
-    
-    complyArray.forEach(ele => {
-        if(ele.passed===true){
-            passed++
-        }else{
-            failed++
-        }
-        
-    });
-      myPieChart = new Chart(document.getElementById("pieComply"), {
-        type: 'pie',
-        data: {
-          labels: [`Passed ${passed*100/(passed+failed)}%`, `Failed ${failed*100/(passed+failed)}%`],
-          datasets: [
-            {
-              label: "Population (millions)",
-              backgroundColor: ["green", "red"],
-              data: [passed,failed]
-            }
-          ]
+  complyArray.forEach((ele) => {
+    if (ele.passed === true) {
+      passed++;
+    } else {
+      failed++;
+    }
+  });
+  myPieChart = new Chart(document.getElementById("pieComply"), {
+    type: "pie",
+    data: {
+      labels: [
+        `Passed ${(passed * 100) / (passed + failed)}%`,
+        `Failed ${(failed * 100) / (passed + failed)}%`,
+      ],
+      datasets: [
+        {
+          label: "Population (millions)",
+          backgroundColor: ["green", "red"],
+          data: [passed, failed],
         },
-        options: {
-          title: {
-            display: true,
-            text: '% Of Time Comply'
-          }
-        }
-    });console.log("pie",myPieChart.data.datasets[0].data[0])
-    
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: "% Of Time Comply",
+      },
+    },
+  });
+  console.log("pie", myPieChart.data.datasets[0].data[0]);
 }

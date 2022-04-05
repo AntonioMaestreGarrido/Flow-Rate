@@ -1,6 +1,7 @@
 *{
     font-size: 30px;
     font-weight: bolder;
+    box-sizing: border-box;
     
 }
 
@@ -73,6 +74,22 @@ button:hover{
     border: solid black 4px;
 }
 #showChart ,#addtest,#testpos{
+   border-radius: 1px;
+   display: none;
+}
+#modificadores{
+    padding: 0;
     display: none;
+   
+}
+.sumatorios{
+    font-size: 12px;
+    padding: 0;
+    box-sizing:border-box;
+    margin: 0;
+    border-radius: 0;
+    background-color: cornsilk;
+    height: 100%;
+    width: 21.5%;
 }
 

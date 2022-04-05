@@ -125,25 +125,29 @@ async function calculate(data) {
 
   if (calculate.minute != date.getMinutes()) {
     calculate.minute = date.getMinutes();
-    const data = {
+    const dataForActu = {
       InductRateAct,
       StowRateAct,
       ATsAct,
+      ATsMax,
+      ATsMin,
       hora: new Date().getHours(),
       minuto: new Date().getMinutes(),
+      epoch: Date.now(),
       "passed":checkComply(ATsAct,StowRateAct)
 
     };
-    updateChart(data);
-    let dataToSend = JSON.stringify(data);
+    console.log("se envia",dataForActu)
+    updateChart(dataForActu);
+    let dataToSend = JSON.stringify(dataForActu);
     console.log("datato send", dataToSend);
     await fetch("http://localhost:3000/send", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
-    });
+      body: JSON.stringify(dataForActu),
+    }); 
   }
   
  
@@ -231,7 +235,7 @@ function setupEventsListener() {
 
   startButton.addEventListener("click", () => handleStartButton());
   document.getElementById("copy").addEventListener("click", () => copyData());
-  document.getElementById("testpos").addEventListener("click", () => mueve());
+  document.getElementById("testpos").addEventListener("click", () => testChart());
 }
 function mueve() {
   mueve.flag;
@@ -259,7 +263,7 @@ function handleStartButton() {
 
     apitest();
     drawChart()
-    handleStartButton.intervalID = setInterval(apitest, 15000);
+    handleStartButton.intervalID = setInterval(apitest, 30000);
   } else {
     startButton.textContent = "Off";
     clearInterval(handleStartButton.intervalID);
