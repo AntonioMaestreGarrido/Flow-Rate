@@ -51,11 +51,18 @@
         <td id="StowRateMax"></td>
         <td id="StowRateOpt"></td>
         <td id="StowRateCustom" contenteditable="true"></td>
-        <td id="modificadores">
-          <button class="sumatorios">-100</button>
-          <button class="sumatorios">-10</button>
-          <button class="sumatorios">+10</button>
-          <button class="sumatorios">+100</button>
+        <td >
+          <div class="modificadores">
+          <button class="sumatorios stow">+100</button>
+          <button class="sumatorios stow">+10</button>
+          <button class="sumatorios stow">-10</button>
+          <button class="sumatorios stow">-100</button>
+        </div>
+        </td>
+        <td class="quickCalc">
+          <button class="sumatorios" id="customMaxInduct">Max Induct</button>
+          <button class="sumatorios" id="customMinInduct">Min Induct</button>
+
         </td>
       </tr>
       <tr>
@@ -65,6 +72,18 @@
         <td id="InductRateMax"></td>
         <td id="InductRateOpt"></td>
         <td id="InductRateCustom" contenteditable="true"></td>
+        <td >
+          <div class="modificadores">
+          <button class="sumatorios induct" >+100</button>
+          <button class="sumatorios induct">+10</button>
+          <button class="sumatorios induct">-10</button>
+          <button class="sumatorios induct">-100</button></div>
+        </td>
+        <td class="quickCalc">
+          <button class="sumatorios" id="customMaxStow">Max Stow</button>
+          <button class="sumatorios" id="customMinStow">Min Stow</button>
+
+        </td>
       </tr>
       <tr>
         <th>Minutes to Check</th>
@@ -73,6 +92,14 @@
         <td></td>
         <td></td>
         <td id="MinutesToCheckCustom" contenteditable="true"></td>
+        <td >
+          <div class="modificadores">
+          <button class="sumatorios minutes" >+5</button>
+          <button class="sumatorios minutes">+1</button>
+          <button class="sumatorios minutes">-1</button>
+          <button class="sumatorios minutes">-5</button>
+        </div>
+        </td>
       </tr>
       <tr>
         <th>Ats at Time Check</th>

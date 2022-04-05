@@ -161,6 +161,7 @@ export async function drawChart() {
       ],
     },
     options: {
+      pointRadius:"0",
       parsing: { xAxisKey: "epoch" },
       animation: true,
       scales: {

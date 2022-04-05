@@ -13,7 +13,8 @@ let database;
 let ATsAct = 0,
   ATsMax = 0,
   ATsMin = 0,
-  ATsOpt = 0;
+  ATsOpt = 0,
+  ATsCustom;
 let StowRateAct = 0,
   StowRateMin = 0,
   StowRateMax = 0,
@@ -25,6 +26,7 @@ let InductRateAct = 0,
   InductRateOpt = 0,
   InductRateCustom = 0;
 let MinutesToCheck = 0,
+  MinutesToCheckCustom = 0,
   ATsAtTime = 0,
   ATsAtTimeCustom = 0;
 let date = new Date();
@@ -38,9 +40,9 @@ const startButton = document.getElementById("startButton");
 setupEventsListener();
 
 function fillCustom() {
-  let ATsCustom = parseInt(document.getElementById("ATsCustom").textContent);
+  ATsCustom = parseInt(document.getElementById("ATsCustom").textContent);
 
-  let MinutesToCheckCustom = parseInt(
+  MinutesToCheckCustom = parseInt(
     document.getElementById("MinutesToCheckCustom").textContent
   );
   InductRateCustom = parseInt(
@@ -134,10 +136,9 @@ async function calculate(data) {
       hora: new Date().getHours(),
       minuto: new Date().getMinutes(),
       epoch: Date.now(),
-      "passed":checkComply(ATsAct,StowRateAct)
-
+      passed: checkComply(ATsAct, StowRateAct),
     };
-    console.log("se envia",dataForActu)
+    console.log("se envia", dataForActu);
     updateChart(dataForActu);
     let dataToSend = JSON.stringify(dataForActu);
     console.log("datato send", dataToSend);
@@ -147,17 +148,15 @@ async function calculate(data) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(dataForActu),
-    }); 
+    });
   }
-  
- 
 }
-// comprueba si el valor de ats esta complay con el ritmo de stow
-function checkComply(Ats,stow){
-  if (Ats > stow/2 || Ats < stow/4)
-  {return false}
-  return true
-
+// comprueba si el valor de ats esta comply con el ritmo de stow
+function checkComply(Ats, stow) {
+  if (Ats > stow / 2 || Ats < stow / 4) {
+    return false;
+  }
+  return true;
 }
 function takeWindowData() {
   takeWindowData.window++;
@@ -235,7 +234,12 @@ function setupEventsListener() {
 
   startButton.addEventListener("click", () => handleStartButton());
   document.getElementById("copy").addEventListener("click", () => copyData());
-  document.getElementById("testpos").addEventListener("click", () => testChart());
+  document
+    .getElementById("testpos")
+    .addEventListener("click", () => testChart());
+
+  addListenerToModifierButtons();
+  addListenerToFindMinMaxCuston();
 }
 function mueve() {
   mueve.flag;
@@ -250,6 +254,77 @@ function mueve() {
     chart.style.left = "0";
   }
 }
+function addListenerToModifierButtons() {
+  let celda;
+  const BotonesModifi = document.querySelectorAll(".sumatorios");
+  console.log(BotonesModifi);
+  BotonesModifi.forEach((boton) =>
+    boton.addEventListener("click", (e) => {
+      if (boton.classList.contains("stow")) {
+        celda = document.getElementById("StowRateCustom");
+      } else if (boton.classList.contains("minutes")) {
+        celda = document.getElementById("MinutesToCheckCustom");
+      } else if (boton.classList.contains("induct")) {
+        celda = document.getElementById("InductRateCustom");
+      } else {
+        return;
+      }
+      console.log(boton.classList);
+      celda.textContent =
+        Number(celda.textContent) + Number(e.target.textContent);
+      fillCustom();
+    })
+  );
+}
+function addListenerToFindMinMaxCuston() {
+  document
+  .querySelector("#customMinStow")//(MinutesToCheck * InductRateAct + 60 * ATsAct) / (30 + MinutesToCheck)
+  .addEventListener(
+    "click",
+    (e) =>
+     { (document.getElementById("StowRateCustom").textContent = Math.round(
+      (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) / (30 + MinutesToCheckCustom)
+       
+       
+  
+      ));fillCustom()}
+  );
+document
+  .querySelector("#customMaxStow")
+  .addEventListener(
+    "click",
+    (e) =>
+     { (document.getElementById("StowRateCustom").textContent = Math.round(
+      (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) / (15 + MinutesToCheckCustom)
+       
+  
+      ));fillCustom()}
+  );
+
+
+  document
+    .querySelector("#customMinInduct")
+    .addEventListener(
+      "click",
+      (e) =>
+       { (document.getElementById("InductRateCustom").textContent = Math.round(
+          (60 * (StowRateCustom/4)-60 * ATsCustom) / Number(MinutesToCheckCustom) + Number( StowRateCustom)
+         
+    
+        ));fillCustom()}
+    );
+  document
+    .querySelector("#customMaxInduct")
+    .addEventListener(
+      "click",
+      (e) =>
+       { (document.getElementById("InductRateCustom").textContent = Math.round(
+          (60 * (StowRateCustom/2)-60 * ATsCustom) / Number(MinutesToCheckCustom) + Number( StowRateCustom)
+         
+    
+        ));fillCustom()}
+    );
+}
 function copyData() {
   document.getElementById("ATsCustom").textContent = ATsAct;
   document.getElementById("StowRateCustom").textContent = StowRateAct;
@@ -262,7 +337,7 @@ function handleStartButton() {
     startButton.textContent = "Running";
 
     apitest();
-    drawChart()
+    drawChart();
     handleStartButton.intervalID = setInterval(apitest, 30000);
   } else {
     startButton.textContent = "Off";
