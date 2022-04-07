@@ -88,7 +88,7 @@ button:hover{
 }
 #showChart ,#addtest,#testpos{
    border-radius: 1px;
-   display: none;
+  
 }
 .modificadores {
     padding: 1;

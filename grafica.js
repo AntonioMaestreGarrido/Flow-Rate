@@ -1,4 +1,5 @@
 let database;
+const complyArray = [];
 let myChart;
 let myPieChart;
 const inducRateArray = [];
@@ -8,6 +9,7 @@ const times = [];
 const maxAts = [];
 const minAts = [];
 const epochArray=[]
+
 
 export function updateChart(data) {
   //{ InductRateAct, StowRateAct, ATsAct, "hora": new Date().getHours(),"minuto":new Date().getMinutes() }
@@ -40,6 +42,12 @@ export function updateChart(data) {
   // }
   
   myChart.update();
+  if (data.minuto % 15 === 0 ) {
+    console.log(data)
+   // if (ele.epoch>inicioEpoch && ele.epoch)
+    complyArray.push(data);
+    myPieChart.update()}
+  
   
   //console.log(myChart.data.datasetsmyChart.data.datasets)
   //myPieChart.data.datasets[0].data[0] passed
@@ -60,6 +68,8 @@ export async function addtest() {
   //   newCanvas.id = "test";
   //   document.getElementById("canvasContainer").appendChild(newCanvas);
   //   drawChart();
+  getWindowsComply()
+  
   
 }
 
@@ -81,14 +91,14 @@ async function getDataBase() {
 let y = [];
 
 export async function drawChart() {
-  drawPased();
-
+  
   database = await fetch("http://localhost:3000/getData").then((response) =>
-    response.json()
+  response.json()
   );
   const ctx = document.getElementById("test").getContext("2d");
+  //drawPased();
 
-  for (const key of database) {
+  /*for (const key of database) {
     inducRateArray.push(parseInt(key.InductRateAct));
     stowRateArray.push(parseInt(key.StowRateAct));
     AtsArray.push(parseInt(key.ATsAct));
@@ -96,7 +106,7 @@ export async function drawChart() {
     minAts.push(parseInt(key.StowRateAct) / 4);
     times.push(key.minutos);
     epochArray.push(key.epoch)
-  }
+  }*/
 
   myChart = new Chart(ctx, {
     type: "line",
@@ -211,23 +221,27 @@ function addZero(i) {
   return i;
 }
 
-async function drawPased() {
-  const complyArray = [];
-  let database = await getDataBase();
+async function getWindowsComply() {
+ 
+  //let database = await getDataBase();
+
   let inicio = {
     hora: 1,
     minuto: 30,
   };
   database.forEach((ele) => {
-    if (ele.minuto % 15 === 0) {
+    if (ele.minuto % 15 === 0 ) {
+      console.log(ele)
+     // if (ele.epoch>inicioEpoch && ele.epoch)
       complyArray.push(ele);
     }
   });
 
+
   drawPie(complyArray);
 }
 
-function drawPie(complyArray) {
+function drawPie() {
   var passed = 0;
   var failed = 0;
 
@@ -242,8 +256,9 @@ function drawPie(complyArray) {
     type: "pie",
     data: {
       labels: [
-        `Passed ${(passed * 100) / (passed + failed)}%`,
-        `Failed ${(failed * 100) / (passed + failed)}%`,
+        // Math.round(((passed * 100) / (passed + failed)) * 100) / 100);
+        `Passed ${Math.round((((passed * 100) / (passed + failed)) * 100) / 100)}%`,
+        `Failed ${Math.round((((failed * 100) / (passed + failed)) * 100) / 100)}%`,
       ],
       datasets: [
         {

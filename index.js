@@ -82,7 +82,7 @@ async function getDataBase() {
     .then((response) => response.json())
     .then((data) => {
       database = data;
-      console.log("database", database);
+     
     })
     .catch((error) => alert("No se encuentra el servidor", error));
 }
@@ -240,7 +240,36 @@ function setupEventsListener() {
 
   addListenerToModifierButtons();
   addListenerToFindMinMaxCuston();
+  document.getElementById('botonGetStowersRates').addEventListener("click",()=>{getStowersRates()})
+  document.getElementById('botonGetInductersRates').addEventListener("click",()=>{getInductersRates()})
 }
+async function getStowersRates(){
+  console.log(new Date().getDate())
+  await fetch("http://localhost:3000/getStowersData")
+    .then((response) => response.json())
+    .then((data) => {
+      let stowersRates = data;
+      console.log(stowersRates);
+      console.log(new Date().getDate())
+      return stowersRates
+      //https://internal-cdn.amazon.com/badgephotos.amazon.com/?uid=ammaestr
+    })
+    .catch((error) => alert("No se encuentra el servidor", error));
+}
+async function getInductersRates(){
+  console.log(new Date().getTime())
+  await fetch("http://localhost:3000/getInductersData")
+    .then((response) => response.json())
+    .then((data) => {
+      let inductersRates = data;
+      console.log(inductersRates);
+      console.log(new Date().getTime())
+      return inductersRates
+    })
+    .catch((error) => alert("No se encuentra el servidor", error));
+}
+
+
 function mueve() {
   mueve.flag;
   let chart = document.getElementById("test");
@@ -257,7 +286,7 @@ function mueve() {
 function addListenerToModifierButtons() {
   let celda;
   const BotonesModifi = document.querySelectorAll(".sumatorios");
-  console.log(BotonesModifi);
+
   BotonesModifi.forEach((boton) =>
     boton.addEventListener("click", (e) => {
       if (boton.classList.contains("stow")) {
@@ -269,7 +298,7 @@ function addListenerToModifierButtons() {
       } else {
         return;
       }
-      console.log(boton.classList);
+     
       celda.textContent =
         Number(celda.textContent) + Number(e.target.textContent);
       fillCustom();
@@ -336,8 +365,8 @@ function handleStartButton() {
   if (startButton.textContent === "Off") {
     startButton.textContent = "Running";
 
-    apitest();
     drawChart();
+    apitest();
     handleStartButton.intervalID = setInterval(apitest, 30000);
   } else {
     startButton.textContent = "Off";
