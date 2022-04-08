@@ -29,11 +29,7 @@ let MinutesToCheck = 0,
   MinutesToCheckCustom = 0,
   ATsAtTime = 0,
   ATsAtTimeCustom = 0;
-let date = new Date();
-let encendido = false;
-let parcelStowedThisWindow = 0;
-let ParcelStowedLAstWindow = 0;
-let window = 0;
+
 
 const startButton = document.getElementById("startButton");
 
@@ -53,7 +49,7 @@ function fillCustom() {
   );
   ATsAtTimeCustom = parseInt(
     ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheckCustom +
-      ATsCustom
+    ATsCustom
   );
   document.getElementById("MinCustom").textContent =
     document.getElementById("StowRateCustom").textContent / 4;
@@ -63,7 +59,7 @@ function fillCustom() {
   giveStyle();
 }
 
-//refreshButton.addEventListener("click", () => apitest());
+
 
 async function apitest() {
   let data2;
@@ -82,7 +78,7 @@ async function getDataBase() {
     .then((response) => response.json())
     .then((data) => {
       database = data;
-     
+
     })
     .catch((error) => alert("No se encuentra el servidor", error));
 }
@@ -158,9 +154,7 @@ function checkComply(Ats, stow) {
   }
   return true;
 }
-function takeWindowData() {
-  takeWindowData.window++;
-}
+
 
 async function filltable() {
   document.getElementById("ATsAct").innerText = ATsAct;
@@ -185,10 +179,7 @@ async function filltable() {
 
   giveStyle();
 }
-function addWindowData() {
-  addWindowData.window = +1;
-  const a = 1;
-}
+
 function giveStyle() {
   if (ATsAct > ATsMax || ATsAct < ATsMin) {
     document.getElementById("ATsAct").style.backgroundColor = "red";
@@ -240,10 +231,10 @@ function setupEventsListener() {
 
   addListenerToModifierButtons();
   addListenerToFindMinMaxCuston();
-  document.getElementById('botonGetStowersRates').addEventListener("click",()=>{getStowersRates()})
-  document.getElementById('botonGetInductersRates').addEventListener("click",()=>{getInductersRates()})
+  document.getElementById('botonGetStowersRates').addEventListener("click", () => { getStowersRates() })
+  document.getElementById('botonGetInductersRates').addEventListener("click", () => { getInductersRates() })
 }
-async function getStowersRates(){
+async function getStowersRates() {
   console.log(new Date().getDate())
   await fetch("http://localhost:3000/getStowersData")
     .then((response) => response.json())
@@ -256,7 +247,7 @@ async function getStowersRates(){
     })
     .catch((error) => alert("No se encuentra el servidor", error));
 }
-async function getInductersRates(){
+async function getInductersRates() {
   console.log(new Date().getTime())
   await fetch("http://localhost:3000/getInductersData")
     .then((response) => response.json())
@@ -298,7 +289,7 @@ function addListenerToModifierButtons() {
       } else {
         return;
       }
-     
+
       celda.textContent =
         Number(celda.textContent) + Number(e.target.textContent);
       fillCustom();
@@ -307,51 +298,55 @@ function addListenerToModifierButtons() {
 }
 function addListenerToFindMinMaxCuston() {
   document
-  .querySelector("#customMinStow")//(MinutesToCheck * InductRateAct + 60 * ATsAct) / (30 + MinutesToCheck)
-  .addEventListener(
-    "click",
-    (e) =>
-     { (document.getElementById("StowRateCustom").textContent = Math.round(
-      (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) / (30 + MinutesToCheckCustom)
-       
-       
-  
-      ));fillCustom()}
-  );
-document
-  .querySelector("#customMaxStow")
-  .addEventListener(
-    "click",
-    (e) =>
-     { (document.getElementById("StowRateCustom").textContent = Math.round(
-      (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) / (15 + MinutesToCheckCustom)
-       
-  
-      ));fillCustom()}
-  );
+    .querySelector("#customMinStow")//(MinutesToCheck * InductRateAct + 60 * ATsAct) / (30 + MinutesToCheck)
+    .addEventListener(
+      "click",
+      (e) => {
+        (document.getElementById("StowRateCustom").textContent = Math.round(
+          (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) / (30 + MinutesToCheckCustom)
+
+
+
+        )); fillCustom()
+      }
+    );
+  document
+    .querySelector("#customMaxStow")
+    .addEventListener(
+      "click",
+      (e) => {
+        (document.getElementById("StowRateCustom").textContent = Math.round(
+          (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) / (15 + MinutesToCheckCustom)
+
+
+        )); fillCustom()
+      }
+    );
 
 
   document
     .querySelector("#customMinInduct")
     .addEventListener(
       "click",
-      (e) =>
-       { (document.getElementById("InductRateCustom").textContent = Math.round(
-          (60 * (StowRateCustom/4)-60 * ATsCustom) / Number(MinutesToCheckCustom) + Number( StowRateCustom)
-         
-    
-        ));fillCustom()}
+      (e) => {
+        (document.getElementById("InductRateCustom").textContent = Math.round(
+          (60 * (StowRateCustom / 4) - 60 * ATsCustom) / Number(MinutesToCheckCustom) + Number(StowRateCustom)
+
+
+        )); fillCustom()
+      }
     );
   document
     .querySelector("#customMaxInduct")
     .addEventListener(
       "click",
-      (e) =>
-       { (document.getElementById("InductRateCustom").textContent = Math.round(
-          (60 * (StowRateCustom/2)-60 * ATsCustom) / Number(MinutesToCheckCustom) + Number( StowRateCustom)
-         
-    
-        ));fillCustom()}
+      (e) => {
+        (document.getElementById("InductRateCustom").textContent = Math.round(
+          (60 * (StowRateCustom / 2) - 60 * ATsCustom) / Number(MinutesToCheckCustom) + Number(StowRateCustom)
+
+
+        )); fillCustom()
+      }
     );
 }
 function copyData() {
@@ -367,9 +362,58 @@ function handleStartButton() {
 
     drawChart();
     apitest();
+
     handleStartButton.intervalID = setInterval(apitest, 30000);
   } else {
     startButton.textContent = "Off";
     clearInterval(handleStartButton.intervalID);
   }
+}
+creaTabla()
+function creaTabla() {
+  const container = document.getElementById("teststow")
+  const cabeceras=["login","ritmo","totales","pasillo"]
+  const constdatos = [
+    ["ante", 23, 345, "d32"],
+    ["zazaz"    , 12, 333, "S22"],
+    ["lowswsgin", 44, 543, "E33"]
+  ]
+  constdatos.sort((a,b)=>a[1]<b[1])
+  const filas = constdatos.length
+  const columnas = Object.keys(constdatos).length
+  let tabla=document.createElement("table")
+  tabla.className="table-sort" 
+  
+ let cabecera = document.createElement("tr")
+ cabeceras.forEach(ele => {
+   let celda=document.createElement("th")
+   celda.innerText=ele
+  
+   cabecera.appendChild(celda)
+   
+ });
+ tabla.appendChild(cabecera)
+
+ for (let i = 0; i < constdatos[0].length; i++) {
+   const th=document.createElement("th")
+   th.innerText=""
+   
+   
+ }
+let tbody=document.createElement("tbody")
+  constdatos.forEach(ele => {
+    let linea = document.createElement("tr")
+    tbody.appendChild(linea)
+    ele.forEach(cel => {
+      let celda=document.createElement("td")
+      celda.innerText=cel
+      linea.appendChild(celda)
+
+    });
+
+
+
+  });
+  tabla.appendChild(tbody)
+  container.appendChild(tabla)
 }

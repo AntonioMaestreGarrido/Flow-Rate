@@ -1,118 +1,136 @@
-*{
+* {
     font-size: 30px;
     font-weight: bolder;
     box-sizing: border-box;
-    
+
 }
 
-td{
+td {
     text-align: center;
     border: solid black 2px;
-   
+
 }
-th{
-    border: solid black 4px  ;
-    background-color:  rgba(107, 156, 221, 0.568);
+
+th {
+    border: solid black 4px;
+    background-color: rgba(107, 156, 221, 0.568);
     min-width: 5vw;
     max-width: 10vw;
-    
-}
-td, tr {
-    
-    
-   
 
 }
 
-table{
+td,
+tr {}
+
+table {
     margin: auto;
 }
-table *{
+
+table * {
     max-height: 40px;
     min-height: 40px;
     max-width: 28vw;
     overflow: hidden;
 }
-h1{
+
+h1 {
     margin: auto;
     text-align: center;
     border-bottom: solid black 5px;
-    
+
     font-size: 40px;
 
 }
-button{
+
+button {
     font-size: 20px;
-   
-   
+
+
     width: 100px;
     border-radius: 15px;
 }
-button:hover{
+
+button:hover {
     transform: scale(0.98);
 }
-#startButton{
+
+#startButton {
     width: 130px;
     position: absolute;
     right: 50px;
     top: 10px;
 }
 
-#copy{
+#copy {
     width: 100%;
     height: 100%;
 
 }
-#copyCell{
+
+#copyCell {
     border: none;
-   
+
 }
-#test{
+
+#test {
     border: solid black 3px;
     background-color: aqua;
     width: 102vw;
     margin: 0px;
     max-height: 40vh;
     position: relative;
-   left: 0px;
+    left: 0px;
     transition: left 2s;
-    
-    
+
+
 }
-#pieComply{
+
+#pieComply {
     display: none;
     width: 300px;
     max-height: 300px;
-    
+
     border: solid black 4px;
 }
-#showChart ,#addtest,#testpos{
-   border-radius: 1px;
-  
+
+#showChart,
+#addtest,
+#testpos,
+#testtabla {
+    border-radius: 1px;
+    display: none;
+
 }
+
 .modificadores {
     padding: 1;
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;
-    
+
     width: 13vw;
     min-height: 10px;
-   
-  
-   
+
+
+
 }
 
 .sumatorios {
     font-size: 13px;
     padding: 0;
-    box-sizing:border-box;
+    box-sizing: border-box;
     margin: 0;
     border-radius: 10px;
-    background-color:  rgba(107, 156, 221, 0.568);
+    background-color: rgba(107, 156, 221, 0.568);
     flex-grow: 0;
-    
-   height: 100%;
-    
+
+    height: 100%;
+
 }
 
+#teststow {
+    display: none;
+    width: fit-content;
+    height:  fit-content;
+    background-color: rgb(255, 123, 0);
+}

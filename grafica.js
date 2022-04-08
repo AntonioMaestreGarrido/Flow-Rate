@@ -13,33 +13,10 @@ const epochArray=[]
 
 export function updateChart(data) {
   //{ InductRateAct, StowRateAct, ATsAct, "hora": new Date().getHours(),"minuto":new Date().getMinutes() }
-  // 0: {label: 'Induct Rate', data: Array(117), backgroundColor: 'red', borderColor: 'red', tension: '0.2', …}
-  // 1: {label: 'ATs', data: Array(117), parsing: {…}, backgroundColor: 'green', borderColor: 'green', …}
-  // 2: {label: 'Stow Rate', data: Array(117), parsing: {…}, backgroundColor: 'blue', borderColor: 'blue', …}
-  // 3: {label: 'Max Ats', data: Array(117), parsing: {…}, pointRadius: '0', backgroundColor: 'black', …}
-  // 4: {label: 'Min Ats', data: Array(117), parsing: {…}, pointRadius: '0', backgroundColor: 'black', …}
-  //**************************************************** */
-  // console.log('intentado actuializar',data)
-  // console.log('datos del chart',myChart.data.datasets)
-  // console.log("data4",myChart.data.datasets[4].data)
-  // myChart.data.datasets[0].data.push(data.InductRateAct);
-  // myChart.data.datasets[1].data.push(data.ATsAct);
-  // myChart.data.datasets[2].data.push(data.StowRateAct);
-  // myChart.data.datasets[3].data.push(data.MaxAts);
-  // myChart.data.datasets[4].data.push(data.MinAts);
+ 
   console.log('pre',database)
   database.push(data)
   console.log('post',database)
-
-  // if (data.minuto % 15 === 0) {
-  //   if (data.passed) {
-  //     myPieChart.data.datasets[0].data[0] =
-  //       myPieChart.data.datasets[0].data[0] + 1;
-  //   } else {
-  //     myPieChart.data.datasets[0].data[1] =
-  //       myPieChart.data.datasets[0].data[1] + 1;
-  //   }
-  // }
   
   myChart.update();
   if (data.minuto % 15 === 0 ) {
@@ -47,27 +24,10 @@ export function updateChart(data) {
    // if (ele.epoch>inicioEpoch && ele.epoch)
     complyArray.push(data);
     myPieChart.update()}
-  
-  
-  //console.log(myChart.data.datasetsmyChart.data.datasets)
-  //myPieChart.data.datasets[0].data[0] passed
+ 
 }
 export async function addtest() {
-  //     console.log(myChart.data.labels)
-  //    let n=Math.floor(Math.random()*500+500)
-  //    //myChart.data.datasets[0].data.push(n)
-  //    myChart.data.labels.push(n)
-  // let newdata
 
-  //    myChart.update()
-  //   const char = document.getElementById("test");
-  //   document.getElementById("test").style.backgroundColor = "red";
-  //   char.parentNode.removeChild(document.getElementById("test"));
-
-  //   let newCanvas = document.createElement("canvas");
-  //   newCanvas.id = "test";
-  //   document.getElementById("canvasContainer").appendChild(newCanvas);
-  //   drawChart();
   getWindowsComply()
   
   
@@ -96,17 +56,7 @@ export async function drawChart() {
   response.json()
   );
   const ctx = document.getElementById("test").getContext("2d");
-  //drawPased();
 
-  /*for (const key of database) {
-    inducRateArray.push(parseInt(key.InductRateAct));
-    stowRateArray.push(parseInt(key.StowRateAct));
-    AtsArray.push(parseInt(key.ATsAct));
-    maxAts.push(parseInt(key.StowRateAct) / 2);
-    minAts.push(parseInt(key.StowRateAct) / 4);
-    times.push(key.minutos);
-    epochArray.push(key.epoch)
-  }*/
 
   myChart = new Chart(ctx, {
     type: "line",
