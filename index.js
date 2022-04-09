@@ -1,5 +1,11 @@
 import { drawChart, testChart, addtest, updateChart } from "./grafica.js";
 
+
+
+
+
+
+
 const windowData = {
   window: 0,
   ATs: 0,
@@ -30,7 +36,6 @@ let MinutesToCheck = 0,
   ATsAtTime = 0,
   ATsAtTimeCustom = 0;
 
-
 const startButton = document.getElementById("startButton");
 
 setupEventsListener();
@@ -49,7 +54,7 @@ function fillCustom() {
   );
   ATsAtTimeCustom = parseInt(
     ((InductRateCustom - StowRateCustom) / 60) * MinutesToCheckCustom +
-    ATsCustom
+      ATsCustom
   );
   document.getElementById("MinCustom").textContent =
     document.getElementById("StowRateCustom").textContent / 4;
@@ -58,8 +63,6 @@ function fillCustom() {
   document.getElementById("ATsAtTimeCustom").textContent = ATsAtTimeCustom;
   giveStyle();
 }
-
-
 
 async function apitest() {
   let data2;
@@ -78,7 +81,6 @@ async function getDataBase() {
     .then((response) => response.json())
     .then((data) => {
       database = data;
-
     })
     .catch((error) => alert("No se encuentra el servidor", error));
 }
@@ -155,7 +157,6 @@ function checkComply(Ats, stow) {
   return true;
 }
 
-
 async function filltable() {
   document.getElementById("ATsAct").innerText = ATsAct;
   document.getElementById("ATsMax").innerText = ATsMax;
@@ -231,35 +232,43 @@ function setupEventsListener() {
 
   addListenerToModifierButtons();
   addListenerToFindMinMaxCuston();
-  document.getElementById('botonGetStowersRates').addEventListener("click", () => { getStowersRates() })
-  document.getElementById('botonGetInductersRates').addEventListener("click", () => { getInductersRates() })
+  document
+    .getElementById("botonGetStowersRates")
+    .addEventListener("click", () => {
+      getStowersRates();
+    });
+  document
+    .getElementById("botonGetInductersRates")
+    .addEventListener("click", () => {
+      getInductersRates();
+    });
 }
 async function getStowersRates() {
-  console.log(new Date().getDate())
+  console.log(new Date().getDate());
   await fetch("http://localhost:3000/getStowersData")
     .then((response) => response.json())
     .then((data) => {
       let stowersRates = data;
       console.log(stowersRates);
-      console.log(new Date().getDate())
-      return stowersRates
+      console.log(new Date().getDate());
+      creaTabla("stowersRates", data);
+      return stowersRates;
       //https://internal-cdn.amazon.com/badgephotos.amazon.com/?uid=ammaestr
     })
     .catch((error) => alert("No se encuentra el servidor", error));
 }
 async function getInductersRates() {
-  console.log(new Date().getTime())
+  console.log(new Date().getTime());
   await fetch("http://localhost:3000/getInductersData")
     .then((response) => response.json())
     .then((data) => {
       let inductersRates = data;
+      creaTabla("inductersRates", data);
       console.log(inductersRates);
-      console.log(new Date().getTime())
-      return inductersRates
     })
-    .catch((error) => alert("No se encuentra el servidor", error));
+    .catch(console.log("no se han podido rcuperar los datos"))
+   
 }
-
 
 function mueve() {
   mueve.flag;
@@ -298,56 +307,38 @@ function addListenerToModifierButtons() {
 }
 function addListenerToFindMinMaxCuston() {
   document
-    .querySelector("#customMinStow")//(MinutesToCheck * InductRateAct + 60 * ATsAct) / (30 + MinutesToCheck)
-    .addEventListener(
-      "click",
-      (e) => {
-        (document.getElementById("StowRateCustom").textContent = Math.round(
-          (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) / (30 + MinutesToCheckCustom)
-
-
-
-        )); fillCustom()
-      }
+    .querySelector("#customMinStow") //(MinutesToCheck * InductRateAct + 60 * ATsAct) / (30 + MinutesToCheck)
+    .addEventListener("click", (e) => {
+      document.getElementById("StowRateCustom").textContent = Math.round(
+        (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) /
+          (30 + MinutesToCheckCustom)
+      );
+      fillCustom();
+    });
+  document.querySelector("#customMaxStow").addEventListener("click", (e) => {
+    document.getElementById("StowRateCustom").textContent = Math.round(
+      (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) /
+        (15 + MinutesToCheckCustom)
     );
-  document
-    .querySelector("#customMaxStow")
-    .addEventListener(
-      "click",
-      (e) => {
-        (document.getElementById("StowRateCustom").textContent = Math.round(
-          (MinutesToCheckCustom * InductRateCustom + 60 * ATsCustom) / (15 + MinutesToCheckCustom)
+    fillCustom();
+  });
 
-
-        )); fillCustom()
-      }
+  document.querySelector("#customMinInduct").addEventListener("click", (e) => {
+    document.getElementById("InductRateCustom").textContent = Math.round(
+      (60 * (StowRateCustom / 4) - 60 * ATsCustom) /
+        Number(MinutesToCheckCustom) +
+        Number(StowRateCustom)
     );
-
-
-  document
-    .querySelector("#customMinInduct")
-    .addEventListener(
-      "click",
-      (e) => {
-        (document.getElementById("InductRateCustom").textContent = Math.round(
-          (60 * (StowRateCustom / 4) - 60 * ATsCustom) / Number(MinutesToCheckCustom) + Number(StowRateCustom)
-
-
-        )); fillCustom()
-      }
+    fillCustom();
+  });
+  document.querySelector("#customMaxInduct").addEventListener("click", (e) => {
+    document.getElementById("InductRateCustom").textContent = Math.round(
+      (60 * (StowRateCustom / 2) - 60 * ATsCustom) /
+        Number(MinutesToCheckCustom) +
+        Number(StowRateCustom)
     );
-  document
-    .querySelector("#customMaxInduct")
-    .addEventListener(
-      "click",
-      (e) => {
-        (document.getElementById("InductRateCustom").textContent = Math.round(
-          (60 * (StowRateCustom / 2) - 60 * ATsCustom) / Number(MinutesToCheckCustom) + Number(StowRateCustom)
-
-
-        )); fillCustom()
-      }
-    );
+    fillCustom();
+  });
 }
 function copyData() {
   document.getElementById("ATsCustom").textContent = ATsAct;
@@ -369,51 +360,41 @@ function handleStartButton() {
     clearInterval(handleStartButton.intervalID);
   }
 }
-creaTabla()
-function creaTabla() {
-  const container = document.getElementById("teststow")
-  const cabeceras=["login","ritmo","totales","pasillo"]
-  const constdatos = [
-    ["ante", 23, 345, "d32"],
-    ["zazaz"    , 12, 333, "S22"],
-    ["lowswsgin", 44, 543, "E33"]
-  ]
-  constdatos.sort((a,b)=>a[1]<b[1])
-  const filas = constdatos.length
-  const columnas = Object.keys(constdatos).length
-  let tabla=document.createElement("table")
-  tabla.className="table-sort" 
+// first parameter Table ID, second array
+function creaTabla(containerName, constdatos) {
+  const container = document.getElementById(containerName);
+ 
+
   
- let cabecera = document.createElement("tr")
- cabeceras.forEach(ele => {
-   let celda=document.createElement("th")
-   celda.innerText=ele
+  const filas = constdatos.length;
+  const columnas = Object.keys(constdatos).length;
   
-   cabecera.appendChild(celda)
-   
- });
- tabla.appendChild(cabecera)
+  let tabla = document.createElement("table")
+  tabla.id=`${containerName}Table`
+  
 
- for (let i = 0; i < constdatos[0].length; i++) {
-   const th=document.createElement("th")
-   th.innerText=""
-   
-   
- }
-let tbody=document.createElement("tbody")
-  constdatos.forEach(ele => {
-    let linea = document.createElement("tr")
-    tbody.appendChild(linea)
-    ele.forEach(cel => {
-      let celda=document.createElement("td")
-      celda.innerText=cel
-      linea.appendChild(celda)
+  let cabecera = document.createElement("tr");
 
-    });
+  constdatos[0].forEach((ele,index) => {
+    
+    let celda = document.createElement("th");
+    celda.innerText = ele;
 
-
-
+    cabecera.appendChild(celda);
   });
-  tabla.appendChild(tbody)
-  container.appendChild(tabla)
+  tabla.appendChild(cabecera);
+
+
+  constdatos.filter((p,i)=>i>0).forEach((ele) => {
+    let linea = document.createElement("tr");
+    tabla.appendChild(linea);
+    ele.forEach((cel) => {
+      let celda = document.createElement("td");
+      celda.innerText = cel;
+      linea.appendChild(celda);
+    });
+    tabla.appendChild(linea);
+  });
+  
+  container.appendChild(tabla);
 }

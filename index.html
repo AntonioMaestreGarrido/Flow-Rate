@@ -1,133 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flow Ratio</title>
+    <script type="module" src="./index.js" defer></script>
+    <!-- tabulator -->
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flow Ratio</title>
-  <script type="module" src="./index.js" defer></script>
+    <!-- https://www.npmjs.com/package/table-sort-js -->
+   
+    <!-- ******************CDN charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" href="data:," />
+  </head>
 
-  <!-- https://www.npmjs.com/package/table-sort-js -->
-  <script src="./table-sort.js"></script>
-  <!-- ******************CDN charts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-  <link rel="stylesheet" href="./styles.css" />
-  <link rel="icon" href="data:," />
-</head>
+  <body>
+    <h1>Flow Ratio 1.150</h1>
+    <button id="startButton">Off</button>
+    <button id="showChart">chart</button>
 
-<body>
-  <h1>Flow Ratio 1.150</h1>
-  <button id="startButton">Off</button>
-  <button id="showChart">chart</button>
+    <button id="addtest">test</button>
+    <button id="testpos">move</button>
+    <button id="botonGetStowersRates">Stowers</button>
+    <button id="botonGetInductersRates">Inducters</button>
+    <div id="stowersRates">
+      <h1>Active Stowers</h1>
+      <!-- <table id="stowerstable" class="table-sort table-arrows"></table> -->
+     
+    </div>
+    <div id="inductersRates">
+        
+      <h1>Active Inducters</h1>
+    </div>
 
-  <button id="addtest">test</button>
-  <button id="testpos">move</button>
-  <button id="testtabla">tabla</button>
-  <div id="teststow">
-    <h1>jijiji</h1>
+    <table id="main" >
+      <thead>
+        <tr>
+          <th>DQA2</th>
+          <th>Actual</th>
+          <th>Min</th>
+          <th>Max</th>
+          <th>Optim</th>
+          <th contenteditable="true">Custom</th>
+          <th>Min Custom</th>
+          <th>Max Custom</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Ats</th>
+          <td id="ATsAct"></td>
+          <td id="ATsMin"></td>
+          <td id="ATsMax"></td>
+          <td id="ATsOpt"></td>
+          <td id="ATsCustom" contenteditable="true"></td>
+
+          <td id="MinCustom"></td>
+          <td id="MaxCustom"></td>
+        </tr>
+        <tr>
+          <th id="botonGetStowersRates">Stow Rate</th>
+          <td id="StowRateAct"></td>
+          <td id="StowRateMin"></td>
+          <td id="StowRateMax"></td>
+          <td id="StowRateOpt"></td>
+          <td id="StowRateCustom" contenteditable="true"></td>
+          <td>
+            <div class="modificadores">
+              <button class="sumatorios stow">+100</button>
+              <button class="sumatorios stow">+10</button>
+              <button class="sumatorios stow">-10</button>
+              <button class="sumatorios stow">-100</button>
+            </div>
+          </td>
+          <td class="quickCalc">
+            <button class="sumatorios" id="customMaxStow">Max Stow</button>
+            <button class="sumatorios" id="customMinStow">Min Stow</button>
+          </td>
+        </tr>
+        <tr>
+          <th id="botonGetInductersRates">Induc Rate</th>
+          <td id="InductRateAct"></td>
+          <td id="InductRateMin"></td>
+          <td id="InductRateMax"></td>
+          <td id="InductRateOpt"></td>
+          <td id="InductRateCustom" contenteditable="true"></td>
+          <td>
+            <div class="modificadores">
+              <button class="sumatorios induct">+100</button>
+              <button class="sumatorios induct">+10</button>
+              <button class="sumatorios induct">-10</button>
+              <button class="sumatorios induct">-100</button>
+            </div>
+          </td>
+          <td class="quickCalc">
+            <button class="sumatorios" id="customMaxInduct">Max Induct</button>
+            <button class="sumatorios" id="customMinInduct">Min Induct</button>
+          </td>
+        </tr>
+        <tr>
+          <th>Minutes to Check</th>
+          <td id="MinutesToCheck"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td id="MinutesToCheckCustom" contenteditable="true"></td>
+          <td>
+            <div class="modificadores">
+              <button class="sumatorios minutes">+5</button>
+              <button class="sumatorios minutes">+1</button>
+              <button class="sumatorios minutes">-1</button>
+              <button class="sumatorios minutes">-5</button>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>Ats at Time Check</th>
+          <td id="ATsAtTime"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td id="ATsAtTimeCustom"></td>
+          <td id="copyCell"><button id="copy">Copy</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+  <div id="canvasContainer">
+    <canvas id="test" width="1000" height="300"></canvas>
+    <canvas id="pieComply" width="1000" height="300"></canvas>
   </div>
-
-  <table >
-    <tr>
-      <th>DQA2</th>
-      <th>Actual</th>
-      <th>Min</th>
-      <th>Max</th>
-      <th>Optim</th>
-      <th contenteditable="true">Custom</th>
-      <th>Min Custom</th>
-      <th>Max Custom</th>
-    </tr>
-
-    <tr>
-      <th>Ats</th>
-      <td id="ATsAct"></td>
-      <td id="ATsMin"></td>
-      <td id="ATsMax"></td>
-      <td id="ATsOpt"></td>
-      <td id="ATsCustom" contenteditable="true"></td>
-
-      <td id="MinCustom"></td>
-      <td id="MaxCustom"></td>
-    </tr>
-    <tr>
-      <th id="botonGetStowersRates">Stow Rate</th>
-      <td id="StowRateAct"></td>
-      <td id="StowRateMin"></td>
-      <td id="StowRateMax"></td>
-      <td id="StowRateOpt"></td>
-      <td id="StowRateCustom" contenteditable="true"></td>
-      <td>
-        <div class="modificadores">
-          <button class="sumatorios stow">+100</button>
-          <button class="sumatorios stow">+10</button>
-          <button class="sumatorios stow">-10</button>
-          <button class="sumatorios stow">-100</button>
-        </div>
-      </td>
-      <td class="quickCalc">
-
-        <button class="sumatorios" id="customMaxStow">Max Stow</button>
-        <button class="sumatorios" id="customMinStow">Min Stow</button>
-
-      </td>
-    </tr>
-    <tr>
-      <th id="botonGetInductersRates">Induc Rate</th>
-      <td id="InductRateAct"></td>
-      <td id="InductRateMin"></td>
-      <td id="InductRateMax"></td>
-      <td id="InductRateOpt"></td>
-      <td id="InductRateCustom" contenteditable="true"></td>
-      <td>
-        <div class="modificadores">
-          <button class="sumatorios induct">+100</button>
-          <button class="sumatorios induct">+10</button>
-          <button class="sumatorios induct">-10</button>
-          <button class="sumatorios induct">-100</button>
-        </div>
-      </td>
-      <td class="quickCalc">
-        <button class="sumatorios" id="customMaxInduct">Max Induct</button>
-        <button class="sumatorios" id="customMinInduct">Min Induct</button>
-
-
-      </td>
-    </tr>
-    <tr>
-      <th>Minutes to Check</th>
-      <td id="MinutesToCheck"></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td id="MinutesToCheckCustom" contenteditable="true"></td>
-      <td>
-        <div class="modificadores">
-          <button class="sumatorios minutes">+5</button>
-          <button class="sumatorios minutes">+1</button>
-          <button class="sumatorios minutes">-1</button>
-          <button class="sumatorios minutes">-5</button>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th>Ats at Time Check</th>
-      <td id="ATsAtTime"></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td id="ATsAtTimeCustom"></td>
-      <td id="copyCell"><button id="copy">Copy</button></td>
-    </tr>
-  </table>
-</body>
-<div id="canvasContainer">
-  <canvas id="test" width="1000" height="300"></canvas>
-  <canvas id="pieComply" width="1000" height="300"></canvas>
-</div>
+  <div id="testable" ></div>
 
 </html>

@@ -34,10 +34,11 @@ function tableSortJs(testingTableSortJS = false, domDocumentWindow = document) {
       makeTableSortable(table);
     }
   }
-
   function makeTableSortable(sortableTable) {
     let createTableHead;
     let tableBody;
+    console.log(sortableTable.getElementsByTagName("thead"))
+    console.log(sortableTable.getElementsByTagName("th"))
     if (sortableTable.getElementsByTagName("thead").length === 0) {
       if (testingTableSortJS === true) {
         createTableHead = domDocumentWindow.createElement("thead");

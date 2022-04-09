@@ -14,9 +14,9 @@ const epochArray=[]
 export function updateChart(data) {
   //{ InductRateAct, StowRateAct, ATsAct, "hora": new Date().getHours(),"minuto":new Date().getMinutes() }
  
-  console.log('pre',database)
+  
   database.push(data)
-  console.log('post',database)
+  
   
   myChart.update();
   if (data.minuto % 15 === 0 ) {
