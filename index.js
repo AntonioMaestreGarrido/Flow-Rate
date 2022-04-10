@@ -1,4 +1,6 @@
-import { drawChart, testChart, addtest, updateChart } from "./grafica.js";
+
+import { drawChart, testChart, addtest, updateChart } from "./src/grafica.js";
+import { creaTabla } from "./src/tablas.js";
 
 
 
@@ -244,31 +246,51 @@ function setupEventsListener() {
     });
 }
 async function getStowersRates() {
-  console.log(new Date().getDate());
+  const StowersContainer=document.getElementById("stowersRates")
+  if(StowersContainer.classList.contains("visible")){
+    StowersContainer.classList.remove("visible")
+    StowersContainer.innerHTML=""
+    
+  
+  }else{
+    StowersContainer.classList.add("visible")
   await fetch("http://localhost:3000/getStowersData")
     .then((response) => response.json())
     .then((data) => {
       let stowersRates = data;
-      console.log(stowersRates);
-      console.log(new Date().getDate());
       creaTabla("stowersRates", data);
+      var stowersTable = new Tabulator("#stowersRatesTable", {
+        "autoColumns":true
+      })
       return stowersRates;
       //https://internal-cdn.amazon.com/badgephotos.amazon.com/?uid=ammaestr
     })
     .catch((error) => alert("No se encuentra el servidor", error));
-}
+}}
 async function getInductersRates() {
-  console.log(new Date().getTime());
+  const inductContainer=document.getElementById("inductersRates")
+  if(inductContainer.classList.contains("visible")){
+    inductContainer.classList.remove("visible")
+    inductContainer.innerHTML=""
+    
+  
+  }else{
+    inductContainer.classList.add("visible")
   await fetch("http://localhost:3000/getInductersData")
     .then((response) => response.json())
     .then((data) => {
       let inductersRates = data;
       creaTabla("inductersRates", data);
-      console.log(inductersRates);
+      
+       inductersTable= new Tabulator("#inductersRatesTable", {
+        "autoColumns":true
+      })
+      console.log(inductersTable);
+      inductContainer.style.display="block"
     })
     .catch(console.log("no se han podido rcuperar los datos"))
    
-}
+}}
 
 function mueve() {
   mueve.flag;
@@ -361,40 +383,3 @@ function handleStartButton() {
   }
 }
 // first parameter Table ID, second array
-function creaTabla(containerName, constdatos) {
-  const container = document.getElementById(containerName);
- 
-
-  
-  const filas = constdatos.length;
-  const columnas = Object.keys(constdatos).length;
-  
-  let tabla = document.createElement("table")
-  tabla.id=`${containerName}Table`
-  
-
-  let cabecera = document.createElement("tr");
-
-  constdatos[0].forEach((ele,index) => {
-    
-    let celda = document.createElement("th");
-    celda.innerText = ele;
-
-    cabecera.appendChild(celda);
-  });
-  tabla.appendChild(cabecera);
-
-
-  constdatos.filter((p,i)=>i>0).forEach((ele) => {
-    let linea = document.createElement("tr");
-    tabla.appendChild(linea);
-    ele.forEach((cel) => {
-      let celda = document.createElement("td");
-      celda.innerText = cel;
-      linea.appendChild(celda);
-    });
-    tabla.appendChild(linea);
-  });
-  
-  container.appendChild(tabla);
-}

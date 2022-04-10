@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/AntonioMaestreGarrido/Flow-Rate/issues"
   },
-  "homepage": "https://github.com/AntonioMaestreGarrido/Flow-Rate#readme"
+  "homepage": "https://github.com/AntonioMaestreGarrido/Flow-Rate#readme",
+  "dependencies": {
+    "tabulator-tables": "^5.1.8"
+  }
 }
