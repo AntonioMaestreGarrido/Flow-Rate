@@ -258,6 +258,7 @@ async function getStowersRates() {
     .then((response) => response.json())
     .then((data) => {
       let stowersRates = data;
+      console.log(data)
       creaTabla("stowersRates", data);
       var stowersTable = new Tabulator("#stowersRatesTable", {
         "autoColumns":true
@@ -268,6 +269,41 @@ async function getStowersRates() {
     .catch((error) => alert("No se encuentra el servidor", error));
 }}
 async function getInductersRates() {
+//   [
+//     [
+//         "Associate",
+//         "PPH",
+//         "Hours",
+//         "Total Packages",
+//         "Active",
+//         "Location"
+//     ],
+//     [
+//         "guerrlor",
+//         "935",
+//         "01:01",
+//         "951",
+//         "Yes",
+//         "IN2"
+//     ],
+//     [
+//         "lloaleja",
+//         "1490",
+//         "02:39",
+//         "3950",
+//         "Yes",
+//         "IN1"
+//     ],
+//     [
+//         "michsali",
+//         "61",
+//         "02:51",
+//         "176",
+//         "Yes",
+//         "REPACK1"
+//     ]
+// ]
+  
   const inductContainer=document.getElementById("inductersRates")
   if(inductContainer.classList.contains("visible")){
     inductContainer.classList.remove("visible")
@@ -280,6 +316,7 @@ async function getInductersRates() {
     .then((response) => response.json())
     .then((data) => {
       let inductersRates = data;
+      console.log(data)
       creaTabla("inductersRates", data);
       
        inductersTable= new Tabulator("#inductersRatesTable", {
