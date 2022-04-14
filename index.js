@@ -21,17 +21,17 @@ let database;
 let ATsAct = 0,
   ATsMax = 0,
   ATsMin = 0,
-  ATsOpt = 0,
+  
   ATsCustom;
 let StowRateAct = 0,
   StowRateMin = 0,
   StowRateMax = 0,
-  StowRateOpt = 0,
+  
   StowRateCustom = 0;
 let InductRateAct = 0,
   InductRateMin = 0,
   InductRateMax = 0,
-  InductRateOpt = 0,
+  
   InductRateCustom = 0;
 let MinutesToCheck = 0,
   MinutesToCheckCustom = 0,
@@ -105,7 +105,7 @@ async function calculate(data) {
 
   ATsMax = StowRateAct / 2;
   ATsMin = StowRateAct / 4;
-  ATsOpt = (ATsMax + ATsMin) / 2;
+  
 
   StowRateMax = parseInt(
     (MinutesToCheck * InductRateAct + 60 * ATsAct) / (15 + MinutesToCheck)
@@ -113,7 +113,7 @@ async function calculate(data) {
   StowRateMin = parseInt(
     (MinutesToCheck * InductRateAct + 60 * ATsAct) / (30 + MinutesToCheck)
   );
-  StowRateOpt = parseInt(StowRateMax + StowRateMin) / 2;
+  
 
   InductRateMax = parseInt(
     (60 * ATsMax - 60 * ATsAct) / MinutesToCheck + StowRateAct
@@ -121,7 +121,7 @@ async function calculate(data) {
   InductRateMin = parseInt(
     (60 * ATsMin - 60 * ATsAct) / MinutesToCheck + StowRateAct
   );
-  InductRateOpt = (InductRateMax + InductRateMin) / 2;
+  
 
   filltable();
 
@@ -163,17 +163,17 @@ async function filltable() {
   document.getElementById("ATsAct").innerText = ATsAct;
   document.getElementById("ATsMax").innerText = ATsMax;
   document.getElementById("ATsMin").innerText = ATsMin;
-  document.getElementById("ATsOpt").innerText = ATsOpt;
+  
 
   document.getElementById("StowRateAct").innerText = StowRateAct;
   document.getElementById("StowRateMax").innerText = StowRateMax;
   document.getElementById("StowRateMin").innerText = StowRateMin;
-  document.getElementById("StowRateOpt").innerText = StowRateOpt;
+  
 
   document.getElementById("InductRateAct").innerText = InductRateAct;
   document.getElementById("InductRateMax").innerText = InductRateMax;
   document.getElementById("InductRateMin").innerText = InductRateMin;
-  document.getElementById("InductRateOpt").innerText = InductRateOpt;
+  
 
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
 
@@ -250,19 +250,29 @@ async function getStowersRates() {
   if(StowersContainer.classList.contains("visible")){
     StowersContainer.classList.remove("visible")
     StowersContainer.innerHTML=""
+    StowersContainer.style.display="none"
     
   
   }else{
     StowersContainer.classList.add("visible")
+    
   await fetch("http://localhost:3000/getStowersData")
     .then((response) => response.json())
     .then((data) => {
       let stowersRates = data;
       console.log(data)
-      creaTabla("stowersRates", data);
+      creaTabla("stowersRates", data,[0,1,7]);
       var stowersTable = new Tabulator("#stowersRatesTable", {
         "autoColumns":true
       })
+      let h2=document.createElement("p")
+      h2.classList.add("cabecera")
+      h2.textContent="Stowers"
+      
+      StowersContainer.insertBefore(h2, StowersContainer.firstChild);
+      
+      StowersContainer.style.display="block"
+      
       return stowersRates;
       //https://internal-cdn.amazon.com/badgephotos.amazon.com/?uid=ammaestr
     })
@@ -308,22 +318,30 @@ async function getInductersRates() {
   if(inductContainer.classList.contains("visible")){
     inductContainer.classList.remove("visible")
     inductContainer.innerHTML=""
+    inductContainer.style.display="none"
     
   
   }else{
+    
     inductContainer.classList.add("visible")
   await fetch("http://localhost:3000/getInductersData")
     .then((response) => response.json())
     .then((data) => {
       let inductersRates = data;
       console.log(data)
-      creaTabla("inductersRates", data);
+      creaTabla("inductersRates", data,[0,1,5]);
       
-       inductersTable= new Tabulator("#inductersRatesTable", {
+       var inductersTable= new Tabulator("#inductersRatesTable", {
         "autoColumns":true
       })
-      console.log(inductersTable);
+      let h2=document.createElement("p")
+      h2.classList.add("cabecera")
+      h2.textContent="Induct"
+      
+      inductContainer.insertBefore(h2, inductContainer.firstChild);
       inductContainer.style.display="block"
+      
+      
     })
     .catch(console.log("no se han podido rcuperar los datos"))
    

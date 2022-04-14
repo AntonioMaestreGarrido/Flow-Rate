@@ -25,7 +25,7 @@
   </head>
 
   <body>
-    <h1>Flow Ratio 1.150</h1>
+    <h1>Flow Ratio 1.151</h1>
     <button id="startButton">Off</button>
     <button id="showChart">chart</button>
 
@@ -33,14 +33,16 @@
     <button id="testpos">move</button>
     <button id="botonGetStowersRates">Stowers</button>
     <button id="botonGetInductersRates">Inducters</button>
+    <div id ="app">
+      <div id="asociatesRates">
     <div id="stowersRates">
-      <h1>Active Stowers</h1>
+      
       <!-- <table id="stowerstable" class="table-sort table-arrows"></table> -->
     </div>
     <div id="inductersRates">
-      <h1>Active Inducters</h1>
+      
     </div>
-
+  </div>
     <table id="main">
       <thead>
         <tr>
@@ -48,7 +50,7 @@
           <th>Actual</th>
           <th>Min</th>
           <th>Max</th>
-          <th>Optim</th>
+          
           <th contenteditable="true">Custom</th>
           <th>Min Custom</th>
           <th>Max Custom</th>
@@ -60,7 +62,7 @@
           <td id="ATsAct"></td>
           <td id="ATsMin"></td>
           <td id="ATsMax"></td>
-          <td id="ATsOpt"></td>
+        
           <td id="ATsCustom" contenteditable="true"></td>
 
           <td id="MinCustom"></td>
@@ -71,7 +73,7 @@
           <td id="StowRateAct"></td>
           <td id="StowRateMin"></td>
           <td id="StowRateMax"></td>
-          <td id="StowRateOpt"></td>
+         
           <td id="StowRateCustom" contenteditable="true"></td>
           <td>
             <div class="modificadores">
@@ -91,7 +93,7 @@
           <td id="InductRateAct"></td>
           <td id="InductRateMin"></td>
           <td id="InductRateMax"></td>
-          <td id="InductRateOpt"></td>
+          
           <td id="InductRateCustom" contenteditable="true"></td>
           <td>
             <div class="modificadores">
@@ -111,7 +113,7 @@
           <td id="MinutesToCheck"></td>
           <td></td>
           <td></td>
-          <td></td>
+          
           <td id="MinutesToCheckCustom" contenteditable="true"></td>
           <td>
             <div class="modificadores">
@@ -138,5 +140,5 @@
     <canvas id="test" width="1000" height="300"></canvas>
     <canvas id="pieComply" width="1000" height="300"></canvas>
   </div>
-  <div id="testable"></div>
+  <div id="testable"></div></div>
 </html>
