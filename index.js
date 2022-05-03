@@ -135,6 +135,7 @@ async function calculate(data) {
       ATsMin,
       hora: new Date().getHours(),
       minuto: new Date().getMinutes(),
+      fecha: new Date().getDate(),
       epoch: Date.now(),
       passed: checkComply(ATsAct, StowRateAct),
     };
@@ -279,40 +280,7 @@ async function getStowersRates() {
     .catch((error) => alert("No se encuentra el servidor", error));
 }}
 async function getInductersRates() {
-//   [
-//     [
-//         "Associate",
-//         "PPH",
-//         "Hours",
-//         "Total Packages",
-//         "Active",
-//         "Location"
-//     ],
-//     [
-//         "guerrlor",
-//         "935",
-//         "01:01",
-//         "951",
-//         "Yes",
-//         "IN2"
-//     ],
-//     [
-//         "lloaleja",
-//         "1490",
-//         "02:39",
-//         "3950",
-//         "Yes",
-//         "IN1"
-//     ],
-//     [
-//         "michsali",
-//         "61",
-//         "02:51",
-//         "176",
-//         "Yes",
-//         "REPACK1"
-//     ]
-// ]
+  
   
   const inductContainer=document.getElementById("inductersRates")
   if(inductContainer.classList.contains("visible")){
@@ -437,4 +405,17 @@ function handleStartButton() {
     clearInterval(handleStartButton.intervalID);
   }
 }
-// first parameter Table ID, second array
+// first parameter Table ID, second arrayasync 
+async function testJSON(){
+  //https://logistics.amazon.co.uk/station/flow/induct/data?stationCode=DQA2&cycleId=CYCLE_1
+  await fetch("https://logistics.amazon.co.uk/station/flow/induct/data?stationCode=DQA2&cycleId=CYCLE_1")
+  .then((response) => response.json())
+  .then((data) => {
+    let datos = data;
+    //console.log(datos);
+    console.log("los datos son ",datos)
+  })
+  .catch((error) => alert("No se encuentra el servidor", error));
+}
+
+

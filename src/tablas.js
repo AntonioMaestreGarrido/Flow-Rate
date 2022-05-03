@@ -56,3 +56,4 @@ export function creaTabla(containerName, constdatos, campos) {
 //   container.appendChild(tabla);
 
 // }
+
