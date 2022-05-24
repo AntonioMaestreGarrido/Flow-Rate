@@ -2,6 +2,12 @@
     
     font-weight: bolder;
     box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+
+    --primColor: rgb(10, 80, 138);
+    --secondColor: rgb(67, 152, 221);
+    --thirdColor: rgb(121, 179, 226);
+    background-color: aqua;
 
 }
 
@@ -9,7 +15,7 @@
    
 
     border: black solid 7px;
-    background-color: orange;
+    background-color: var(--primColor);
     height: 50px;
     
     font-size: 22px;
@@ -23,7 +29,7 @@
 }
 
 #main tbody td ,#main tbody th {
-    background-color: orchid;
+    background-color: var(--secondColor);
     min-width: 90px;
    
 
@@ -37,7 +43,7 @@
 
 }
 .modificadores {
-    background-color: red;
+    background-color: yellow;
     height: 40px;
     padding: 1;
     display: flex;
