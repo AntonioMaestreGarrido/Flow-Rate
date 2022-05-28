@@ -1,13 +1,20 @@
-
+import {  getAPIdata, getAPIgetdata } from "./src/api.js";
 import { drawChart, testChart, addtest, updateChart } from "./src/grafica.js";
 import { creaTabla } from "./src/tablas.js";
-
-
-
-
-
-
-
+function isScreenLockSupported() {
+  return ('wakeLock' in navigator);
+ }
+async function getScreenLock() {
+  if(isScreenLockSupported()){
+    let screenLock;
+    try {
+       screenLock = await navigator.wakeLock.request('screen');
+    } catch(err) {
+       console.log(err.name, err.message);
+    }
+    return screenLock;
+  }
+}
 const windowData = {
   window: 0,
   ATs: 0,
@@ -21,17 +28,14 @@ let database;
 let ATsAct = 0,
   ATsMax = 0,
   ATsMin = 0,
-  
   ATsCustom;
 let StowRateAct = 0,
   StowRateMin = 0,
   StowRateMax = 0,
-  
   StowRateCustom = 0;
 let InductRateAct = 0,
   InductRateMin = 0,
   InductRateMax = 0,
-  
   InductRateCustom = 0;
 let MinutesToCheck = 0,
   MinutesToCheckCustom = 0,
@@ -73,10 +77,10 @@ async function apitest() {
     .then((response) => response.json())
     .then((data) => {
       let datos = data;
-      //console.log(datos);
+      console.log(datos);
       calculate(datos);
     })
-    .catch((error) => alert("No se encuentra el servidor", error));
+    .catch((error) => console.log("No se encuentra el servidor", error));
 }
 async function getDataBase() {
   await fetch("http://localhost:3000/getData")
@@ -84,7 +88,7 @@ async function getDataBase() {
     .then((data) => {
       database = data;
     })
-    .catch((error) => alert("No se encuentra el servidor", error));
+    .catch((error) => console.log("No se encuentra el servidor", error));
 }
 async function calculate(data) {
   calculate.minute;
@@ -105,7 +109,6 @@ async function calculate(data) {
 
   ATsMax = StowRateAct / 2;
   ATsMin = StowRateAct / 4;
-  
 
   StowRateMax = parseInt(
     (MinutesToCheck * InductRateAct + 60 * ATsAct) / (15 + MinutesToCheck)
@@ -113,7 +116,6 @@ async function calculate(data) {
   StowRateMin = parseInt(
     (MinutesToCheck * InductRateAct + 60 * ATsAct) / (30 + MinutesToCheck)
   );
-  
 
   InductRateMax = parseInt(
     (60 * ATsMax - 60 * ATsAct) / MinutesToCheck + StowRateAct
@@ -121,7 +123,6 @@ async function calculate(data) {
   InductRateMin = parseInt(
     (60 * ATsMin - 60 * ATsAct) / MinutesToCheck + StowRateAct
   );
-  
 
   filltable();
 
@@ -164,17 +165,14 @@ async function filltable() {
   document.getElementById("ATsAct").innerText = ATsAct;
   document.getElementById("ATsMax").innerText = ATsMax;
   document.getElementById("ATsMin").innerText = ATsMin;
-  
 
   document.getElementById("StowRateAct").innerText = StowRateAct;
   document.getElementById("StowRateMax").innerText = StowRateMax;
   document.getElementById("StowRateMin").innerText = StowRateMin;
-  
 
   document.getElementById("InductRateAct").innerText = InductRateAct;
   document.getElementById("InductRateMax").innerText = InductRateMax;
   document.getElementById("InductRateMin").innerText = InductRateMin;
-  
 
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
 
@@ -210,7 +208,10 @@ function giveStyle() {
 }
 
 function setupEventsListener() {
-  document.getElementById("addtest").addEventListener("click", () => addtest());
+  document.getElementById("test").addEventListener("click",async () => {
+    const t= await getAPIgetdata("/wipData")
+    console.log(t)
+  });
   document
     .getElementById("StowRateCustom")
     .addEventListener("focusout", () => fillCustom());
@@ -247,73 +248,49 @@ function setupEventsListener() {
     });
 }
 async function getStowersRates() {
-  const StowersContainer=document.getElementById("stowersRates")
-  if(StowersContainer.classList.contains("visible")){
-    StowersContainer.classList.remove("visible")
-    StowersContainer.innerHTML=""
-    StowersContainer.style.display="none"
-    
-  
-  }else{
-    StowersContainer.classList.add("visible")
-    
-  await fetch("http://localhost:3000/getStowersData")
-    .then((response) => response.json())
-    .then((data) => {
-      let stowersRates = data;
-      console.log(data)
-      creaTabla("stowersRates", data,[0,1,7]);
-      var stowersTable = new Tabulator("#stowersRatesTable", {
-        "autoColumns":true
-      })
-      let h2=document.createElement("p")
-      h2.classList.add("cabecera")
-      h2.textContent="Stowers"
-      
-      StowersContainer.insertBefore(h2, StowersContainer.firstChild);
-      
-      StowersContainer.style.display="block"
-      
-      return stowersRates;
-      //https://internal-cdn.amazon.com/badgephotos.amazon.com/?uid=ammaestr
-    })
-    .catch((error) => alert("No se encuentra el servidor", error));
-}}
-async function getInductersRates() {
-  
-  
-  const inductContainer=document.getElementById("inductersRates")
-  if(inductContainer.classList.contains("visible")){
-    inductContainer.classList.remove("visible")
-    inductContainer.innerHTML=""
-    inductContainer.style.display="none"
-    
-  
-  }else{
-    
-    inductContainer.classList.add("visible")
-  await fetch("http://localhost:3000/getInductersData")
-    .then((response) => response.json())
-    .then((data) => {
-      let inductersRates = data;
-      console.log(data)
-      creaTabla("inductersRates", data,[0,1,5]);
-      
-       var inductersTable= new Tabulator("#inductersRatesTable", {
-        "autoColumns":true
-      })
-      let h2=document.createElement("p")
-      h2.classList.add("cabecera")
-      h2.textContent="Induct"
-      
-      inductContainer.insertBefore(h2, inductContainer.firstChild);
-      inductContainer.style.display="block"
-      
-      
-    })
-    .catch(console.log("no se han podido rcuperar los datos"))
+  const StowersContainer = document.getElementById("stowersRates");
+  if (StowersContainer.classList.contains("visible")) {
+    StowersContainer.classList.remove("visible");
+    StowersContainer.innerHTML = "";
+    StowersContainer.style.display = "none";
+  } else {
+    StowersContainer.classList.add("visible");
+    let stowList = await getAPIdata('{"resourcePath":"svs/associates/data","httpMethod":"post","processName":"stow","requestBody":{"filters":{"NODE":["DQA2"],"CYCLE":["CYCLE_1"]},"fieldsRequired":["NAME","STATUS","PERFORMANCE","LOCATION"]}}')
+    console.log(stowList)
+    creaTabla("stowerRates",stowList.associates,[])
+    StowersContainer.style.display = "block";
+  }
+        
    
-}}
+   
+}
+async function getInductersRates() {
+  const inductContainer = document.getElementById("inductersRates");
+  if (inductContainer.classList.contains("visible")) {
+    inductContainer.classList.remove("visible");
+    inductContainer.innerHTML = "";
+    inductContainer.style.display = "none";
+  } else {
+    inductContainer.classList.add("visible");
+    let inductList = await getAPIdata(
+      '{"resourcePath":"/ivs/getAssociateMetric","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQA2"}}'
+    );
+    console.log(inductList.associateMetricList);
+    let activeInducters = inductList.associateMetricList.filter(
+      (ele) => ele.active === true
+    );
+    console.log(activeInducters);
+
+    creaTabla("inductersRates", activeInducters, [
+      "PPH",
+      "alias",
+      "hourSpent",
+      "location",
+      "packageHandled",
+    ]);
+    inductContainer.style.display = "block";
+  }
+}
 
 function mueve() {
   mueve.flag;
@@ -395,27 +372,16 @@ function copyData() {
 function handleStartButton() {
   if (startButton.textContent === "Off") {
     startButton.textContent = "Running";
+    getScreenLock()
 
     drawChart();
     apitest();
 
-    handleStartButton.intervalID = setInterval(apitest, 30000);
+    handleStartButton.intervalID = setInterval(apitest, 5000);
   } else {
     startButton.textContent = "Off";
     clearInterval(handleStartButton.intervalID);
   }
 }
-// first parameter Table ID, second arrayasync 
-async function testJSON(){
-  //https://logistics.amazon.co.uk/station/flow/induct/data?stationCode=DQA2&cycleId=CYCLE_1
-  await fetch("https://logistics.amazon.co.uk/station/flow/induct/data?stationCode=DQA2&cycleId=CYCLE_1")
-  .then((response) => response.json())
-  .then((data) => {
-    let datos = data;
-    //console.log(datos);
-    console.log("los datos son ",datos)
-  })
-  .catch((error) => alert("No se encuentra el servidor", error));
-}
-
+// first parameter Table ID, second arrayasync
 

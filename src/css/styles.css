@@ -112,19 +112,7 @@ button:hover {
 
 }
 
-#test {
-    display: none;
-    border: solid black 3px;
-    background-color: aqua;
-    width: 102vw;
-    margin: 0px;
-    max-height: 40vh;
-    position: relative;
-    left: 0px;
-    transition: left 2s;
 
-
-}
 
 #pieComply {
     display: none;
@@ -217,5 +205,8 @@ button:hover {
     color: #ccc;
     
     
+  }
+  .visible{
+      display: block;
   }
   

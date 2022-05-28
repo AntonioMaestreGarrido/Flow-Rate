@@ -2,58 +2,55 @@
 //constdatos array con los datos
 //campos especifica que columnas se van a renderizar
 export function creaTabla(containerName, constdatos, campos) {
-  
+  purgaObj(constdatos, campos);
+  let datos = purgaObj(constdatos, campos);
   const container = document.getElementById(containerName);
 
-  const filas = campos.length;
-  const columnas = Object.keys(constdatos).length;
+  const filas = datos.length;
+  const columnas = datos[0].length;
 
   let tabla = document.createElement("table");
   tabla.id = `${containerName}Table`;
 
   let cabecera = document.createElement("tr");
-  for (let i = 0; i < campos.length; i++) {
+  for (const key in datos[0]) {
     let celda = document.createElement("th");
-    let index = campos[i];
-    let contenido = constdatos[0][index];
-    celda.innerText = contenido;
+    celda.innerText = key;
     cabecera.appendChild(celda);
-    
   }
+
   tabla.appendChild(cabecera);
   // console.log(constdatos[0].length)=8
   // console.log(constdatos.length)=3
 
   const tbody = document.createElement("tbody");
-  for (let i = 1; i < constdatos.length; i++) {
+  datos.forEach((ele) => {
     let linea = document.createElement("tr");
-    linea.addEventListener("click",(e)=>alert(e.target))
-    for (let j = 0; j < campos.length; j++) {
+    for (const key in ele) {
       let celda = document.createElement("td");
-      let index = campos[j];
-      let contenido = constdatos[i][index];
-      
-      celda.innerText = contenido;
+      celda.innerText = ele[key];
       linea.appendChild(celda);
     }
     tbody.appendChild(linea);
-  }
+  });
+
   tabla.appendChild(tbody);
   container.appendChild(tabla);
 }
-//   constdatos.filter((p,i)=>i>0).forEach((ele,index) => {
-//     if(campos.includes(index)){
-//     let linea = document.createElement("tr");
-//     tabla.appendChild(linea);
-//     ele.forEach((cel) => {
-//       let celda = document.createElement("td");
-//       celda.innerText = cel;
-//       linea.appendChild(celda);
-//     });
-//     tbody.appendChild(linea);}
-//   });
-//   tabla.appendChild(tbody)
-//   container.appendChild(tabla);
-
-// }
-
+function purgaObj(arrayObj, lista = []) {
+  arrayObj.forEach((ele) => {
+    ele.alias=ele.alias.replace("@amazon.com","")
+    for (const key in ele) {
+      console.log(key);
+      
+      if (lista.includes(key)) {
+        console.log(key);
+        console.log(ele[key]);
+      } else {
+        delete ele[key];
+      }
+    }
+  });
+  console.log(arrayObj);
+  return arrayObj;
+}
