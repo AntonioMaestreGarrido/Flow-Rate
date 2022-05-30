@@ -197,14 +197,38 @@ button:hover {
     justify-content: center;
     
   }
-  .window{
-      min-width: 90px;
-      min-height: 80px;
+  #windows15Data{
+      
+      font-size: 16px;
+      display: flex;
+      width: 100vw;
+      /* min-height: 10em; */
       border: solid black 2px;
       background-color: aquamarine;
-    color: #ccc;
+    color: black;
+    overflow-y: scroll;}
+    .passed{
+        background-color: rgba(0, 128, 0, 0.527);
+
+    }
+    .failed{
+        background-color: rgba(255, 0, 0, 0.575) ;
+    }
+   
+  
+
     
     
+  
+  .divContainer{
+      padding: 4px;
+    border: solid black 2px;
+    margin: auto;
+      
+  }
+  .divContainer:first-child{
+      margin: auto;
+
   }
   .visible{
       display: block;

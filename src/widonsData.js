@@ -1,4 +1,67 @@
-export const  sccwindowData={
+
+
+
+export function renderWindowsData(){
+//const data=sccwindowData
+const sccData=data.flowPVAData[15]
+console.log(sccData)
+const induction=data.flowPVAData[15][0]
+const sortation=data.flowPVAData[15][2]
+console.log(sortation)
+let totalAts=0
+let windowContainer=document.querySelector("#windows15Data")
+induction.dataPointList.forEach((ele,index)=>{
+    let sort=sortation.dataPointList[index].metricValue
+     totalAts =totalAts+(ele.metricValue-sort)
+     let time =new Date(ele.timeStampVal)
+     let bufferInMinutes
+
+     if(sort===0){ bufferInMinutes=0}
+     else(
+      bufferInMinutes=totalAts/sort*15)
+
+    
+    
+    //{type:"",class:"",content:""}
+    let title=` ${time.getHours()}:${String(time.getMinutes()).padEnd(2,"0")}-${time.getHours()}:${String(time.getMinutes()+15.1).padEnd(2,"0")} `
+    
+    let partialWindow=createNewEle({type:"div",class:"divContainer",content:title})
+    if(bufferInMinutes>14.9 && bufferInMinutes<30.1){partialWindow.classList.add("passed")}else{partialWindow.classList.add("failed")}
+    let sortData=createNewEle({type:"div",class:"windowData",content:`Induction=${ele.metricValue}`})
+    let inductData=createNewEle({type:"div",class:"windowData",content:`Sortattion=${sort}`})
+    let AtsData=createNewEle({type:"div",class:"windowData",content:`AtStation=${totalAts}`})
+    let buffer=createNewEle({type:"div",class:"windowData",content:`Buffer=${bufferInMinutes.toFixed(1)}´`})
+    partialWindow.appendChild(inductData)
+    partialWindow.appendChild(sortData)
+    partialWindow.appendChild(AtsData)
+    partialWindow.appendChild(buffer)
+    windowContainer.appendChild(partialWindow)
+    let a= document.createElement("w")
+   
+    
+    
+})
+
+
+
+function createNewEle(ele){
+    const newEle= document.createElement(ele.type)
+    newEle.classList.add(ele.class)
+    newEle.textContent =ele.content
+    
+    return newEle
+}
+}
+
+
+
+
+
+
+
+
+
+ const  data={
 	"flowPVAData": {
 		"15": [
 			{
@@ -960,575 +1023,3 @@ export const  sccwindowData={
 		]
 	}
 }
-// {
-// 	"flowPVAData": {
-// 		"15": [
-// 			{
-// 				"dataPointList": [
-// 					{
-// 						"metricValue": 2408,
-// 						"timeStampVal": "2022-05-28T01:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T01:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T01:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T01:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T02:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T02:15"
-// 					},
-// 					{
-// 						"metricValue": 2152,
-// 						"timeStampVal": "2022-05-28T02:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T02:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:00"
-// 					},
-// 					{
-// 						"metricValue": 2321,
-// 						"timeStampVal": "2022-05-28T03:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T05:00"
-// 					},
-// 					{
-// 						"metricValue": 307,
-// 						"timeStampVal": "2022-05-28T05:15"
-// 					},
-// 					{
-// 						"metricValue": 1004,
-// 						"timeStampVal": "2022-05-28T05:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T05:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T07:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T07:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T07:30"
-// 					},
-// 					{
-// 						"metricValue": 821,
-// 						"timeStampVal": "2022-05-28T07:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:30"
-// 					}
-// 				],
-// 				"metricName": "INBOUND_PACKAGES",
-// 				"taskCountType": "Actual"
-// 			},
-// 			{
-// 				"dataPointList": [
-// 					{
-// 						"metricValue": 3519,
-// 						"timeStampVal": "2022-05-28T01:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T01:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T01:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T01:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T02:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T02:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T02:30"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T02:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:45"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T04:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T05:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T05:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T05:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T05:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:30"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T06:45"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T07:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T07:15"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T07:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T07:45"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:15"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:30"
-// 					}
-// 				],
-// 				"metricName": "INBOUND_PACKAGES",
-// 				"taskCountType": "Planned"
-// 			}
-// 		],
-// 		"30": [
-// 			{
-// 				"dataPointList": [
-// 					{
-// 						"metricValue": 2408,
-// 						"timeStampVal": "2022-05-28T01:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T01:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T02:00"
-// 					},
-// 					{
-// 						"metricValue": 2152,
-// 						"timeStampVal": "2022-05-28T02:30"
-// 					},
-// 					{
-// 						"metricValue": 2321,
-// 						"timeStampVal": "2022-05-28T03:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:30"
-// 					},
-// 					{
-// 						"metricValue": 307,
-// 						"timeStampVal": "2022-05-28T05:00"
-// 					},
-// 					{
-// 						"metricValue": 1004,
-// 						"timeStampVal": "2022-05-28T05:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T07:00"
-// 					},
-// 					{
-// 						"metricValue": 821,
-// 						"timeStampVal": "2022-05-28T07:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:30"
-// 					}
-// 				],
-// 				"metricName": "INBOUND_PACKAGES",
-// 				"taskCountType": "Actual"
-// 			},
-// 			{
-// 				"dataPointList": [
-// 					{
-// 						"metricValue": 3519,
-// 						"timeStampVal": "2022-05-28T01:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T01:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T02:00"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T02:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:30"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T04:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T05:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T05:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:00"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T06:30"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T07:00"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T07:30"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:30"
-// 					}
-// 				],
-// 				"metricName": "INBOUND_PACKAGES",
-// 				"taskCountType": "Planned"
-// 			}
-// 		],
-// 		"60": [
-// 			{
-// 				"dataPointList": [
-// 					{
-// 						"metricValue": 2408,
-// 						"timeStampVal": "2022-05-28T01:00"
-// 					},
-// 					{
-// 						"metricValue": 2152,
-// 						"timeStampVal": "2022-05-28T02:00"
-// 					},
-// 					{
-// 						"metricValue": 2321,
-// 						"timeStampVal": "2022-05-28T03:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T04:00"
-// 					},
-// 					{
-// 						"metricValue": 1311,
-// 						"timeStampVal": "2022-05-28T05:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T06:00"
-// 					},
-// 					{
-// 						"metricValue": 821,
-// 						"timeStampVal": "2022-05-28T07:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:00"
-// 					}
-// 				],
-// 				"metricName": "INBOUND_PACKAGES",
-// 				"taskCountType": "Actual"
-// 			},
-// 			{
-// 				"dataPointList": [
-// 					{
-// 						"metricValue": 3519,
-// 						"timeStampVal": "2022-05-28T01:00"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T02:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T03:00"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T04:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T05:00"
-// 					},
-// 					{
-// 						"metricValue": 1111,
-// 						"timeStampVal": "2022-05-28T06:00"
-// 					},
-// 					{
-// 						"metricValue": 2222,
-// 						"timeStampVal": "2022-05-28T07:00"
-// 					},
-// 					{
-// 						"metricValue": 0,
-// 						"timeStampVal": "2022-05-28T08:00"
-// 					}
-// 				],
-// 				"metricName": "INBOUND_PACKAGES",
-// 				"taskCountType": "Planned"
-// 			}
-// 		]
-// 	}
-// }
-// {
-// 	"metricName": "stow-wip",
-// 	"taskCountType": "ACTUAL",
-// 	"dataPointList": [
-// 		{
-// 			"timeStampVal": "2022-05-28T01:15",
-// 			"metricValue": 18
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T01:30",
-// 			"metricValue": 36
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T01:45",
-// 			"metricValue": 26
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T02:00",
-// 			"metricValue": 24
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T02:15",
-// 			"metricValue": 26
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T02:30",
-// 			"metricValue": 21
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T02:45",
-// 			"metricValue": 13
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T03:00",
-// 			"metricValue": 23
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T03:15",
-// 			"metricValue": 25
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T03:30",
-// 			"metricValue": 21
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T03:45",
-// 			"metricValue": 17
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T04:00",
-// 			"metricValue": 27
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T04:15",
-// 			"metricValue": 18
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T04:30",
-// 			"metricValue": 23
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T04:45",
-// 			"metricValue": 30
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T05:00",
-// 			"metricValue": 28
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T05:15",
-// 			"metricValue": 23
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T05:30",
-// 			"metricValue": 25
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T05:45",
-// 			"metricValue": 24
-// 		},
-// 		{
-// 			"timeStampVal": "2022-05-28T06:00",
-// 			"metricValue": 21
-// 		}
-// 	]
-// }

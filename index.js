@@ -1,6 +1,8 @@
 import {  getAPIdata, getAPIgetdata } from "./src/api.js";
 import { drawChart, testChart, addtest, updateChart } from "./src/grafica.js";
 import { creaTabla } from "./src/tablas.js";
+import { renderWindowsData } from "./src/widonsData.js";
+
 function isScreenLockSupported() {
   return ('wakeLock' in navigator);
  }
@@ -15,6 +17,7 @@ async function getScreenLock() {
     return screenLock;
   }
 }
+renderWindowsData()
 const windowData = {
   window: 0,
   ATs: 0,
@@ -369,6 +372,27 @@ function copyData() {
   document.getElementById("MinutesToCheckCustom").textContent = MinutesToCheck;
   fillCustom();
 }
+
+
+let ahora = new Date()
+let nextw=2-ahora.getMinutes()%2
+console.log( nextw)
+let nextdate= new Date(ahora)
+nextdate.setMinutes(ahora.getMinutes()+nextw)
+nextdate.setSeconds(15)
+let nextCall=nextdate.getTime()-ahora.getTime()
+console.log(nextCall/1000/60)
+
+console.log(nextdate,nextdate.getTime())
+console.log(ahora.setMinutes(ahora.getMinutes()+nextw))
+setTimeout(testcall,nextCall)
+function testcall(){
+  //alert("holaaaaaa")
+  let n=new Date
+  console.log("llamada a las "+ n)
+  setTimeout(testcall,2*60*1000)
+}
+let next 
 function handleStartButton() {
   if (startButton.textContent === "Off") {
     startButton.textContent = "Running";
