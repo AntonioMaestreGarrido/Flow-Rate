@@ -2,6 +2,7 @@
 //constdatos array con los datos
 //campos especifica que columnas se van a renderizar
 export function creaTabla(containerName, constdatos, campos) {
+  if (constdatos.length<=0){return}
   purgaObj(constdatos, campos);
   let datos = purgaObj(constdatos, campos);
   const container = document.getElementById(containerName);

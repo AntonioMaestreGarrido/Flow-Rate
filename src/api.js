@@ -1,4 +1,5 @@
 export async function getAPIdata(peticion){
+   
 
     let scc=await fetch("http://localhost:3000/testpost",{
         method: 'POST',
@@ -6,7 +7,8 @@ export async function getAPIdata(peticion){
             'Content-Type': 'application/json',
             "Accept": "application/json, text/plain, */*",
           },
-        body: JSON.stringify({"body":peticion})
+        body: JSON.stringify(peticion)
+        //body:'{"resourcePath":"/ivs/getpvadata","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQA2","cycleIds":["CYCLE_1"],"processPath":"induct"}}'
     })
                                 
                                 
@@ -43,3 +45,5 @@ export async function getAPIgetdata(link){
   }
     
     
+//receive data
+//{"resourcePath":"/ivs/getNodeLineHaulList","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQA2","groupBy":""}}

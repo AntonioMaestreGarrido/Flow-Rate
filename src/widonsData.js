@@ -1,10 +1,20 @@
+import { getAPIdata } from "./api.js"
 
 
 
-export function renderWindowsData(){
+export async function renderWindowsData(){
+	
 //const data=sccwindowData
+console.log("wdonswdata llamado a las "+Date())
+const petBody={'resourcePath':'/ivs/getpvadata','httpMethod':'post','processName':'induct','requestBody':{'nodeId':'DQA2','cycleIds':['CYCLE_1'],'processPath':'induct'}}
+
+const data= await getAPIdata(petBody)
+console.log(data)
+
+
 const sccData=data.flowPVAData[15]
 console.log(sccData)
+
 const induction=data.flowPVAData[15][0]
 const sortation=data.flowPVAData[15][2]
 console.log(sortation)
@@ -23,18 +33,22 @@ induction.dataPointList.forEach((ele,index)=>{
     
     
     //{type:"",class:"",content:""}
-    let title=` ${time.getHours()}:${String(time.getMinutes()).padEnd(2,"0")}-${time.getHours()}:${String(time.getMinutes()+15.1).padEnd(2,"0")} `
-    
+    let title=` ${time.getHours()}:${String(time.getMinutes()).padEnd(2,"0")}-${time.getHours()}:${String(time.getMinutes()+15).padEnd(2,"0")} `
+    let 	flowRatexCent=ele.metricValue/sort*100
+
+	if (isNaN(flowRatexCent)){flowRatexCent=0}
     let partialWindow=createNewEle({type:"div",class:"divContainer",content:title})
     if(bufferInMinutes>14.9 && bufferInMinutes<30.1){partialWindow.classList.add("passed")}else{partialWindow.classList.add("failed")}
     let sortData=createNewEle({type:"div",class:"windowData",content:`Induction=${ele.metricValue}`})
     let inductData=createNewEle({type:"div",class:"windowData",content:`Sortattion=${sort}`})
     let AtsData=createNewEle({type:"div",class:"windowData",content:`AtStation=${totalAts}`})
-    let buffer=createNewEle({type:"div",class:"windowData",content:`Buffer=${bufferInMinutes.toFixed(1)}´`})
+    let buffer=createNewEle({type:"div",class:"windowData",content:`Buffer=${bufferInMinutes.toFixed(1)}m`})
+	let flowRate=createNewEle({type:"div",class:"windowData",content:`FlowRate=${flowRatexCent}%`})
     partialWindow.appendChild(inductData)
     partialWindow.appendChild(sortData)
     partialWindow.appendChild(AtsData)
     partialWindow.appendChild(buffer)
+	partialWindow.appendChild(flowRate)
     windowContainer.appendChild(partialWindow)
     let a= document.createElement("w")
    
@@ -61,7 +75,7 @@ function createNewEle(ele){
 
 
 
- const  data={
+ const  dataa={
 	"flowPVAData": {
 		"15": [
 			{

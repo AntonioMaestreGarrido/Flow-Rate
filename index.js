@@ -6,7 +6,10 @@ import { renderWindowsData } from "./src/widonsData.js";
 function isScreenLockSupported() {
   return ('wakeLock' in navigator);
  }
+ 
 async function getScreenLock() {
+  const camiones=await getAPIdata({"resourcePath":"/ivs/getNodeLineHaulList","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQV2","groupBy":""}})
+  console.log(camiones)
   if(isScreenLockSupported()){
     let screenLock;
     try {
@@ -17,7 +20,7 @@ async function getScreenLock() {
     return screenLock;
   }
 }
-renderWindowsData()
+
 const windowData = {
   window: 0,
   ATs: 0,
@@ -129,32 +132,32 @@ async function calculate(data) {
 
   filltable();
 
-  if (calculate.minute != date.getMinutes()) {
-    calculate.minute = date.getMinutes();
-    const dataForActu = {
-      InductRateAct,
-      StowRateAct,
-      ATsAct,
-      ATsMax,
-      ATsMin,
-      hora: new Date().getHours(),
-      minuto: new Date().getMinutes(),
-      fecha: new Date().getDate(),
-      epoch: Date.now(),
-      passed: checkComply(ATsAct, StowRateAct),
-    };
-    console.log("se envia", dataForActu);
-    updateChart(dataForActu);
-    let dataToSend = JSON.stringify(dataForActu);
-    console.log("datato send", dataToSend);
-    await fetch("http://localhost:3000/send", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataForActu),
-    });
-  }
+  // if (calculate.minute != date.getMinutes()) {
+  //   calculate.minute = date.getMinutes();
+  //   const dataForActu = {
+  //     InductRateAct,
+  //     StowRateAct,
+  //     ATsAct,
+  //     ATsMax,
+  //     ATsMin,
+  //     hora: new Date().getHours(),
+  //     minuto: new Date().getMinutes(),
+  //     fecha: new Date().getDate(),
+  //     epoch: Date.now(),
+  //     passed: checkComply(ATsAct, StowRateAct),
+  //   };
+  //   console.log("se envia", dataForActu);
+  //   //updateChart(dataForActu);
+  //   let dataToSend = JSON.stringify(dataForActu);
+  //   console.log("datato send", dataToSend);
+  //   await fetch("http://localhost:3000/send", {
+  //     method: "post",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(dataForActu),
+  //   });
+  // }
 }
 // comprueba si el valor de ats esta comply con el ritmo de stow
 function checkComply(Ats, stow) {
@@ -258,7 +261,7 @@ async function getStowersRates() {
     StowersContainer.style.display = "none";
   } else {
     StowersContainer.classList.add("visible");
-    let stowList = await getAPIdata('{"resourcePath":"svs/associates/data","httpMethod":"post","processName":"stow","requestBody":{"filters":{"NODE":["DQA2"],"CYCLE":["CYCLE_1"]},"fieldsRequired":["NAME","STATUS","PERFORMANCE","LOCATION"]}}')
+    let stowList = await getAPIdata({"resourcePath":"svs/associates/data","httpMethod":"post","processName":"stow","requestBody":{"filters":{"NODE":["DQA2"],"CYCLE":["CYCLE_1"]},"fieldsRequired":["NAME","STATUS","PERFORMANCE","LOCATION"]}})
     console.log(stowList)
     creaTabla("stowerRates",stowList.associates,[])
     StowersContainer.style.display = "block";
@@ -276,7 +279,7 @@ async function getInductersRates() {
   } else {
     inductContainer.classList.add("visible");
     let inductList = await getAPIdata(
-      '{"resourcePath":"/ivs/getAssociateMetric","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQA2"}}'
+      {"resourcePath":"/ivs/getAssociateMetric","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQA2"}}
     );
     console.log(inductList.associateMetricList);
     let activeInducters = inductList.associateMetricList.filter(
@@ -374,18 +377,6 @@ function copyData() {
 }
 
 
-let ahora = new Date()
-let nextw=2-ahora.getMinutes()%2
-console.log( nextw)
-let nextdate= new Date(ahora)
-nextdate.setMinutes(ahora.getMinutes()+nextw)
-nextdate.setSeconds(15)
-let nextCall=nextdate.getTime()-ahora.getTime()
-console.log(nextCall/1000/60)
-
-console.log(nextdate,nextdate.getTime())
-console.log(ahora.setMinutes(ahora.getMinutes()+nextw))
-setTimeout(testcall,nextCall)
 function testcall(){
   //alert("holaaaaaa")
   let n=new Date
@@ -397,15 +388,38 @@ function handleStartButton() {
   if (startButton.textContent === "Off") {
     startButton.textContent = "Running";
     getScreenLock()
-
-    drawChart();
+   // drawChart();
     apitest();
-
+    calculateNextWindowCall()
+    
     handleStartButton.intervalID = setInterval(apitest, 5000);
   } else {
     startButton.textContent = "Off";
     clearInterval(handleStartButton.intervalID);
   }
 }
+function calculateNextWindowCall(){
+  renderWindowsData()
+  const interval=15
+let ahora = new Date()
+let nextw=interval-ahora.getMinutes()%interval
+console.log( nextw)
+let nextdate= new Date(ahora)
+nextdate.setMinutes(ahora.getMinutes()+nextw)
+nextdate.setSeconds(10)
+let nextCall=nextdate.getTime()-ahora.getTime()
+console.log(nextCall/1000/60)
+
+console.log(nextdate,nextdate.getTime())
+console.log(ahora.setMinutes(ahora.getMinutes()+nextw))
+setTimeout(windowsInterval,nextCall)
+
+}
+function windowsInterval(){
+  renderWindowsData()
+  setTimeout(windowsInterval,(15*60*1000)-1)
+
+}
+
 // first parameter Table ID, second arrayasync
 
