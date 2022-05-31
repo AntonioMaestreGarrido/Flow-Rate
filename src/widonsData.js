@@ -3,78 +3,81 @@ import { getAPIdata } from "./api.js"
 
 
 
-export async function renderWindowsData(){
+export async function renderWindowsData() {
+
+	//const data=sccwindowData
+	console.log("wdonswdata llamado a las " + Date())
+	const petBody = { 'resourcePath': '/ivs/getpvadata', 'httpMethod': 'post', 'processName': 'induct', 'requestBody': { 'nodeId': CONFIG.site, 'cycleIds': ['CYCLE_1'], 'processPath': 'induct' } }
+
+	const data= await getAPIdata(petBody)
 	
-//const data=sccwindowData
-console.log("wdonswdata llamado a las "+Date())
-const petBody={'resourcePath':'/ivs/getpvadata','httpMethod':'post','processName':'induct','requestBody':{'nodeId':CONFIG.site,'cycleIds':['CYCLE_1'],'processPath':'induct'}}
-
-const data= await getAPIdata(petBody)
-console.log(data)
+	console.log(data)
 
 
-const sccData=data.flowPVAData[15]
-console.log(sccData)
+	const sccData = data.flowPVAData[15]
+	console.log(sccData)
 
-const induction=data.flowPVAData[15][0]
-const sortation=data.flowPVAData[15][2]
-console.log(sortation)
-let totalAts=0
-let windowContainer=document.querySelector("#windows15Data")
-windowContainer.innerHTML=""
-induction.dataPointList.forEach((ele,index)=>{
-    let sort=sortation.dataPointList[index].metricValue
-     totalAts =totalAts+(ele.metricValue-sort)
-     let time =new Date(ele.timeStampVal)
-     let bufferInMinutes
+	const induction = data.flowPVAData[15][0]
+	const sortation = data.flowPVAData[15][2]
+	console.log(sortation)
+	let totalAts = 0
+	let windowContainer = document.querySelector("#windows15Data")
+	windowContainer.innerHTML = ""
+	induction.dataPointList.forEach((ele, index) => {
+		let sort = sortation.dataPointList[index].metricValue
+		totalAts = totalAts + (ele.metricValue - sort)
+		let time = new Date(ele.timeStampVal)
+		let bufferInMinutes
 
-     if(sort===0){ bufferInMinutes=0}
-     else(
-      bufferInMinutes=totalAts/sort*15)
-
-    
-    
-    //{type:"",class:"",content:""}
-    let title=` ${time.getHours()}:${String(time.getMinutes()).padEnd(2,"0")}-${time.getHours()}:${String(time.getMinutes()+15).padEnd(2,"0")} `
-    let 	flowRatexCent=ele.metricValue/sort*100
-
-	if (isNaN(flowRatexCent)){flowRatexCent=0}
-    let partialWindow=createNewEle({type:"div",class:"divContainer"})
-   
-	let windowTime=new Date(ele.timeStampVal).getTime()
-	let now=new Date().getTime()
-	
-	let timeWindowMark=createNewEle({type:"div",class:"title",content:title})
-	if(now>windowTime){
-		if(bufferInMinutes>14.9 && bufferInMinutes<30.1 || sort<30){timeWindowMark.classList.add("passed")}else{timeWindowMark.classList.add("failed")}}
-	console.log(ele.timeStampVal)
-    let sortData=createNewEle({type:"div",class:"windowData",content:`Induction=${ele.metricValue}`})
-    let inductData=createNewEle({type:"div",class:"windowData",content:`Sortattion=${sort}`})
-    let AtsData=createNewEle({type:"div",class:"windowData",content:`AtStation=${totalAts}`})
-    let buffer=createNewEle({type:"div",class:"windowData",content:`Buffer=${bufferInMinutes.toFixed(1)}m`})
-	let flowRate=createNewEle({type:"div",class:"windowData",content:`FlowRate=${flowRatexCent.toFixed(2)}%`})
-	partialWindow.appendChild(timeWindowMark)
-    partialWindow.appendChild(inductData)
-    partialWindow.appendChild(sortData)
-    partialWindow.appendChild(AtsData)
-    partialWindow.appendChild(buffer)
-	partialWindow.appendChild(flowRate)
-	windowContainer.appendChild(partialWindow)
-    let a= document.createElement("w")
-   
-    
-    
-})
+		if (sort === 0) { bufferInMinutes = 0 }
+		else (
+			bufferInMinutes = totalAts / sort * 15)
 
 
 
-function createNewEle(ele){
-    const newEle= document.createElement(ele.type)
-    newEle.classList.add(ele.class)
-    newEle.textContent =ele.content
-    
-    return newEle
-}
+		//{type:"",class:"",content:""}
+		let title = ` ${time.getHours()}:${String(time.getMinutes()).padEnd(2, "0")}-${time.getHours()}:${String(time.getMinutes() + 15).padEnd(2, "0")} `
+		let flowRatexCent = ele.metricValue / sort * 100
+
+		if (isNaN(flowRatexCent) || flowRatexCent===Infinity) { flowRatexCent = 0 }
+		
+		let windowTime = new Date(ele.timeStampVal).getTime()
+		let now=new Date().getTime() 
+		
+		console.log(now, new Date(windowTime), now > windowTime)
+		if (now > (windowTime + 15 * 60 * 1000)) {
+			let partialWindow = createNewEle({ type: "div", class: "divContainer" })
+			let timeWindowMark = createNewEle({ type: "div", class: "title", content: title })
+			if (bufferInMinutes > 14.9 && bufferInMinutes < 30.1 || sort < 30) { timeWindowMark.classList.add("passed") } else { timeWindowMark.classList.add("failed") }
+			
+		console.log(ele.timeStampVal)
+		let sortData = createNewEle({ type: "div", class: "windowData", content: `Induction=${ele.metricValue}` })
+		let inductData = createNewEle({ type: "div", class: "windowData", content: `Sortattion=${sort}` })
+		let AtsData = createNewEle({ type: "div", class: "windowData", content: `AtStation=${totalAts}` })
+		let buffer = createNewEle({ type: "div", class: "windowData", content: `Buffer=${bufferInMinutes.toFixed(1)}m` })
+		let flowRate = createNewEle({ type: "div", class: "windowData", content: `FlowRate=${flowRatexCent.toFixed(2)}%` })
+		partialWindow.appendChild(timeWindowMark)
+		partialWindow.appendChild(inductData)
+		partialWindow.appendChild(sortData)
+		partialWindow.appendChild(AtsData)
+		partialWindow.appendChild(buffer)
+		partialWindow.appendChild(flowRate)
+		windowContainer.appendChild(partialWindow)
+	}
+
+
+
+	})
+
+
+
+	function createNewEle(ele) {
+		const newEle = document.createElement(ele.type)
+		newEle.classList.add(ele.class)
+		newEle.textContent = ele.content
+
+		return newEle
+	}
 }
 
 
@@ -85,7 +88,7 @@ function createNewEle(ele){
 
 
 
- const  dataa={
+const dataa = {
 	"flowPVAData": {
 		"15": [
 			{

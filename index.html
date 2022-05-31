@@ -1,56 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flow Ratio</title>
-    <script type="module" src="./index.js" defer></script>
-    <link href="./src/tabu/dist/css/tabulator_midnight.css" rel="stylesheet">
-<script type="text/javascript" src="./src/tabu//dist/js/tabulator.min.js"></script>
-   
-    <!-- <script
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flow Ratio</title>
+  <script type="module" src="./index.js" defer></script>
+  <link href="./src/tabu/dist/css/tabulator_midnight.css" rel="stylesheet">
+  <script type="text/javascript" src="./src/tabu//dist/js/tabulator.min.js"></script>
+
+  <!-- <script
       type="text/javascript"
       src="./src/css/tabulator.min.css"
     ></script> -->
 
-    <!-- https://www.npmjs.com/package/table-sort-js -->
+  <!-- https://www.npmjs.com/package/table-sort-js -->
 
-    <!-- ******************CDN charts -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-    <link rel="stylesheet" href="./src/css/styles.css" />
-    <link rel="icon" type="image/x-icon" href="./src/img/favicon.ico">
-  </head>
+  <!-- ******************CDN charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <link rel="stylesheet" href="./src/css/styles.css" />
+  <link rel="icon" type="image/x-icon" href="./src/img/favicon.ico">
+</head>
 
-  <body>
-    <h1>Flow Ratio 1.154</h1>
-    <button id="startButton">Off</button>
-    <button id="showChart">chart</button>
+<body>
+  <h1>Flow Ratio 1.154</h1>
+  <button id="startButton">Off</button>
+  <button id="showChart">chart</button>
 
-    <button id="test">test</button>
-    <button id="testpos">move</button>
-    <button id="botonGetStowersRates">Stowers</button>
-    <button id="botonGetInductersRates">Inducters</button>
-    <div id ="app">
-      <div id="asociatesRates">
-    <div id="stowersRates">
-      
-      <!-- <table id="stowerstable" class="table-sort table-arrows"></table> -->
-    </div>
-    <div id="inductersRates">
-      
-    </div>
-  </div>
+  <button id="test">test</button>
+  <button id="testpos">move</button>
+  <button id="botonGetStowersRates">Stowers</button>
+  <button id="botonGetInductersRates">Inducters</button>
+  <button class="boton refreshTimeWindows">Refresh windows</button>
+  <div id="app">
     <table id="main">
       <thead>
         <tr>
-          <th>DQA2</th>
+          <th>DQV2</th>
           <th>Actual</th>
           <th>Min</th>
           <th>Max</th>
-          
+
           <th contenteditable="true">Custom</th>
           <th>Min Custom</th>
           <th>Max Custom</th>
@@ -62,7 +56,7 @@
           <td id="ATsAct"></td>
           <td id="ATsMin"></td>
           <td id="ATsMax"></td>
-        
+
           <td id="ATsCustom" contenteditable="true"></td>
 
           <td id="MinCustom"></td>
@@ -73,7 +67,7 @@
           <td id="StowRateAct"></td>
           <td id="StowRateMin"></td>
           <td id="StowRateMax"></td>
-         
+
           <td id="StowRateCustom" contenteditable="true"></td>
           <td>
             <div class="modificadores">
@@ -93,7 +87,7 @@
           <td id="InductRateAct"></td>
           <td id="InductRateMin"></td>
           <td id="InductRateMax"></td>
-          
+
           <td id="InductRateCustom" contenteditable="true"></td>
           <td>
             <div class="modificadores">
@@ -113,7 +107,7 @@
           <td id="MinutesToCheck"></td>
           <td></td>
           <td></td>
-          
+
           <td id="MinutesToCheckCustom" contenteditable="true"></td>
           <td>
             <div class="modificadores">
@@ -135,13 +129,24 @@
         </tr>
       </tbody>
     </table>
-  </body>
-  <div id="testable"></div></div>
-  <div id="windows15Data">
-    
-  </div>
-  <div id="canvasContainer">
-    <canvas id="test" width="1000" height="300"></canvas>
-    <canvas id="pieComply" width="1000" height="300"></canvas>
-  </div>
+    <div id="asociatesRates">
+      <div id="stowersRates">
+dd
+        <!-- <table id="stowerstable" class="table-sort table-arrows"></table> -->
+      </div>
+      <div id="inductersRates">
+fr
+      </div>
+    </div>
+</body>
+<div id="testable"></div>
+</div>
+<div id="windows15Data">
+
+</div>
+<div id="canvasContainer">
+  <canvas id="test" width="1000" height="300"></canvas>
+  <canvas id="pieComply" width="1000" height="300"></canvas>
+</div>
+
 </html>

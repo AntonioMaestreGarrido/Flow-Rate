@@ -2,7 +2,7 @@ import {  getAPIdata, getAPIgetdata } from "./src/api.js";
 import { drawChart, testChart, addtest, updateChart } from "./src/grafica.js";
 import { creaTabla } from "./src/tablas.js";
 import { renderWindowsData } from "./src/widonsData.js";
-export const CONFIG={site:"DQA2"}
+export const CONFIG={site:"DQV2"}
 function isScreenLockSupported() {
   return ('wakeLock' in navigator);
  }
@@ -218,6 +218,10 @@ function setupEventsListener() {
     const t= await getAPIgetdata("/wipData")
     console.log(t)
   });
+  
+  document
+  .querySelector(".refreshTimeWindows")
+  .addEventListener("click", renderWindowsData);
   document
     .getElementById("StowRateCustom")
     .addEventListener("focusout", () => fillCustom());
@@ -448,6 +452,6 @@ function windowsInterval(){
   setTimeout(windowsInterval,(15*60*1000)-1)
 
 }
-
+//renderWindowsData()
 // first parameter Table ID, second arrayasync
 
