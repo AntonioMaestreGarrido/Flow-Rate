@@ -204,15 +204,22 @@ button:hover {
       width: 100vw;
       /* min-height: 10em; */
       border: solid black 2px;
-      background-color: aquamarine;
+      background-color: var(--secondColor);
     color: black;
     overflow-y: scroll;}
+    
     .passed{
         background-color: rgba(0, 128, 0, 0.527);
 
     }
+    .passed::after{
+        content:"Passed!" ;
+    }
     .failed{
         background-color: rgba(255, 0, 0, 0.575) ;
+    }
+    .failed::after{
+        content: "Failed!";
     }
    
   

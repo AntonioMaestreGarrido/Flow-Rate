@@ -39,13 +39,21 @@ induction.dataPointList.forEach((ele,index)=>{
     let 	flowRatexCent=ele.metricValue/sort*100
 
 	if (isNaN(flowRatexCent)){flowRatexCent=0}
-    let partialWindow=createNewEle({type:"div",class:"divContainer",content:title})
-    if(bufferInMinutes>14.9 && bufferInMinutes<30.1){partialWindow.classList.add("passed")}else{partialWindow.classList.add("failed")}
+    let partialWindow=createNewEle({type:"div",class:"divContainer"})
+   
+	let windowTime=new Date(ele.timeStampVal).getTime()
+	let now=new Date().getTime()
+	
+	let timeWindowMark=createNewEle({type:"div",class:"title",content:title})
+	if(now>windowTime){
+		if(bufferInMinutes>14.9 && bufferInMinutes<30.1 || sort<30){timeWindowMark.classList.add("passed")}else{timeWindowMark.classList.add("failed")}}
+	console.log(ele.timeStampVal)
     let sortData=createNewEle({type:"div",class:"windowData",content:`Induction=${ele.metricValue}`})
     let inductData=createNewEle({type:"div",class:"windowData",content:`Sortattion=${sort}`})
     let AtsData=createNewEle({type:"div",class:"windowData",content:`AtStation=${totalAts}`})
     let buffer=createNewEle({type:"div",class:"windowData",content:`Buffer=${bufferInMinutes.toFixed(1)}m`})
 	let flowRate=createNewEle({type:"div",class:"windowData",content:`FlowRate=${flowRatexCent.toFixed(2)}%`})
+	partialWindow.appendChild(timeWindowMark)
     partialWindow.appendChild(inductData)
     partialWindow.appendChild(sortData)
     partialWindow.appendChild(AtsData)
