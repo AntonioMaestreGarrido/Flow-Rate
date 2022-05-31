@@ -1,3 +1,4 @@
+import { CONFIG } from "../index.js"
 import { getAPIdata } from "./api.js"
 
 
@@ -6,7 +7,7 @@ export async function renderWindowsData(){
 	
 //const data=sccwindowData
 console.log("wdonswdata llamado a las "+Date())
-const petBody={'resourcePath':'/ivs/getpvadata','httpMethod':'post','processName':'induct','requestBody':{'nodeId':'DQA2','cycleIds':['CYCLE_1'],'processPath':'induct'}}
+const petBody={'resourcePath':'/ivs/getpvadata','httpMethod':'post','processName':'induct','requestBody':{'nodeId':CONFIG.site,'cycleIds':['CYCLE_1'],'processPath':'induct'}}
 
 const data= await getAPIdata(petBody)
 console.log(data)
@@ -20,6 +21,7 @@ const sortation=data.flowPVAData[15][2]
 console.log(sortation)
 let totalAts=0
 let windowContainer=document.querySelector("#windows15Data")
+windowContainer.innerHTML=""
 induction.dataPointList.forEach((ele,index)=>{
     let sort=sortation.dataPointList[index].metricValue
      totalAts =totalAts+(ele.metricValue-sort)
@@ -43,13 +45,13 @@ induction.dataPointList.forEach((ele,index)=>{
     let inductData=createNewEle({type:"div",class:"windowData",content:`Sortattion=${sort}`})
     let AtsData=createNewEle({type:"div",class:"windowData",content:`AtStation=${totalAts}`})
     let buffer=createNewEle({type:"div",class:"windowData",content:`Buffer=${bufferInMinutes.toFixed(1)}m`})
-	let flowRate=createNewEle({type:"div",class:"windowData",content:`FlowRate=${flowRatexCent}%`})
+	let flowRate=createNewEle({type:"div",class:"windowData",content:`FlowRate=${flowRatexCent.toFixed(2)}%`})
     partialWindow.appendChild(inductData)
     partialWindow.appendChild(sortData)
     partialWindow.appendChild(AtsData)
     partialWindow.appendChild(buffer)
 	partialWindow.appendChild(flowRate)
-    windowContainer.appendChild(partialWindow)
+	windowContainer.appendChild(partialWindow)
     let a= document.createElement("w")
    
     

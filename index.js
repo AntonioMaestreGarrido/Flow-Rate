@@ -2,13 +2,13 @@ import {  getAPIdata, getAPIgetdata } from "./src/api.js";
 import { drawChart, testChart, addtest, updateChart } from "./src/grafica.js";
 import { creaTabla } from "./src/tablas.js";
 import { renderWindowsData } from "./src/widonsData.js";
-
+export const CONFIG={site:"DQA2"}
 function isScreenLockSupported() {
   return ('wakeLock' in navigator);
  }
- 
+ getScreenLock()
 async function getScreenLock() {
-  const camiones=await getAPIdata({"resourcePath":"/ivs/getNodeLineHaulList","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQV2","groupBy":""}})
+  const camiones=await getAPIdata({"resourcePath":"/ivs/getNodeLineHaulList","httpMethod":"post","processName":"induct","requestBody":{"nodeId":CONFIG.site,"groupBy":""}})
   console.log(camiones)
   if(isScreenLockSupported()){
     let screenLock;
@@ -83,7 +83,7 @@ async function apitest() {
     .then((response) => response.json())
     .then((data) => {
       let datos = data;
-      console.log(datos);
+     // console.log(datos);
       calculate(datos);
     })
     .catch((error) => console.log("No se encuentra el servidor", error));
@@ -254,6 +254,7 @@ function setupEventsListener() {
     });
 }
 async function getStowersRates() {
+  let objFlat=[]
   const StowersContainer = document.getElementById("stowersRates");
   if (StowersContainer.classList.contains("visible")) {
     StowersContainer.classList.remove("visible");
@@ -261,14 +262,41 @@ async function getStowersRates() {
     StowersContainer.style.display = "none";
   } else {
     StowersContainer.classList.add("visible");
-    let stowList = await getAPIdata({"resourcePath":"svs/associates/data","httpMethod":"post","processName":"stow","requestBody":{"filters":{"NODE":["DQA2"],"CYCLE":["CYCLE_1"]},"fieldsRequired":["NAME","STATUS","PERFORMANCE","LOCATION"]}})
+    let stowList = await getAPIdata({"resourcePath":"svs/associates/data","httpMethod":"post","processName":"stow","requestBody":{"filters":{"NODE":[CONFIG.site],"CYCLE":["CYCLE_1"]},"fieldsRequired":["NAME","STATUS","PERFORMANCE","LOCATION"]}})
     console.log(stowList)
-    creaTabla("stowerRates",stowList.associates,[])
+    //////////////////////////
+ stowList.associates.forEach((ele)=>{
+   ele.pph=ele.performance.pph
+ console.log(ele.performance.pph)
+ })
+  
+  console.log(objFlat)
+
+
+    /////////////////////////
+
+    creaTabla("stowersRates",stowList.associates,[
+"alias",
+"pph",
+"location"
+    ])
+      
     StowersContainer.style.display = "block";
   }
         
    
    
+}
+function flattenObj(obj, parent, res = {}){
+  for(let key in obj){
+      let propName = parent ? parent + '_' + key : key;
+      if(typeof obj[key] == 'object'){
+          flattenObj(obj[key], propName, res);
+      } else {
+          res[propName] = obj[key];
+      }
+  }
+  return res;
 }
 async function getInductersRates() {
   const inductContainer = document.getElementById("inductersRates");
@@ -279,7 +307,7 @@ async function getInductersRates() {
   } else {
     inductContainer.classList.add("visible");
     let inductList = await getAPIdata(
-      {"resourcePath":"/ivs/getAssociateMetric","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQA2"}}
+      {"resourcePath":"/ivs/getAssociateMetric","httpMethod":"post","processName":"induct","requestBody":{"nodeId":CONFIG.site}}
     );
     console.log(inductList.associateMetricList);
     let activeInducters = inductList.associateMetricList.filter(
@@ -288,8 +316,8 @@ async function getInductersRates() {
     console.log(activeInducters);
 
     creaTabla("inductersRates", activeInducters, [
-      "PPH",
       "alias",
+      "PPH",
       "hourSpent",
       "location",
       "packageHandled",

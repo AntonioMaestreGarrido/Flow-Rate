@@ -3,20 +3,20 @@
 //campos especifica que columnas se van a renderizar
 export function creaTabla(containerName, constdatos, campos) {
   if (constdatos.length<=0){return}
-  purgaObj(constdatos, campos);
-  let datos = purgaObj(constdatos, campos);
+  //purgaObj(constdatos, campos);
+  //let datos = purgaObj(constdatos, campos);
   const container = document.getElementById(containerName);
 
-  const filas = datos.length;
-  const columnas = datos[0].length;
+  const filas = constdatos.length;
+  const columnas = campos.length;
 
   let tabla = document.createElement("table");
   tabla.id = `${containerName}Table`;
 
   let cabecera = document.createElement("tr");
-  for (const key in datos[0]) {
+  for (const key in campos) {
     let celda = document.createElement("th");
-    celda.innerText = key;
+    celda.innerText =campos[key];
     cabecera.appendChild(celda);
   }
 
@@ -25,13 +25,18 @@ export function creaTabla(containerName, constdatos, campos) {
   // console.log(constdatos.length)=3
 
   const tbody = document.createElement("tbody");
-  datos.forEach((ele) => {
+
+
+  constdatos.forEach((ele,index) => {
+
     let linea = document.createElement("tr");
-    for (const key in ele) {
+    campos.forEach((key)=>{
       let celda = document.createElement("td");
       celda.innerText = ele[key];
       linea.appendChild(celda);
-    }
+
+    })
+    
     tbody.appendChild(linea);
   });
 

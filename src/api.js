@@ -8,7 +8,7 @@ export async function getAPIdata(peticion){
             "Accept": "application/json, text/plain, */*",
           },
         body: JSON.stringify(peticion)
-        //body:'{"resourcePath":"/ivs/getpvadata","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQA2","cycleIds":["CYCLE_1"],"processPath":"induct"}}'
+        
     })
                                 
                                 
