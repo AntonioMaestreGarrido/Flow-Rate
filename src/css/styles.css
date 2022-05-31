@@ -229,7 +229,9 @@ button:hover {
     .failed::after{
         content: "Failed!";
     }
-   
+   #test{
+       display: none;
+   }
   
 
     
