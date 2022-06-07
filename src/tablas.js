@@ -32,7 +32,7 @@ export function creaTabla(containerName, constdatos, campos) {
     let linea = document.createElement("tr");
     campos.forEach((key)=>{
       let celda = document.createElement("td");
-      celda.innerText = ele[key];
+      celda.innerText = ele[key].replace("@amazon.com","");
       linea.appendChild(celda);
 
     })

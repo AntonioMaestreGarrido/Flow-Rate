@@ -3,6 +3,7 @@
     font-weight: bolder;
     box-sizing: border-box;
     font-family: "Roboto", sans-serif;
+    font-size: 1rem;
 
     --primColor: rgb(10, 80, 138);
     --secondColor: rgb(67, 152, 221);
@@ -19,7 +20,7 @@
     color: aliceblue;
     height: 50px;
     
-    font-size: 22px;
+    /* font-size: 22px; */
     
 
     
@@ -75,7 +76,7 @@
 #main {
     margin: 10px;
     text-align: center;
-    font-size:24px;
+    /* font-size:24px; */
     
 
     color: black;
@@ -95,7 +96,7 @@ h1 {
     text-align: center;
     border-bottom: solid black 5px;
     
-    font-size: 40px;
+    /* font-size: 40px; */
     
 }
 button:hover {
@@ -187,7 +188,7 @@ button:hover {
 }
 .cabecera{
     margin: 3px;
-    font-size: 16px;
+    /* font-size: 16px; */
 }
 #windows{
     background-color: red;
@@ -271,3 +272,12 @@ button:hover {
     border: solid red 2px;
 
   } */
+  .setting{
+      /* min-width: 200px;
+      min-height: 400px; */
+      position: absolute;
+      width: max-content;
+      margin: 4px;
+      padding: 14px;
+      border: solid red 2px;
+  }

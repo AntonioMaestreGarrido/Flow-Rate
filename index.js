@@ -2,6 +2,7 @@ import {  getAPIdata, getAPIgetdata } from "./src/api.js";
 import { drawChart, testChart, addtest, updateChart } from "./src/grafica.js";
 import { creaTabla } from "./src/tablas.js";
 import { renderWindowsData } from "./src/widonsData.js";
+
 export const CONFIG={site:"DQV2"}
 function isScreenLockSupported() {
   return ('wakeLock' in navigator);
@@ -218,7 +219,7 @@ function setupEventsListener() {
     const t= await getAPIgetdata("/wipData")
     console.log(t)
   });
-  
+ 
   document
   .querySelector(".refreshTimeWindows")
   .addEventListener("click", renderWindowsData);
