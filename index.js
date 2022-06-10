@@ -1,22 +1,40 @@
-import {  getAPIdata, getAPIgetdata } from "./src/api.js";
+import { getAPIdata, getAPIgetdata } from "./src/api.js";
+import { renderGeneralRates } from "./src/generalRatesW.js";
 import { drawChart, testChart, addtest, updateChart } from "./src/grafica.js";
 import { creaTabla } from "./src/tablas.js";
-import { renderWindowsData } from "./src/widonsData.js";
-
-export const CONFIG={site:"DQV2"}
+import {  getRanking, renderWindowsData } from "./src/widonsData.js";
+export let CONFIG = getConfig() ;
+console.log("SITE:", document.getElementById("site").textContent);
+console.log(getConfig())
+document.getElementById("site").textContent = getConfig().site;
+function saveConfig() {
+  localStorage.setItem("config", JSON.stringify(CONFIG));
+}
+function getConfig() {
+  let config=JSON.parse(localStorage.getItem("config"))
+  if(!config){
+    config={"SITE":"DQA2"}
+  }
+  return config
+}
 function isScreenLockSupported() {
-  return ('wakeLock' in navigator);
- }
- getScreenLock()
+  return "wakeLock" in navigator;
+}
+getScreenLock();
 async function getScreenLock() {
-  const camiones=await getAPIdata({"resourcePath":"/ivs/getNodeLineHaulList","httpMethod":"post","processName":"induct","requestBody":{"nodeId":CONFIG.site,"groupBy":""}})
-  console.log(camiones)
-  if(isScreenLockSupported()){
+  const camiones = await getAPIdata({
+    resourcePath: "/ivs/getNodeLineHaulList",
+    httpMethod: "post",
+    processName: "induct",
+    requestBody: { nodeId: CONFIG.site, groupBy: "" },
+  });
+  console.log(camiones);
+  if (isScreenLockSupported()) {
     let screenLock;
     try {
-       screenLock = await navigator.wakeLock.request('screen');
-    } catch(err) {
-       console.log(err.name, err.message);
+      screenLock = await navigator.wakeLock.request("screen");
+    } catch (err) {
+      console.log(err.name, err.message);
     }
     return screenLock;
   }
@@ -80,11 +98,12 @@ function fillCustom() {
 async function apitest() {
   let data2;
 
-  await fetch("http://localhost:3000")
+  // await fetch(`http://localhost:3000/:${CONFIG.site}`)
+  await fetch(`http://localhost:3000/main2/${CONFIG.site}`)
     .then((response) => response.json())
     .then((data) => {
       let datos = data;
-     // console.log(datos);
+      // console.log(datos);
       calculate(datos);
     })
     .catch((error) => console.log("No se encuentra el servidor", error));
@@ -215,11 +234,18 @@ function giveStyle() {
 }
 
 function setupEventsListener() {
-  document.getElementById("test").addEventListener("click",async () => {
-    const t= await getAPIgetdata("/wipData")
-    console.log(t)
+  document.getElementById("site").addEventListener("focusout", (e) => {
+    CONFIG.site = e.target.textContent.toUpperCase();
+    document.getElementById("site").textContent=CONFIG.site
+    saveConfig()
+    renderWindowsData()
+    console.log(CONFIG.site);
   });
- 
+  document.getElementById("test").addEventListener("click", async () => {
+    const t = await getAPIgetdata("/wipData");
+    console.log(t);
+  });
+ document.querySelector(".getRanking").addEventListener("click",getRanking)
   document
   .querySelector(".refreshTimeWindows")
   .addEventListener("click", renderWindowsData);
@@ -259,7 +285,7 @@ function setupEventsListener() {
     });
 }
 async function getStowersRates() {
-  let objFlat=[]
+  let objFlat = [];
   const StowersContainer = document.getElementById("stowersRates");
   if (StowersContainer.classList.contains("visible")) {
     StowersContainer.classList.remove("visible");
@@ -267,39 +293,43 @@ async function getStowersRates() {
     StowersContainer.style.display = "none";
   } else {
     StowersContainer.classList.add("visible");
-    let stowList = await getAPIdata({"resourcePath":"svs/associates/data","httpMethod":"post","processName":"stow","requestBody":{"filters":{"NODE":[CONFIG.site],"CYCLE":["CYCLE_1"]},"fieldsRequired":["NAME","STATUS","PERFORMANCE","LOCATION"]}})
-    console.log(stowList)
+    let stowList = await getAPIdata({
+      resourcePath: "svs/associates/data",
+      httpMethod: "post",
+      processName: "stow",
+      requestBody: {
+        filters: { NODE: [CONFIG.site], CYCLE: ["CYCLE_1"] },
+        fieldsRequired: ["NAME", "STATUS", "PERFORMANCE", "LOCATION"],
+      },
+    });
+    console.log(stowList);
     //////////////////////////
- stowList.associates.forEach((ele)=>{
-   ele.pph=ele.performance.pph
- console.log(ele.performance.pph)
- })
-  
-  console.log(objFlat)
+    stowList.associates.forEach((ele) => {
+      ele.pph = ele.performance.pph;
+      console.log(ele.performance.pph);
+    })
 
+    console.log(objFlat);
 
     /////////////////////////
+    
+    creaTabla("stowersRates", stowList.associates.filter((ele)=>ele.status==="ACTIVE"), [
+      "alias",
+      "pph",
+      "location",
+    ]);
 
-    creaTabla("stowersRates",stowList.associates,[
-"alias",
-"pph",
-"location"
-    ])
-      
     StowersContainer.style.display = "block";
   }
-        
-   
-   
 }
-function flattenObj(obj, parent, res = {}){
-  for(let key in obj){
-      let propName = parent ? parent + '_' + key : key;
-      if(typeof obj[key] == 'object'){
-          flattenObj(obj[key], propName, res);
-      } else {
-          res[propName] = obj[key];
-      }
+function flattenObj(obj, parent, res = {}) {
+  for (let key in obj) {
+    let propName = parent ? parent + "_" + key : key;
+    if (typeof obj[key] == "object") {
+      flattenObj(obj[key], propName, res);
+    } else {
+      res[propName] = obj[key];
+    }
   }
   return res;
 }
@@ -311,9 +341,12 @@ async function getInductersRates() {
     inductContainer.style.display = "none";
   } else {
     inductContainer.classList.add("visible");
-    let inductList = await getAPIdata(
-      {"resourcePath":"/ivs/getAssociateMetric","httpMethod":"post","processName":"induct","requestBody":{"nodeId":CONFIG.site}}
-    );
+    let inductList = await getAPIdata({
+      resourcePath: "/ivs/getAssociateMetric",
+      httpMethod: "post",
+      processName: "induct",
+      requestBody: { nodeId: CONFIG.site },
+    });
     console.log(inductList.associateMetricList);
     let activeInducters = inductList.associateMetricList.filter(
       (ele) => ele.active === true
@@ -409,50 +442,46 @@ function copyData() {
   fillCustom();
 }
 
-
-function testcall(){
+function testcall() {
   //alert("holaaaaaa")
-  let n=new Date
-  console.log("llamada a las "+ n)
-  setTimeout(testcall,2*60*1000)
+  let n = new Date();
+  console.log("llamada a las " + n);
+  setTimeout(testcall, 2 * 60 * 1000);
 }
-let next 
+let next;
 function handleStartButton() {
   if (startButton.textContent === "Off") {
     startButton.textContent = "Running";
-    getScreenLock()
-   // drawChart();
+    getScreenLock();
+    // drawChart();
     apitest();
-    calculateNextWindowCall()
-    
-    handleStartButton.intervalID = setInterval(apitest, 5000);
+    calculateNextWindowCall();
+
+    handleStartButton.intervalID = setInterval(apitest, 10000);
   } else {
     startButton.textContent = "Off";
     clearInterval(handleStartButton.intervalID);
   }
 }
-function calculateNextWindowCall(){
-  renderWindowsData()
-  const interval=15
-let ahora = new Date()
-let nextw=interval-ahora.getMinutes()%interval
-console.log( nextw)
-let nextdate= new Date(ahora)
-nextdate.setMinutes(ahora.getMinutes()+nextw)
-nextdate.setSeconds(10)
-let nextCall=nextdate.getTime()-ahora.getTime()
-console.log(nextCall/1000/60)
+function calculateNextWindowCall() {
+  renderWindowsData();
+  const interval = 15;
+  let ahora = new Date();
+  let nextw = interval - (ahora.getMinutes() % interval);
+  console.log(nextw);
+  let nextdate = new Date(ahora);
+  nextdate.setMinutes(ahora.getMinutes() + nextw);
+  nextdate.setSeconds(10);
+  let nextCall = nextdate.getTime() - ahora.getTime();
+  console.log(nextCall / 1000 / 60);
 
-console.log(nextdate,nextdate.getTime())
-console.log(ahora.setMinutes(ahora.getMinutes()+nextw))
-setTimeout(windowsInterval,nextCall)
-
+  console.log(nextdate, nextdate.getTime());
+  console.log(ahora.setMinutes(ahora.getMinutes() + nextw));
+  setTimeout(windowsInterval, nextCall);
 }
-function windowsInterval(){
-  renderWindowsData()
-  setTimeout(windowsInterval,(15*60*1000)-1)
-
+function windowsInterval() {
+  renderWindowsData();
+  setTimeout(windowsInterval, 15 * 60 * 1000 - 1);
 }
 //renderWindowsData()
 // first parameter Table ID, second arrayasync
-

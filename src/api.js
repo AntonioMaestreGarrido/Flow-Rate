@@ -45,5 +45,47 @@ export async function getAPIgetdata(link){
   }
     
     
+
+  export async function getInductAndStow() {
+    let body = {
+      resourcePath: "/ivs/getLocationMetric",
+      httpMethod: "post",
+      processName: "induct",
+      requestBody: { nodeId: CONFIG.site},
+    };
+  
+    const data = await getAPIdata(body);
+    console.log(data);
+    let induct=0
+    data.locationInsightList.forEach((ele)=>induct=induct+ele.inductRate)
+    let body2 = {
+      resourcePath: "svs/packages/metrics",
+      httpMethod: "post",
+      processName: "stow",
+      requestBody: {
+        groupBy: "CLUSTER",
+        filters: {
+          NODE: [CONFIG.site],
+          DRS: ["FALSE"],
+          CYCLE: ["CYCLE_1"],
+          CYCLE_ID: ["761553f5-9fc1-4cef-8815-b974bc63f0a9"],
+        },
+        metrics: [
+          "STOW_RATE",
+          "SCAN_COMPLIANCE",
+          "PROBLEM_SOLVE_COUNT",
+          "PLANNED_COUNT",
+          "STOW_VS_PLAN",
+          "STOWED_COUNT",
+          "CURRENT_INDUCTED_COUNT",
+        ],
+        isAggregationRequired: true,
+      },
+    };
+    const stowData = await getAPIdata(body2);
+    let stow=stowData.aggregatePackageMetrics.stowRate
+    console.log(`ritmo de Stow: ${stow} y ritmo de induccion ${induct}`);
+    return{induct,stow}
+  }
 //receive data
 //{"resourcePath":"/ivs/getNodeLineHaulList","httpMethod":"post","processName":"induct","requestBody":{"nodeId":"DQA2","groupBy":""}}

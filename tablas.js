@@ -32,7 +32,7 @@ export function creaTabla(containerName, constdatos, campos) {
       let celda = document.createElement("td");
       let index = campos[j];
       let contenido = constdatos[i][index];
-      
+      console.log("????")
       celda.innerText = contenido;
       linea.appendChild(celda);
     }

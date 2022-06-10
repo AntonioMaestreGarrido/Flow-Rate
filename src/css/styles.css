@@ -3,7 +3,7 @@
     font-weight: bolder;
     box-sizing: border-box;
     font-family: "Roboto", sans-serif;
-    font-size: 1rem;
+    
 
     --primColor: rgb(10, 80, 138);
     --secondColor: rgb(67, 152, 221);
@@ -11,6 +11,7 @@
     
 
 }
+:root{font-size: 1rem;}
 
 #main thead {
    
@@ -78,7 +79,7 @@
     text-align: center;
     /* font-size:24px; */
     
-
+max-height: 20rem;
     color: black;
    
     overflow: hidden;
@@ -204,7 +205,7 @@ button:hover {
   }
   #windows15Data{
       
-      font-size: 16px;
+      font-size: 14px;
       display: flex;
       align-content: flex-start;
       max-width: 100vw;
@@ -275,9 +276,33 @@ button:hover {
   .setting{
       /* min-width: 200px;
       min-height: 400px; */
+      display: none;
       position: absolute;
       width: max-content;
       margin: 4px;
       padding: 14px;
       border: solid red 2px;
   }
+  #generalInfo{
+      display: flex;
+      /* max-width: 15rem; */
+      width: fit-content;
+      flex-direction: column;
+      border: black solid 3px;
+  }
+  .generalDivision{
+      display: flex;
+      justify-content: space-between;
+      padding: 5px;
+
+      margin: 5px;
+  }
+  .generalDivision p{
+      margin: 5px;
+      
+  }
+  .miniPicture{
+      height: 3rem;
+
+  }
+

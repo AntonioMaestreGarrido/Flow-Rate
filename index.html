@@ -27,7 +27,7 @@
 </head>
 
 <body>
-  <h1>Flow Ratio 1.154</h1>
+  <h1>WIP Helper  0.154</h1>
   <button id="startButton">Off</button>
   <button id="showChart">chart</button>
 
@@ -36,18 +36,20 @@
   <button id="botonGetStowersRates">Stowers</button>
   <button id="botonGetInductersRates">Inducters</button>
   <button class="boton refreshTimeWindows">Refresh windows</button>
+  <button class="boton getRanking">Get Ranking</button>
+  
   <div id="app">
     <table id="main">
       <thead>
         <tr>
-          <th>DQV2</th>
+          <th id="site" contenteditable="true">DQA2</th>
           <th>Actual</th>
           <th>Min</th>
           <th>Max</th>
 
           <th contenteditable="true">Custom</th>
-          <th>Min Custom</th>
-          <th>Max Custom</th>
+          <th>Min<br> Custom</th>
+          <th>Max<br> Custom</th>
         </tr>
       </thead>
       <tbody>
@@ -78,8 +80,8 @@
             </div>
           </td>
           <td class="quickCalc">
-            <button class="sumatorios" id="customMaxStow">Max Stow</button>
-            <button class="sumatorios" id="customMinStow">Min Stow</button>
+            <button class="sumatorios" id="customMaxStow">Max<br> Stow</button>
+            <button class="sumatorios" id="customMinStow">Min<br> Stow</button>
           </td>
         </tr>
         <tr>
@@ -98,8 +100,8 @@
             </div>
           </td>
           <td class="quickCalc">
-            <button class="sumatorios" id="customMaxInduct">Max Induct</button>
-            <button class="sumatorios" id="customMinInduct">Min Induct</button>
+            <button class="sumatorios" id="customMaxInduct">Max<br> Induct</button>
+            <button class="sumatorios" id="customMinInduct">Min<br> Induct</button>
           </td>
         </tr>
         <tr>
@@ -131,17 +133,43 @@
     </table>
     <div id="asociatesRates">
       <div id="stowersRates">
-dd
+
         <!-- <table id="stowerstable" class="table-sort table-arrows"></table> -->
       </div>
       <div id="inductersRates">
-fr
+
       </div>
     </div>
 </body>
 <div id="testable"></div>
 </div>
 <div id="windows15Data">
+  <h2 id="windows15DataTitle">WIP compliance</h2>
+
+</div>
+<div id="generalInfo">
+  <div>
+    <p class="info volumeExpected">Volume Expected:</p>
+  </div>
+  <div class="generalDivision">
+    <p class="info startTime">Start time</p>
+    <p class="info endTime">End time</p>
+ </div>
+  <div class="generalDivision">
+    <p class="info inductHourlyRate">Induct Hr</p>
+    <p class="info stowHourlyRate">Stow Hr</p>
+  </div>
+  <div class="generalDivision">
+    <p class="info inductWindowRate">Induct Wr</p>
+    <p class="info stowWindowRate">Stow Wr</p>
+ </div>
+
+
+</div>
+<div id="ranking">
+  <h2>WIP Spanish League</h2>
+  <div id="rankingcontainer"></div>
+</div>
 
 </div>
 <div class="setting modal">

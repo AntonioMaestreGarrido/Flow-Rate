@@ -28,18 +28,33 @@ export function creaTabla(containerName, constdatos, campos) {
 
 
   constdatos.forEach((ele,index) => {
-
+    let pictureContainer=document.createElement("div")
+    let picture=document.createElement("img")
+    picture.classList.add("miniPicture")
+    console.log(ele)
+    console.log(ele.alias)
+    picture.setAttribute("src",`https://internal-cdn.amazon.com/badgephotos.amazon.com/?uid=${ele.alias.replace("@amazon.com","")}`)
+    
     let linea = document.createElement("tr");
+    linea.appendChild(picture)
     campos.forEach((key)=>{
       let celda = document.createElement("td");
-      celda.innerText = ele[key].replace("@amazon.com","");
+      let txt=ele[key]
+      console.log( typeof(txt))
+      if(typeof(txt)==="string"){
+        txt= txt.replace("@amazon.com","")
+      }
+      celda.innerText = txt;
       linea.appendChild(celda);
-
+      
     })
     
     tbody.appendChild(linea);
   });
-
+  let celda = document.createElement("th");
+  celda.innerText ="Picture";
+  //eElement.insertBefore(newFirstElement, eElement.firstChild);
+  cabecera.insertBefore( cabecera.appendChild(celda),cabecera.firstChild)
   tabla.appendChild(tbody);
   container.appendChild(tabla);
 }
