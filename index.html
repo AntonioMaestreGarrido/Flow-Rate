@@ -39,6 +39,25 @@
   <button class="boton getRanking">Get Ranking</button>
   
   <div id="app">
+    <div id="generalInfo">
+      <div>
+        <p class="info volumeExpected">Volume Expected:</p>
+      </div>
+      <div class="generalDivision">
+        <p class="info startTime">Start time</p>
+        <p class="info endTime">End time</p>
+     </div>
+      <div class="generalDivision">
+        <p class="info inductHourlyRate">Induct Hr</p>
+        <p class="info stowHourlyRate">Stow Hr</p>
+      </div>
+      <div class="generalDivision">
+        <p class="info inductWindowRate">Induct Wr</p>
+        <p class="info stowWindowRate">Stow Wr</p>
+     </div>
+    
+    
+    </div>
     <table id="main">
       <thead>
         <tr>
@@ -73,10 +92,10 @@
           <td id="StowRateCustom" contenteditable="true"></td>
           <td>
             <div class="modificadores">
-              <button class="sumatorios stow">+100</button>
-              <button class="sumatorios stow">+10</button>
-              <button class="sumatorios stow">-10</button>
-              <button class="sumatorios stow">-100</button>
+              <button class="sumatorios stow">100<br>+</button>
+              <button class="sumatorios stow">10<br>+</button>
+              <button class="sumatorios stow">10<br>-</button>
+              <button class="sumatorios stow">100<br>-</button>
             </div>
           </td>
           <td class="quickCalc">
@@ -93,10 +112,10 @@
           <td id="InductRateCustom" contenteditable="true"></td>
           <td>
             <div class="modificadores">
-              <button class="sumatorios induct">+100</button>
-              <button class="sumatorios induct">+10</button>
-              <button class="sumatorios induct">-10</button>
-              <button class="sumatorios induct">-100</button>
+              <button class="sumatorios induct">100<br>+</button>
+              <button class="sumatorios induct">10<br>+</button>
+              <button class="sumatorios induct">10<br>-</button>
+              <button class="sumatorios induct">100<br>-</button>
             </div>
           </td>
           <td class="quickCalc">
@@ -113,10 +132,10 @@
           <td id="MinutesToCheckCustom" contenteditable="true"></td>
           <td>
             <div class="modificadores">
-              <button class="sumatorios minutes">+5</button>
-              <button class="sumatorios minutes">+1</button>
-              <button class="sumatorios minutes">-1</button>
-              <button class="sumatorios minutes">-5</button>
+              <button class="sumatorios minutes">5<br>+</button>
+              <button class="sumatorios minutes">1<br>+</button>
+              <button class="sumatorios minutes">1<br>-</button>
+              <button class="sumatorios minutes">5<br>-</button>
             </div>
           </td>
         </tr>
@@ -147,25 +166,7 @@
   <h2 id="windows15DataTitle">WIP compliance</h2>
 
 </div>
-<div id="generalInfo">
-  <div>
-    <p class="info volumeExpected">Volume Expected:</p>
-  </div>
-  <div class="generalDivision">
-    <p class="info startTime">Start time</p>
-    <p class="info endTime">End time</p>
- </div>
-  <div class="generalDivision">
-    <p class="info inductHourlyRate">Induct Hr</p>
-    <p class="info stowHourlyRate">Stow Hr</p>
-  </div>
-  <div class="generalDivision">
-    <p class="info inductWindowRate">Induct Wr</p>
-    <p class="info stowWindowRate">Stow Wr</p>
- </div>
 
-
-</div>
 <div id="ranking">
   <h2>WIP Spanish League</h2>
   <div id="rankingcontainer"></div>

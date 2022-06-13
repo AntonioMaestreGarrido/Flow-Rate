@@ -34,7 +34,7 @@
 
 #main tbody td ,#main tbody th {
     background-color: var(--secondColor);
-    min-width: 90px;
+    min-width: 70px;
    
 
 }
@@ -85,13 +85,7 @@ max-height: 20rem;
     overflow: hidden;
 }
 .sumatorios 
-{
-    height: 100%;
-    width: 25%;
-    font-size: 4px;
-    padding: 2px;
-   
-}
+
 h1 {
     margin: auto;
     text-align: center;
@@ -136,7 +130,7 @@ button:hover {
 
 }
 .sumatorios {
-    font-size: 11px;
+    font-size: 10px;
     max-width: 40px;
     padding: 0;
     box-sizing: border-box;
@@ -144,7 +138,7 @@ button:hover {
     border-radius: 10px;
     background-color:var(--thirdColor);
     flex-grow: 0;
-
+    width: 25%;
     height: 100%;
 
 }

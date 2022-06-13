@@ -3,19 +3,18 @@ import { renderGeneralRates } from "./src/generalRatesW.js";
 import { drawChart, testChart, addtest, updateChart } from "./src/grafica.js";
 import { creaTabla } from "./src/tablas.js";
 import {  getRanking, renderWindowsData } from "./src/widonsData.js";
-export let CONFIG = getConfig() ;
-console.log("SITE:", document.getElementById("site").textContent);
-console.log(getConfig())
-document.getElementById("site").textContent = getConfig().site;
+export let  CONFIG  ;
+CONFIG=getConfig()
+document.getElementById("site").textContent = CONFIG.site;
 function saveConfig() {
   localStorage.setItem("config", JSON.stringify(CONFIG));
 }
 function getConfig() {
   let config=JSON.parse(localStorage.getItem("config"))
   if(!config){
-    config={"SITE":"DQA2"}
-  }
-  return config
+     CONFIG={"site":document.getElementById("site").textContent}
+  }else{CONFIG=config}
+  return CONFIG
 }
 function isScreenLockSupported() {
   return "wakeLock" in navigator;
