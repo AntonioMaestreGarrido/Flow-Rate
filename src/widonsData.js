@@ -5,8 +5,9 @@ import { renderGeneralRates } from "./generalRatesW.js";
 export async function renderWindowsData() {
   let   complience=await compliencePorCent()
   let volume=document.querySelector(".volumeExpected").textContent.match(/(\d+)/)
+  let volumenTotal=1
   if(volume)
-  {console.log(volume[0])}
+  {console.log(volume);volumenTotal=volume[0]}
   //const data=sccwindowData
   console.log("wdonswdata llamado a las " + Date());
   const petBody = {
@@ -78,7 +79,8 @@ export async function renderWindowsData() {
         content: title,
       });
       console.log(index,induction.dataPointList.length-1);
-      if ((bufferInMinutes > 14.9 && bufferInMinutes < 30.1) || sort < 65|| index==induction.dataPointList.length-1) {
+      console.log((volumenTotal/complience.total/15*2))
+      if ((bufferInMinutes > 14.9 && bufferInMinutes < 30.1) || sort < (volumenTotal/complience.total/15*2)|| index==induction.dataPointList.length-1) {
         timeWindowMark.classList.add("passed");
       } else {
         timeWindowMark.classList.add("failed");
@@ -138,12 +140,14 @@ async function compliencePorCent(){
   let pass=0
   let failed=0
   let txC
+  let total
   let container=document.querySelectorAll(".divContainer")
   container.forEach((ele)=>{if(ele.querySelectorAll(".passed").length>0){pass++}else{failed++}})
   console.log(pass,failed)
   txC=(pass*100/ (pass+failed)).toFixed("2")
+  total=pass+failed
   if(isNaN(txC)){txC=0}
-  return{pass,failed,txC}
+  return{pass,failed,total,txC}
 }
 
 
