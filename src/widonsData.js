@@ -132,7 +132,7 @@ export async function renderWindowsData() {
   
    title.textContent=`WIP compliance ${complience.txC}% `
    windowtotal.textContent=`Windows ${complience.pass+complience.failed}`
-   windowPassed.textContent=`Passed ${complience.failed}`
+   windowPassed.textContent=`Passed ${complience.pass}`
    return true
 
 }
