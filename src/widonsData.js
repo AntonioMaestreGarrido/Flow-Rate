@@ -3,6 +3,7 @@ import { getAPIdata } from "./api.js";
 import { renderGeneralRates } from "./generalRatesW.js";
 
 export async function renderWindowsData() {
+  let   complience=await compliencePorCent()
   //const data=sccwindowData
   console.log("wdonswdata llamado a las " + Date());
   const petBody = {
@@ -30,9 +31,17 @@ export async function renderWindowsData() {
   let totalAts = 0;
   let windowContainer = document.querySelector("#windows15Data");
   windowContainer.innerHTML = "";
+  let windowInfoContainer=document.createElement("div")
   let title=document.createElement("h2")
   title.textContent=`WIP compliance`
-  windowContainer.appendChild(title)
+  windowInfoContainer.appendChild(title)
+  let windowtotal=document.createElement("p")
+  let windowPassed=document.createElement("p")
+  windowContainer.appendChild(windowInfoContainer)
+  windowInfoContainer.appendChild(windowtotal)
+  windowInfoContainer.appendChild(windowPassed)
+
+
   induction.dataPointList.forEach((ele, index) => {
     let sort = sortation.dataPointList[index].metricValue;
     totalAts = totalAts + (ele.metricValue - sort);
@@ -66,7 +75,7 @@ export async function renderWindowsData() {
         content: title,
       });
       console.log(index,induction.dataPointList.length-1);
-      if ((bufferInMinutes > 14.9 && bufferInMinutes < 30.1) || sort < 50 || index==induction.dataPointList.length-1) {
+      if ((bufferInMinutes > 14.9 && bufferInMinutes < 30.1) || sort < 65|| index==induction.dataPointList.length-1) {
         timeWindowMark.classList.add("passed");
       } else {
         timeWindowMark.classList.add("failed");
@@ -115,9 +124,10 @@ export async function renderWindowsData() {
 
     return newEle;
   }
-   let   complience=await compliencePorCent()
-   title.textContent=`WIP compliance ${complience.txC}%`
-   
+  
+   title.textContent=`WIP compliance ${complience.txC}% `
+   windowtotal.textContent=`Windows ${complience.pass+complience.failed}`
+   windowPassed.textContent=`Passed ${complience.failed}`
    return true
 
 }
