@@ -4,6 +4,9 @@ import { renderGeneralRates } from "./generalRatesW.js";
 
 export async function renderWindowsData() {
   let   complience=await compliencePorCent()
+  let volume=document.querySelector(".volumeExpected").textContent.match(/(\d+)/)
+  if(volume)
+  {console.log(volume[0])}
   //const data=sccwindowData
   console.log("wdonswdata llamado a las " + Date());
   const petBody = {
