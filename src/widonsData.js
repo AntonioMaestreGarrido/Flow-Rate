@@ -6,11 +6,11 @@ export async function renderWindowsData() {
   //let   complience=await compliencePorCent()//
   let volume=document.querySelector(".volumeExpected").textContent.match(/(\d+)/)
   let volumenTotal=1
-  let sideMatch=document.querySelector(".sideline").textContent.match(/(\d+)/)
+  //let sideMatch=document.querySelector(".sideline").textContent.match(/(\d+)/)
   let side=0
-  if(sideMatch){
-    side=sideMatch[0]
-  }
+ // if(sideMatch){
+  //  side=sideMatch[0]
+  //}
   console.log("el side es ",side)
   if(volume)
   {console.log(volume);volumenTotal=volume[0]}
