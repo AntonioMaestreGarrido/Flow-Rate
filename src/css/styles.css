@@ -13,10 +13,10 @@
 }
 :root{font-size: 1rem;}
 
-#main thead {
+#main thead ,th{
    
 
-    border: black solid 7px;
+    border: black solid 1px;
     background-color: var(--primColor);
     color: aliceblue;
     height: 50px;
@@ -32,7 +32,7 @@
   
 }
 
-#main tbody td ,#main tbody th {
+#main tbody td  {
     background-color: var(--secondColor);
     min-width: 70px;
    
@@ -61,7 +61,7 @@
 
 }
 .quickCalc{
-    width: 150px;
+    /* width: 150px; */
     display: flex;
     
         justify-content: space-evenly;
@@ -106,20 +106,14 @@ button:hover {
 #copyCell {
     border: none;
     background-color: royalblue;
-    width: 100px;
+    /* width: 100px; */
     border: solid 4px;
 
 }
 
 
 
-#pieComply {
-    display: none;
-    width: 300px;
-    max-height: 300px;
 
-    border: solid black 4px;
-}
 
 #showChart,
 #addtest,
