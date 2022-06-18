@@ -3,9 +3,15 @@ import { getAPIdata } from "./api.js";
 import { renderGeneralRates } from "./generalRatesW.js";
 
 export async function renderWindowsData() {
-  let   complience=await compliencePorCent()
+  //let   complience=await compliencePorCent()//
   let volume=document.querySelector(".volumeExpected").textContent.match(/(\d+)/)
   let volumenTotal=1
+  let sideMatch=document.querySelector(".sideline").textContent.match(/(\d+)/)
+  let side=0
+  if(sideMatch){
+    side=sideMatch[0]
+  }
+  console.log("el side es ",side)
   if(volume)
   {console.log(volume);volumenTotal=volume[0]}
   //const data=sccwindowData
@@ -45,16 +51,16 @@ export async function renderWindowsData() {
   windowInfoContainer.appendChild(windowtotal)
   windowInfoContainer.appendChild(windowPassed)
 
-
+  let   complience=await compliencePorCent()
   induction.dataPointList.forEach((ele, index) => {
     let sort = sortation.dataPointList[index].metricValue;
-    totalAts = totalAts + (ele.metricValue - sort);
+    totalAts = totalAts + (ele.metricValue - sort);// experimentando con el side
     let time = new Date(ele.timeStampVal);
     let bufferInMinutes;
 
     if (sort === 0) {
       bufferInMinutes = 0;
-    } else bufferInMinutes = (totalAts / sort) * 15;
+    } else bufferInMinutes = ((totalAts-side) / sort) * 15;
 
     //{type:"",class:"",content:""}
     let title = ` ${time.getHours()}:${String(time.getMinutes()).padEnd(
@@ -79,8 +85,9 @@ export async function renderWindowsData() {
         content: title,
       });
       console.log(index,induction.dataPointList.length-1);
+      
       console.log((volumenTotal/complience.total/15*2))
-      if ((bufferInMinutes > 14.9 && bufferInMinutes < 30.1) || sort < (volumenTotal/complience.total/15*2)|| index==induction.dataPointList.length-1) {
+      if ((bufferInMinutes > 14.9 && bufferInMinutes < 30.1) || sort < 62|| index==induction.dataPointList.length-1) {
         timeWindowMark.classList.add("passed");
       } else {
         timeWindowMark.classList.add("failed");

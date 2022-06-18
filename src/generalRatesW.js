@@ -42,4 +42,6 @@ export async function renderGeneralRates(sccData) {
   document.querySelector(".stowWindowRate").textContent=`Stow Wr: ${(data.groupedPackageMetrics.PLANNED_MANIFESTED[CONFIG.site]/(worktime*4)).toFixed(0)}`
   document.querySelector(".startTime").textContent=`Start time: ${String(start.getHours()).padStart(2,"0")}:${String(start.getMinutes()).padEnd(2,"0")}`
   document.querySelector(".endTime").textContent=`End time: ${String(end.getHours()).padStart(2,"0")}:${String(end.getMinutes()).padEnd(2,"0")}`
+  document.querySelector(".sideline").textContent=`Sideline: ${data.groupedPackageMetrics.SIDELINE[CONFIG.site]}`
+  
 }
