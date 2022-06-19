@@ -136,7 +136,7 @@ export async function renderWindowsData() {
 
     return newEle;
   }
-  t =await compliencePorCent()
+  complience=await compliencePorCent()
    title.textContent=`WIP compliance ${complience.txC}% `
    windowtotal.textContent=`Windows ${complience.pass+complience.failed}`
    windowPassed.textContent=`Passed ${complience.pass}`
