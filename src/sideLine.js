@@ -11,7 +11,7 @@ export async function setSideLine() {
   // console.log( end)
   // console.log(start)
 
-
+  //getAts()
 
 
   /////////////
@@ -24,10 +24,24 @@ export async function setSideLine() {
   console.log("*")
  return list
 }
+async function   getAts(){
+  let atsTotal=0
+ const dwell= await getDwell("DQA2")
+console.log(dwell)
+let atsDwell
+dwell.forEach((ele)=>{if(ele.packageStatus==="Inducted"){atsDwell=ele.columnToViewDataMap}})
+
+for (const key in atsDwell) {
+  // console.log(key)
+  // console.log(held[key].value)
+  atsTotal = atsTotal + parseInt(atsDwell[key].value);
+}
+console.log(atsTotal)
+}
 export async function getSideOut(site) {
   let sideTotal = 0;
-  
   const dwell = await getDwell(site);
+  
   // console.log(dwell);
   // console.log(dwell[5].packageStatus);
   let held = dwell.filter((ele) => {
@@ -59,14 +73,13 @@ function parseDate(data) {
   const end=new Date(ventanas.dataPointList[ventanas.dataPointList.length-1].timeStampVal)
   console.log(start,end)
   const sideListArray = [];
-  data.forEach((ele) => {
+  const m=data.map((ele) => {
     // console.log(ele);
     ele.last = new Date(ele.lastUpdatedTime);
     let d = new Date();
     d.getMinutes();
-    // console.log(ele.last.getHours(), ele.last.getMinutes());
-    // let window =( ele.last.getHours()-start.getHours())*4 ;
-    let window =( ele.last.getHours()-start.getHours())*4 + Math.ceil((ele.last.getMinutes()+1) / 15);
+    // el +1 depende de si el paquete cae en el minuto justo de la ventana o no
+    let window =( ele.last.getHours()-start.getHours())*4 + Math.ceil((ele.last.getMinutes()) / 15);
     // console.log(window);
     sideListArray.push({
       Tracking: ele.trackingId,
@@ -172,7 +185,7 @@ export function windowSidelined(sideListArray){
      windowSide[i]=0;
     
   }
-  sideListArray.forEach((ele,index) => {
+  let m=sideListArray.map((ele,index) => {
     let w=ele.ventana-1
     windowSide[w]=windowSide[w]+1
     //console.log(windowSide)

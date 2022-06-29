@@ -25,13 +25,7 @@ function isScreenLockSupported() {
 }
 getScreenLock();
 async function getScreenLock() {
-  const camiones = await getAPIdata({
-    resourcePath: "/ivs/getNodeLineHaulList",
-    httpMethod: "post",
-    processName: "induct",
-    requestBody: { nodeId: CONFIG.site, groupBy: "" },
-  });
-  console.log(camiones);
+ 
   if (isScreenLockSupported()) {
     let screenLock;
     try {
@@ -211,6 +205,13 @@ async function filltable() {
   document.getElementById("MinutesToCheck").innerText = MinutesToCheck;
 
   document.getElementById("ATsAtTime").innerText = ATsAtTime;
+
+  document.getElementById("buffer")
+  .textContent = Math.round(ATsAct*60/StowRateAct)+"m";
+  // if(document.getElementById("buffer")
+  // .textContent === Math.round(ATsAct*60/StowRateAct)>30||document.getElementById("buffer")
+  // .textContent === Math.round(ATsAct*60/StowRateAct)<15){document.getElementById("buffer").classList.add("failed")}else{document.getElementById("buffer").classList.add("passed")}
+  document.getElementById("bufferAtCheck").textContent =  Math.round(ATsAtTime*60/StowRateAct)+"m";
   //document.getElementById("ATsAtTimeCustom").innerText = ATsAtTime;
 
   giveStyle();
@@ -495,7 +496,7 @@ function calculateNextWindowCall() {
 }
 function windowsInterval() {
   renderWindowsData();
-  setTimeout(windowsInterval, 15 * 60 * 1000 - 1);
+  setTimeout(windowsInterval, 5 * 60 * 1000 - 1);
 }
 //renderWindowsData()
 // first parameter Table ID, second arrayasync
