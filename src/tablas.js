@@ -2,76 +2,57 @@
 //constdatos array con los datos
 //campos especifica que columnas se van a renderizar
 export function creaTabla(containerName, constdatos, campos) {
-  if (constdatos.length<=0){return}
-  //purgaObj(constdatos, campos);
-  //let datos = purgaObj(constdatos, campos);
+  
   const container = document.getElementById(containerName);
 
-  const filas = constdatos.length;
-  const columnas = campos.length;
+  const filas = campos.length;
+  const columnas = Object.keys(constdatos).length;
 
   let tabla = document.createElement("table");
   tabla.id = `${containerName}Table`;
 
   let cabecera = document.createElement("tr");
-  for (const key in campos) {
+  for (let i = 0; i < campos.length; i++) {
     let celda = document.createElement("th");
-    celda.innerText =campos[key];
+    let index = campos[i];
+    let contenido = constdatos[0][index];
+    celda.innerText = contenido;
     cabecera.appendChild(celda);
+    
   }
-
   tabla.appendChild(cabecera);
   // console.log(constdatos[0].length)=8
   // console.log(constdatos.length)=3
 
   const tbody = document.createElement("tbody");
-
-
-  constdatos.forEach((ele,index) => {
-    let pictureContainer=document.createElement("div")
-    let picture=document.createElement("img")
-    picture.classList.add("miniPicture")
-    console.log(ele)
-    console.log(ele.alias)
-    picture.setAttribute("src",`https://internal-cdn.amazon.com/badgephotos.amazon.com/?uid=${ele.alias.replace("@amazon.com","")}`)
-    
+  for (let i = 1; i < constdatos.length; i++) {
     let linea = document.createElement("tr");
-    linea.appendChild(picture)
-    campos.forEach((key)=>{
+    linea.addEventListener("click",(e)=>alert(e.target))
+    for (let j = 0; j < campos.length; j++) {
       let celda = document.createElement("td");
-      let txt=ele[key]
-      console.log( typeof(txt))
-      if(typeof(txt)==="string"){
-        txt= txt.replace("@amazon.com","")
-      }
-      celda.innerText = txt;
+      let index = campos[j];
+      let contenido = constdatos[i][index];
+      console.log("????")
+      celda.innerText = contenido;
       linea.appendChild(celda);
-      
-    })
-    
+    }
     tbody.appendChild(linea);
-  });
-  let celda = document.createElement("th");
-  celda.innerText ="Picture";
-  //eElement.insertBefore(newFirstElement, eElement.firstChild);
-  cabecera.insertBefore( cabecera.appendChild(celda),cabecera.firstChild)
+  }
   tabla.appendChild(tbody);
   container.appendChild(tabla);
 }
-function purgaObj(arrayObj, lista = []) {
-  arrayObj.forEach((ele) => {
-    ele.alias=ele.alias.replace("@amazon.com","")
-    for (const key in ele) {
-      console.log(key);
-      
-      if (lista.includes(key)) {
-        console.log(key);
-        console.log(ele[key]);
-      } else {
-        delete ele[key];
-      }
-    }
-  });
-  console.log(arrayObj);
-  return arrayObj;
-}
+//   constdatos.filter((p,i)=>i>0).forEach((ele,index) => {
+//     if(campos.includes(index)){
+//     let linea = document.createElement("tr");
+//     tabla.appendChild(linea);
+//     ele.forEach((cel) => {
+//       let celda = document.createElement("td");
+//       celda.innerText = cel;
+//       linea.appendChild(celda);
+//     });
+//     tbody.appendChild(linea);}
+//   });
+//   tabla.appendChild(tbody)
+//   container.appendChild(tabla);
+
+// }

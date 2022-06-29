@@ -37,12 +37,16 @@
   <button id="botonGetInductersRates">Inducters</button>
   <button class="boton refreshTimeWindows">Refresh windows</button>
   <button class="boton getRanking">Get Ranking</button>
+  <button class="boton getSide">Get Side</button>
+  <label for="checkBoxSide">Live Sideline</label>
+  <input name="checkBoxSide" id="checkBoxSide" type="checkbox">
   
   <div id="app">
     <div id="generalInfo">
       <div>
         <p class="info volumeExpected">Volume Expected:</p>
-        <p class="info volumeExpected">Volume Expected:</p>
+        <p class="info SideLineIn">SideLine In: <span class="dataSideLineIn">0</span></p>
+        <p class="info SideLineOut">SideLine Out: <span class="dataSideLineOut">0</span></p>
       </div>
       <div class="generalDivision">
         <p class="info startTime">Start time</p>
@@ -194,5 +198,6 @@
   <canvas id="test" width="1000" height="300"></canvas>
   <canvas id="pieComply" width="1000" height="300"></canvas>
 </div>
+
 
 </html>

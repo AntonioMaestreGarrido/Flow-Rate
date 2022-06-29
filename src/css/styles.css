@@ -213,6 +213,12 @@ button:hover {
     .passed::after{
         content:"Passed!" ;
     }
+    .nula{
+        background-color: yellow;
+    }
+    .nula::after{
+        content: "Nula";
+    }
     .failed{
         background-color: rgba(255, 0, 0, 0.575) ;
     }
@@ -230,13 +236,19 @@ button:hover {
   .divContainer{
       padding: 4px;
     border: solid black 2px;
+    min-width: fit-content;
     /* margin: auto; */
+    margin-top: 1px;
+    margin-bottom: 1px;
       
   }
-  .divContainer:first-child{
-      /* margin: auto; */
-
+  #windows15Data p,#windows15Data h2{
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 3px;
+    margin-right: 3px;
   }
+ 
   .visible{
       display: block;
   }
@@ -292,5 +304,21 @@ button:hover {
   .miniPicture{
       height: 3rem;
 
+  }
+  #rankingcontainer{
+      width: max-content;
+      border: black solid 2px;
+      
+  }
+  .fila{
+    border: black solid 2px;
+    justify-content: space-between;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      padding-left:5px;
+      padding-right:5px;
+      gap: 15px;
+      
   }
 

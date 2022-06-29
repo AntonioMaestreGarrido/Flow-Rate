@@ -1,20 +1,24 @@
 import { getAPIdata, getAPIgetdata } from "./src/api.js";
 import { renderGeneralRates } from "./src/generalRatesW.js";
 import { drawChart, testChart, addtest, updateChart } from "./src/grafica.js";
+import { setSideLine } from "./src/sideLine.js";
 import { creaTabla } from "./src/tablas.js";
-import {  getRanking, renderWindowsData } from "./src/widonsData.js";
-export let  CONFIG  ;
-CONFIG=getConfig()
+import { getRanking, renderWindowsData } from "./src/widonsData.js";
+export let CONFIG;
+CONFIG = getConfig();
+
 document.getElementById("site").textContent = CONFIG.site;
 function saveConfig() {
   localStorage.setItem("config", JSON.stringify(CONFIG));
 }
 function getConfig() {
-  let config=JSON.parse(localStorage.getItem("config"))
-  if(!config){
-     CONFIG={"site":document.getElementById("site").textContent}
-  }else{CONFIG=config}
-  return CONFIG
+  let config = JSON.parse(localStorage.getItem("config"));
+  if (!config) {
+    CONFIG = { site: document.getElementById("site").textContent };
+  } else {
+    CONFIG = config;
+  }
+  return CONFIG;
 }
 function isScreenLockSupported() {
   return "wakeLock" in navigator;
@@ -104,6 +108,7 @@ async function apitest() {
       let datos = data;
       // console.log(datos);
       calculate(datos);
+      sessionStorage.setItem("lastWindowData",JSON.stringify(datos))
     })
     .catch((error) => console.log("No se encuentra el servidor", error));
 }
@@ -123,6 +128,10 @@ async function calculate(data) {
   }
   let date = new Date();
   ATsAct = parseInt(data.ATs);
+  if (document.querySelector("#checkBoxSide").checked) {
+    ATsAct =
+      ATsAct - parseInt(document.querySelector(".dataSideLineOut").textContent);
+  }
   StowRateAct = parseInt(data.stowRate);
   InductRateAct = parseInt(data.inductRate);
   let stowRateMinute = StowRateAct / 60;
@@ -234,20 +243,26 @@ function giveStyle() {
 
 function setupEventsListener() {
   document.getElementById("site").addEventListener("focusout", (e) => {
-    CONFIG.site = e.target.textContent.toUpperCase();
-    document.getElementById("site").textContent=CONFIG.site
-    saveConfig()
-    renderWindowsData()
+    CONFIG.site = e.target.textContent.toUpperCase().trim();
+    document.getElementById("site").textContent = CONFIG.site;
+    saveConfig();
+    renderWindowsData();
     console.log(CONFIG.site);
   });
+  document
+    .querySelector("#checkBoxSide")
+    .addEventListener("click", (e) => calculate(JSON.parse(sessionStorage.getItem ("lastWindowData"))));
+  document
+    .querySelector(".getSide")
+    .addEventListener("click", () => setSideLine());
   document.getElementById("test").addEventListener("click", async () => {
     const t = await getAPIgetdata("/wipData");
     console.log(t);
   });
- document.querySelector(".getRanking").addEventListener("click",getRanking)
+  document.querySelector(".getRanking").addEventListener("click", getRanking);
   document
-  .querySelector(".refreshTimeWindows")
-  .addEventListener("click", renderWindowsData);
+    .querySelector(".refreshTimeWindows")
+    .addEventListener("click", renderWindowsData);
   document
     .getElementById("StowRateCustom")
     .addEventListener("focusout", () => fillCustom());
@@ -306,17 +321,17 @@ async function getStowersRates() {
     stowList.associates.forEach((ele) => {
       ele.pph = ele.performance.pph;
       console.log(ele.performance.pph);
-    })
+    });
 
     console.log(objFlat);
 
     /////////////////////////
-    
-    creaTabla("stowersRates", stowList.associates.filter((ele)=>ele.status==="ACTIVE"), [
-      "alias",
-      "pph",
-      "location",
-    ]);
+
+    creaTabla(
+      "stowersRates",
+      stowList.associates.filter((ele) => ele.status === "ACTIVE"),
+      ["alias", "pph", "location"]
+    );
 
     StowersContainer.style.display = "block";
   }
