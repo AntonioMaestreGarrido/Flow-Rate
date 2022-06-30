@@ -141,7 +141,7 @@ function parseCsv(data, fieldSep, newLine) {
   //console.log('- grid: ' + JSON.stringify(grid, null, ' '));
   return grid;
 }
-function testCSV(array) {
+export function testCSV(array) {
   var universalBOM = "\uFEFF";
 
   //headers from object
