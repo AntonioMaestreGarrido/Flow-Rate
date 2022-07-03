@@ -1,9 +1,13 @@
 import { CONFIG } from "../index.js";
 import { getAPIdata, getDwell } from "./api.js";
 import { renderGeneralRates } from "./generalRatesW.js";
+import { parcelList } from "./parcelList.js";
 import { setSideLine, testCSV } from "./sideLine.js";
 
 export async function renderWindowsData() {
+ 
+
+
   const petBody = {
     resourcePath: "/ivs/getpvadata",
     httpMethod: "post",
@@ -23,12 +27,14 @@ export async function renderWindowsData() {
   sessionStorage.setItem("windows", JSON.stringify(data.flowPVAData[15][2]));
   const sccData = data.flowPVAData[15];
   console.log(sccData);
-  renderGeneralRates(data.flowPVAData[15][2]);
+  await renderGeneralRates(data.flowPVAData[15][2]);
   const sideLined = await setSideLine();
-  let volume = document
-    .querySelector(".volumeExpected")
-    .textContent.match(/(\d+)/);
+  // let volume = document
+  //   .querySelector(".volumeExpected")
+  //   .textContent.match(/(\d+)/);
+  let volume= await getVolume()
   let volumenTotal = 1;
+  let sideTotal=1
   //let sideMatch=document.querySelector(".sideline").textContent.match(/(\d+)/)
   let side = 0;
   // if(sideMatch){
@@ -46,7 +52,8 @@ export async function renderWindowsData() {
   const sortation = data.flowPVAData[15][2];
   console.log(sortation.dataPointList.length);
   let v = sortation.dataPointList.length;
-  let lowSortThreshold = (parseInt(volumenTotal) / v / 15) * 2;
+//  let lowSortThreshold = (parseInt(volumenTotal) / v / 15) * 2;
+let lowSortThreshold = (parseInt(volume) / v / 15) * 2;
   let totalAts = 0;
   let windowContainer = document.querySelector("#windows15Data");
   windowContainer.innerHTML = "";
@@ -67,6 +74,7 @@ export async function renderWindowsData() {
   let complience = await compliencePorCent();
   let inductAcumulu = 0;
   let stowAcumulu = 0;
+  let sideAcumulu=0
   const totalData=[]
   let partialData= induction.dataPointList.map((ele, index) => {
     
@@ -82,6 +90,7 @@ export async function renderWindowsData() {
     inductAcumulu = inductAcumulu + ele.metricValue ;
     // inductAcumulu = inductAcumulu + ele.metricValue - sideLined[index];
     stowAcumulu = stowAcumulu + sort;
+    sideAcumulu=sideAcumulu+sideLined[index] 
     totalAts = totalAts + (ele.metricValue - sideLined[index] - sort); // experimentando con el side
     if (sort > lowSortThreshold) {
       //totalAts=totalAts-sort
@@ -171,6 +180,11 @@ export async function renderWindowsData() {
         class: "windowData",
         content: `Sidelined=${sideLined[index]}`,
       });
+      let sideAcumuluInWindow = createNewEle({
+        type: "div",
+        class: "windowData",
+        content: `Total Side=${sideAcumulu}`,
+      });
       let buffer = createNewEle({
         type: "div",
         class: "windowData",
@@ -187,6 +201,8 @@ export async function renderWindowsData() {
       partialWindow.appendChild(inductAcuData);
       partialWindow.appendChild(sortAcuData);
       partialWindow.appendChild(sideInWindow);
+      partialWindow.appendChild(sideAcumuluInWindow);
+      
       partialWindow.appendChild(AtsData);
       partialWindow.appendChild(buffer);
       partialWindow.appendChild(flowRate);
@@ -234,7 +250,7 @@ async function compliencePorCent() {
   return { total, pass, failed, nulas, txC,time };
 }
 
-export async function getRanking() {
+export async function getRanking(ExportToCSV=false) {
   let actualSite = CONFIG.site; // guarda el site actual para reinstaurarlo despues del ranking
   const sites2 = [
     "DQB2",
@@ -344,7 +360,7 @@ export async function getRanking() {
   console.log(sites);
   //  sites = rankingFrancia
    const ranking = [];
-  sites=mini
+  // sites=mini
 
   const todosLosDatos=[]
   for (let i = 0; i < sites[0].length; i++) {
@@ -358,7 +374,9 @@ export async function getRanking() {
   }
   console.log("listado todas")
   console.log(todosLosDatos)
-  testCSV(todosLosDatos)
+  if(ExportToCSV==="yes")
+  {testCSV(todosLosDatos)}
+  
   console.log(ranking.sort((a, b) => b.percentil - a.percentil));
 
   renderRanking(ranking);
@@ -570,3 +588,39 @@ const rankingItalia = [
     "Origgio",
   ],
 ];
+export function exportFullData() {
+  getRanking("yes")
+
+  
+}
+async function getVolume(site=CONFIG.site){
+  const petBody = {
+    resourcePath: "/ivs/getPackageMetric",
+    httpMethod: "post",
+    processName: "induct",
+    requestBody: {
+      nodeId: site,
+      filters: { Cycle: ["CYCLE_1"] },
+      groupBy: "Node",
+      metricList: [
+        "CURRENT_CYCLE_RECEIVED",
+        "OTHER_CYCLE_RECEIVED",
+        "PENDING_DEPART_FROM_UPSTREAM",
+        "PENDING_DEPART_FROM_UPSTREAM_UNPLANNED",
+        "IN_TRANSIT_FROM_UPSTREAM",
+        "IN_TRANSIT_FROM_UPSTREAM_UNPLANNED",
+        "PENDING_INDUCT",
+        "PENDING_INDUCT_UNPLANNED",
+        "PENDING_RE_INDUCT",
+        "PENDING_RE_INDUCT_UNPLANNED",
+        "INDUCTED_AT_STATION",
+        "PLANNED_MANIFESTED",
+        "SIDELINE",
+      ],
+    },
+  };
+  const data = await getAPIdata(petBody);
+  console.log(data);
+  console.log(data.groupedPackageMetrics.PLANNED_MANIFESTED[CONFIG.site]);
+return data.groupedPackageMetrics.PLANNED_MANIFESTED[CONFIG.site]
+}
