@@ -31,17 +31,15 @@ export async function parcelList(site = CONFIG.site) {
     })
   );
 
-  //manifests = manifests.flat();
-  console.log(manifests);
-  //   testCSV(manifests)
+ 
   let bigdata = await fullSearchData(manifests);
   bigdata = bigdata.flat();
   bigdata.forEach((ele) => (ele = flatSearchData(ele)));
-  console.log(bigdata);
+  
   let b = new Date();
 
   console.log("Tempo total:", (b - a) / 1000);
-  console.log(bigdata)
+  
   // se coloca columna vrid primera
   let truckIndex=bigdata
   testCSV(bigdata);
@@ -52,15 +50,14 @@ async function fullSearchData(array) {
   const bigData = [];
   const arrayPartido = chunk(array, 1000);
 
-  console.log("strt");
-  console.log(arrayPartido)
+  
   await Promise.all(
     arrayPartido[0].map(async (ele,indexPartido) => {
-      console.log("pidiendo ");
+      console.log(`Pidiendo ${arrayPartido[1][indexPartido][5]}`);
       let a = await  getFullData(ele);//await
-       console.log(arrayPartido[1][indexPartido][5])
+       
        a.packageSummaryList.forEach((e,index)=>{e.Truck=arrayPartido[1][indexPartido][index]})
-      console.log("recibiendo");
+       console.log(`Recibido ${arrayPartido[1][indexPartido][5]}`);
 
       bigData.push(a.packageSummaryList);
       return true;
@@ -75,7 +72,7 @@ async function fullSearchData(array) {
 function chunk(items, size) {
   const chunks = [[],[]];
   //items = [].concat(...items);
-console.log(items[0].length)
+
   while (items[0].length) {
     chunks[0].push(items[0].splice(0, size));
     chunks[1].push(items[1].splice(0, size));
@@ -141,9 +138,7 @@ function flatSearchData(obj) {
      
       obj[key] = valu.replaceAll(",", " ");
     }
-    if(name=="lastUpdatedTime"){
-      console.log(obj[key] )// to fixed
-    }
+   
     if (obj[key]!= null && name.toLocaleLowerCase().includes("date")&& name !=="lastUpdatedTime" ) {
     
       obj[key] = new Date(obj[key]).toLocaleDateString();

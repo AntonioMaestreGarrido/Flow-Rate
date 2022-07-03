@@ -17,7 +17,7 @@ export async function setSideLine() {
   /////////////
   let a = new Date()
   let sideList = await getSideList();
-  console.log(sideList);
+  
   const list=parseDate(sideList);
   let b= new Date()
   console.log("Tiempo de respuesta: "+  (b.getMilliseconds()-a.getMilliseconds())/1000+" segundos")
@@ -36,7 +36,7 @@ export async function getSideOut(site) {
     return ele.packageStatus == "Held";
   });
   held = held[0].columnToViewDataMap;
-  console.log(held);
+  
   for (const key in held) {
     // console.log(key)
     // console.log(held[key].value)
@@ -55,10 +55,10 @@ export async function getSideIn(site) {
 }
 function parseDate(data) {
   const ventanas=JSON.parse( sessionStorage.getItem("windows"))
-  console.log(ventanas)
+  
   const start=new Date(ventanas.dataPointList[0].timeStampVal)
   const end=new Date(ventanas.dataPointList[ventanas.dataPointList.length-1].timeStampVal)
-  console.log(start,end)
+  
   const sideListArray = [];
   const m=data.map((ele) => {
     // console.log(ele);
@@ -75,7 +75,7 @@ function parseDate(data) {
       ventana: window,
     });
   });
-  console.table(sideListArray)
+  
   return windowSidelined(sideListArray)
 }
 
@@ -118,7 +118,7 @@ function parseCsv(data, fieldSep, newLine) {
   return grid;
 }
 export function testCSV(array) {
-console.log(array)
+
  
   
 
@@ -137,7 +137,7 @@ console.log(array)
   let fila = Object.keys(array[0]);
   // get truck index
   let truckIndex=fila.indexOf("Truck")
-  console.log(fila)
+  
   fila.splice(truckIndex,1)
   fila.unshift("Truck")
   for (let col of fila) {
