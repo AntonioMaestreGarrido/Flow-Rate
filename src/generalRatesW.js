@@ -55,6 +55,7 @@ export async function renderGeneralRates(sccData) {
   document.querySelector(
     ".volumeManifested span"
   ).textContent = ` ${truckData.totalVolume} (${truckData.truckManifested}/${truckData.trucksNumber})`;
+  //volumenFraccion
   document.querySelector(".inductHourlyRate").textContent = `Induct Hr: ${(
     data.groupedPackageMetrics.PLANNED_MANIFESTED[CONFIG.site] / worktime
   ).toFixed(0)}`;
@@ -82,6 +83,8 @@ export async function renderGeneralRates(sccData) {
   document.querySelector("#truckTotal").textContent = truckData.trucksNumber;
   document.querySelector("#volumeArrived").textContent =
     truckData.volumeArrived;
+    document.querySelector("#arrivedPorCent").textContent=Math.round(document.querySelector("#volumeArrived").textContent /
+    truckData.totalVolume * 100)
   //document.querySelector(".sideline").textContent=`Sideline: ${data.groupedPackageMetrics.SIDELINE[CONFIG.site]}`
 }
 
