@@ -82,7 +82,7 @@ async function truckList() {
   let trucksNumber = 0;
   let truckManifested = 0;
   let truckArrived=0
-  
+  console.table(truckList)
   truckList.forEach((ele) => {
     
     if(!ele.origin.startsWith("OQ")&& !ele.origin.startsWith("OC")&& ele.origin.length <5){
@@ -91,8 +91,8 @@ async function truckList() {
     if (!isNaN(ele.volume) && !ele.volume==0) {
       totalVolume += ele.volume;
       truckManifested++;
+      if(ele.lineHaulStatus==="ARRIVED"){truckArrived++}
     }}
-    if(ele.lineHaulStatus==="ARRIVED"){truckArrived++}
   });
 
   return { totalVolume, trucksNumber, truckManifested,truckArrived };
