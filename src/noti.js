@@ -1,4 +1,4 @@
-import { CONFIG } from "..";
+import { CONFIG } from "../index.js";
 
 
 export function sendNotification(ele) {
