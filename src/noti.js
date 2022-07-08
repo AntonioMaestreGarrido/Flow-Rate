@@ -30,6 +30,7 @@ export function sendNotification(ele) {
   });
   notification.addEventListener("show", () => console.log("camion llegado"));
   notification.addEventListener("close",()=>navigator.clipboard.writeText(vrid))
+  notification.addEventListener("click",()=>navigator.clipboard.writeText(vrid))
 }
 function askFroNoti() {
   {
