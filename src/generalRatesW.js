@@ -94,6 +94,7 @@ async function truckList() {
     (ele) =>
       !ele.origin.startsWith("OQ") &&
       !ele.origin.startsWith("OC") &&
+      !ele.origin.startsWith("DQ") &&
       ele.origin.length < 5
   );
   checkArrived(truckList);
