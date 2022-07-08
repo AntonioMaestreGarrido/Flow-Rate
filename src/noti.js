@@ -1,3 +1,4 @@
+import { CONFIG } from "..";
 
 
 export function sendNotification(ele) {
@@ -15,8 +16,8 @@ export function sendNotification(ele) {
   var img = "./src/img/truck-noti.jpg";
   let ico = "./src/img/peccy.jpg";
 
-  let titulo = "Truck";
-  var text = `Llega camion VRID:${vrid} de ${ele.origin} con ${ele.volume} paquetes`;
+  let titulo = `Truck arrived to ${CONFIG.site}`;
+  var text = `Llega camion VRID:${vrid} de ${ele.origin} con ${ele.volume} paquetes `;
 //   notiChime(text)
   var notification = new Notification("Truck Arrived", {
       timestamp:Date(),
