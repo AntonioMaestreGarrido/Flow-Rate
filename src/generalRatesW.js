@@ -85,7 +85,7 @@ export async function renderGeneralRates(sccData) {
     truckData.volumeArrived;
     document.querySelector("#arrivedPorCent").textContent=Math.round(document.querySelector("#volumeArrived").textContent /
     truckData.totalVolume * 100)
-  //document.querySelector(".sideline").textContent=`Sideline: ${data.groupedPackageMetrics.SIDELINE[CONFIG.site]}`
+ 
 }
 
 async function truckList() {
