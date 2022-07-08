@@ -29,6 +29,7 @@ export function sendNotification(ele) {
     silent: true,
   });
   notification.addEventListener("show", () => console.log("camion llegado"));
+  notification.addEventListener("close",()=>navigator.clipboard.writeText(vrid))
 }
 function askFroNoti() {
   {

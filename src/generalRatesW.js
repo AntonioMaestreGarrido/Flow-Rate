@@ -5,6 +5,8 @@ import { getSideIn, getSideOut } from "./sideLine.js";
 import { renderWindowsData } from "./widonsData.js";
 
 export async function renderGeneralRates(sccData) {
+  
+
   let sideIN = await getSideIn(CONFIG.site);
   let sideOut = await getSideOut();
   const truckData = await truckList();
